@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    color: #f6f6f6;
+    background-color: #2f2f2f;
+}
+
+html,
+body,
+#root,
+#root>div {
+    height: 100%
+}
