@@ -7,7 +7,7 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "sa2b-gardening-tools",
+    "productName": "sa2-gardening-tools",
     "version": "0.0.0"
   },
   "tauri": {
@@ -37,9 +37,9 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "sa2b-gardening-tools",
-        "width": 800,
-        "height": 600
+        "title": "sa2-gardening-tools",
+        "width": 1200,
+        "height": 800
       }
     ]
   }

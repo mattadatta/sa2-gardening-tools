@@ -1,12 +1,17 @@
 import { useCallback } from "react";
 import { processFiles } from "./backend";
-import Dropzone from "./components/Dropzone";
+import Dropzone from "./components/TauriDropzone";
+import { useAppStore } from "./store";
 
-function App() {
+export default function App() {
+
+  const setLoadedSaves = useAppStore((state) => state.setLoadedSaves)
+  const loadedSaves = useAppStore((state) => state.loadedSaves)
 
   const handleDrop = useCallback(async (files: string[]) => {
-    console.log(`what is wrong with you: ${files}`)
-    await processFiles(files);
+    const response = await processFiles(files)
+    const data = JSON.parse(response)
+    setLoadedSaves(data)
   }, [])
 
   return (
@@ -16,5 +21,3 @@ function App() {
     </Dropzone>
   );
 }
-
-export default App;

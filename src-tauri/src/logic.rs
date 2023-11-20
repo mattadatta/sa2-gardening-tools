@@ -1,31 +1,31 @@
-use sieve::SieveSift;
+use serde::{Serialize, Deserialize};
 use strum_macros::EnumIter;
 
 use crate::model::save::ChaoSave;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-enum SaveType {
-    Main, Chao
+pub fn process_files(file_paths: &[String]) -> String {
+    let found_files = crate::util::walker::walk_paths(file_paths);
+    let loaded_files = load_relevant_files(&found_files[..]);
+    let chao_save: Option<ChaoSave> = loaded_files
+        .iter()
+        .find(|f| f.save_type == SaveType::Chao)
+        .and_then(|f| f.data[..].try_into().ok());
+
+    // let json_path = chao_save_file_instance.file_path.clone() + ".json";
+    // let _ = std::fs::write(json_path, chao_save_json);
+
+    let loaded_files = LoadedFiles {
+        chao_save
+    };
+    serde_json::to_string(&loaded_files).unwrap()
 }
 
-#[derive(Debug)]
-struct FileInstance {
-    _file_path: String,
-    save_type: SaveType,
-    data: Vec<u8>,
-}
-
-fn create_file_instances(file_paths: &Vec<String>) -> Vec<FileInstance> {
+fn load_relevant_files(file_paths: &[String]) -> Vec<LoadedFile> {
     file_paths.iter().filter_map(|path| {
-        let file_name = std::path::Path::new(path)
-            .file_name()
-            .and_then(|name| name.to_str())
-            .unwrap_or("");
-
-        if file_name.ends_with("ALF") {
+        if path.ends_with("ALF") {
             if let Ok(data) = std::fs::read(path) {
-                Some(FileInstance {
-                    _file_path: path.clone(),
+                Some(LoadedFile {
+                    file_path: path.clone(),
                     save_type: SaveType::Chao,
                     data,
                 })
@@ -38,17 +38,20 @@ fn create_file_instances(file_paths: &Vec<String>) -> Vec<FileInstance> {
     }).collect()
 }
 
-pub fn accept_files(file_paths: &Vec<String>) {
-    let found_files = crate::util::walker::walk_paths(&file_paths);
-    let file_instances = create_file_instances(&found_files);
-    let chao_save_file_instance = file_instances.iter().find(|i| i.save_type == SaveType::Chao).unwrap();
-    match ChaoSave::sift(&chao_save_file_instance.data) {
-        Ok(_chao_save) => {
-            println!("Got chao save");
-        },
-        Err(error) => {
-            println!("Got error: {:?}", error);
-        },
-    }
-    // println!("File paths: {:?}", file_instances);
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct LoadedFiles {
+    chao_save: Option<ChaoSave>
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+enum SaveType {
+    Main, Chao
+}
+
+#[derive(Debug)]
+struct LoadedFile {
+    file_path: String,
+    save_type: SaveType,
+    data: Vec<u8>,
 }

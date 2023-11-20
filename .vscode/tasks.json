@@ -6,14 +6,24 @@
         {
             "label": "ui:dev",
             "type": "shell",
-            // `dev` keeps running in the background
-            // ideally you should also configure a `problemMatcher`
-            // see https://code.visualstudio.com/docs/editor/tasks#_can-a-background-task-be-used-as-a-prelaunchtask-in-launchjson
             "isBackground": true,
             "command": "pnpm",
             "args": [
                 "start-debug"
             ]
+            // "problemMatcher": {
+            //     "pattern": {
+            //         "regexp": "^(.*)$",
+            //         "file": 1,
+            //         "location": 2,
+            //         "message": 3
+            //     },
+            //     "background": {
+            //         "activeOnStart": true,
+            //         "beginsPattern": "\\[\\d+\\]\\s+VITE .* ready in ",
+            //         "endsPattern": "\\[\\d+\\]\\s+pnpm dev exited with code"
+            //     }
+            // }
         },
         {
             "label": "ui:build",

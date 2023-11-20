@@ -12,7 +12,7 @@ fn add_files_recursively(directory: &Path, all_files: &mut Vec<String>) -> Resul
     Ok(())
 }
 
-pub fn walk_paths(file_paths: &Vec<String>) -> Vec<String> {
+pub fn walk_paths(file_paths: &[String]) -> Vec<String> {
     let mut all_files: Vec<String> = Vec::new();
 
     for path in file_paths {

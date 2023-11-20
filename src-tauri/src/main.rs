@@ -4,6 +4,8 @@
 mod util {
     pub mod file;
     pub mod walker;
+    pub mod serde_bitflags;
+    pub mod serde_try_from;
     pub mod try_from_enum;
     pub mod try_from_bitflags;
 }
@@ -12,12 +14,11 @@ mod model {
     pub mod save;
 }
 
-mod logic;
+pub mod logic;
 
 #[tauri::command]
-fn process_files(file_paths: Vec<String>) {
-    logic::accept_files(&file_paths);
-    println!("Found paths!!! {:?}", file_paths);
+fn process_files(file_paths: Vec<String>) -> String {
+    logic::process_files(&file_paths[..])
 }
 
 fn main() {

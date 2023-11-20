@@ -1,13 +1,14 @@
 use bimap::BiMap;
 use bitflags::bitflags;
 use lazy_static::lazy_static;
-// use serde::{Deserialize, Serialize, Deserializer, Serializer, ser::SerializeStruct, de::MapAccess};
 use strum_macros::EnumIter;
+use ts_rs::TS;
 
-use crate::{try_from_enum, try_from_bitflags};
+use crate::{try_from_enum, try_from_bitflags, serde_try_from};
 
 try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter, TS)]
+    #[ts(export, export_to = "../src/gen/model/types/ChaoColor.ts")]
     pub enum ChaoColor: u8 {
         Normal = 0,
         Yellow,
@@ -267,6 +268,7 @@ try_from_enum! {
         UNUSED170,
     }
 }
+serde_try_from!(ChaoColor, u8);
 
 try_from_enum! {
     #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
@@ -342,6 +344,7 @@ try_from_enum! {
         Glass,
     }
 }
+serde_try_from!(ChaoEggColor, u8);
 
 try_from_enum! {
     #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
@@ -474,6 +477,7 @@ try_from_enum! {
         GreenCheckerboard,
     }
 }
+serde_try_from!(ChaoTexture, u8);
 
 try_from_enum! {
     #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
@@ -565,6 +569,7 @@ try_from_enum! {
         GlassEggShell,
     }
 }
+serde_try_from!(ChaoHat, u8);
 
 try_from_enum! {
     #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
@@ -578,10 +583,402 @@ try_from_enum! {
         MysticRuins,
     }
 }
+serde_try_from!(ChaoGarden, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoType: u8 {
+        Empty = 0,
+        Egg,
+        Child,
+        UNUSEDGood,
+        UNUSEDBad,
+        NormalNeutral,
+        NormalHero,
+        NormalDark,
+        SwimNeutral,
+        SwimHero,
+        SwimDark,
+        FlyNeutral,
+        FlyHero,
+        FlyDark,
+        RunNeutral,
+        RunHero,
+        RunDark,
+        PowerNeutral,
+        PowerHero,
+        PowerDark,
+        ChaosNeutral,
+        ChaosHero,
+        ChaosDark,
+        Tails,
+        Knuckles,
+        Amy,
+    }
+}
+serde_try_from!(ChaoType, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoEyes: u8 {
+        Normal = 0,
+        Painful,
+        ClosedStraight,
+        ClosedHappy,
+        ClosedUp,
+        Tiny,
+        Circles,
+        ClosedDown,
+        Tiny2,
+        HalfClosed,
+        Mean,
+        GreenChaos,
+        BlueChaos,
+        YellowChaos,
+    }
+}
+serde_try_from!(ChaoEyes, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoMouth: u8 {
+        None = 0,
+        ToothySmile,
+        Open,
+        ClosedSmile,
+        ClosedFrown,
+        OpenSmile,
+        OpenFrown,
+        CloseSmile2,
+        Squiggly,
+        ToothyFrown,
+        ClosedFrown2,
+        WideOpen,
+        ClosedFrown3,
+        StraightMustache,
+        StraightMustache2,
+        StraightMustache3,
+    }
+}
+serde_try_from!(ChaoMouth, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoEmotiball: u8 {
+        Normal = 0,
+        Flame,
+        None,
+    }
+}
+serde_try_from!(ChaoEmotiball, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoBodyType: u8 {
+        Normal = 0,
+        Egg,
+        Omochao,
+        Animal,
+        UNUSED,
+        None,
+    }
+}
+serde_try_from!(ChaoBodyType, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoMedal: u8 {
+        None = 0,
+        Aquamarine,
+        Topaz,
+        Peridot,
+        Garnet,
+        Onyx,
+        Diamond,
+        Beginner,
+        Challenge,
+        Hero,
+        Dark,
+        Pearl,
+        Amethyst,
+        Emerald,
+        Ruby,
+        Sapphire,
+    }
+}
+serde_try_from!(ChaoMedal, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoAnimal: u8 {
+        Penguin = 0,
+        Seal = 1,
+        Otter = 2,
+        Rabbit = 3,
+        Cheetah = 4,
+        Warthog = 5,
+        Bear = 6,
+        Tiger = 7,
+        Gorilla = 8,
+        Peacock = 9,
+        Parrot = 10,
+        Condor = 11,
+        Skunk = 12,
+        Sheep = 13,
+        Raccoon = 14,
+        HalfFish = 15,
+        SkeletonDog = 16,
+        Bat = 17,
+        Dragon = 18,
+        Unicorn = 19,
+        Phoenix = 20,
+        None = 255,
+    }
+}
+serde_try_from!(ChaoAnimal, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter, TS)]
+    #[ts(export, export_to = "../src/gen/model/types/ChaoAnimalPartHorns.ts")]
+    pub enum ChaoAnimalPartHorns: u8 {
+        Invalid = 0,
+        Sheep = 13,
+        Dragon = 18,
+        None = 255,
+    }
+}
+serde_try_from!(ChaoAnimalPartHorns, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoAnimalPartForehead: u8 {
+        Penguin = 0,
+        Gorilla = 8,
+        Peacock = 9,
+        Parrot = 10,
+        Skunk = 12,
+        Unicorn = 19,
+        Phoenix = 20,
+        None = 255,
+    }
+}
+serde_try_from!(ChaoAnimalPartForehead, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoAnimalPartEars: u8 {
+        Invalid = 0,
+        Otter = 2,
+        Rabbit = 3,
+        Cheetah = 4,
+        Warthog = 5,
+        Bear = 6,
+        Tiger = 7,
+        Gorilla = 8,
+        Condor = 11,
+        Sheep = 13,
+        Raccoon = 14,
+        Dragon = 18,
+        Unicorn = 19,
+        None = 255,
+    }
+}
+serde_try_from!(ChaoAnimalPartEars, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoAnimalPartArms: u8 {
+        Penguin = 0,
+        Seal = 1,
+        Otter = 2,
+        Rabbit = 3,
+        Cheetah = 4,
+        Warthog = 5,
+        Bear = 6,
+        Tiger = 7,
+        Gorilla = 8,
+        Skunk = 12,
+        Sheep = 13,
+        Raccoon = 14,
+        Dragon = 18,
+        Unicorn = 19,
+        None = 255,
+    }
+}
+serde_try_from!(ChaoAnimalPartArms, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoAnimalPartFace: u8 {
+        Invalid = 0,
+        Otter = 2,
+        Warthog = 5,
+        None = 255,
+    }
+}
+serde_try_from!(ChaoAnimalPartFace, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoAnimalPartBody: u8 {
+        Penguin = 0,
+        Seal = 1,
+        Otter = 2,
+        Rabbit = 3,
+        Cheetah = 4,
+        Warthog = 5,
+        Bear = 6,
+        Tiger = 7,
+        Gorilla = 8,
+        Peacock = 9,
+        Parrot = 10,
+        Condor = 11,
+        Skunk = 12,
+        Sheep = 13,
+        Raccoon = 14,
+        HalfFish = 15,
+        SkeletonDog = 16,
+        Bat = 17,
+        Dragon = 18,
+        Unicorn = 19,
+        Phoenix = 20,
+        None = 255,
+    }
+}
+serde_try_from!(ChaoAnimalPartBody, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoAnimalPartWings: u8 {
+        Invalid = 0,
+        Peacock = 9,
+        Parrot = 10,
+        Condor = 11,
+        Dragon = 18,
+        Phoenix = 20,
+        None = 255,
+    }
+}
+serde_try_from!(ChaoAnimalPartWings, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoAnimalPartTail: u8 {
+        Invalid = 0,
+        Seal = 1,
+        Otter = 2,
+        Rabbit = 3,
+        Cheetah = 4,
+        Warthog = 5,
+        Tiger = 7,
+        Peacock = 9,
+        Parrot = 10,
+        Condor = 11,
+        Skunk = 12,
+        Sheep = 13,
+        Dragon = 18,
+        Unicorn = 19,
+        Phoenix = 20,
+        None = 255,
+    }
+}
+serde_try_from!(ChaoAnimalPartTail, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoAnimalPartLegs: u8 {
+        Penguin = 0,
+        Otter = 2,
+        Rabbit = 3,
+        Cheetah = 4,
+        Warthog = 5,
+        Bear = 6,
+        Tiger = 7,
+        Gorilla = 8,
+        Peacock = 9,
+        Parrot = 10,
+        Condor = 11,
+        Skunk = 12,
+        Sheep = 13,
+        Raccoon = 14,
+        Dragon = 18,
+        Unicorn = 19,
+        Phoenix = 20,
+        None = 255,
+    }
+}
+serde_try_from!(ChaoAnimalPartLegs, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoFruit: u8 {
+        ChaoGardenFruit = 0,
+        HeroGardenFruit,
+        DarkGardenFruit,
+        StrongFruit,
+        TastyFruit,
+        HeroFruit,
+        DarkFruit,
+        RoundFruit,
+        TriangleFruit,
+        SquareFruit,
+        HeartFruit,
+        ChaoFruit,
+        SmartFruit,
+        OrangeFruit,
+        BlueFruit,
+        PinkFruit,
+        GreenFruit,
+        PurpleFruit,
+        YellowFruit,
+        RedFruit,
+        Mushroom,
+        MushroomX2,
+        MintCandy,
+        Grapes,
+        CweHyperSwimFruit = 29,
+        CweHyperFlyFruit = 30,
+        CweHyperRunFruit = 31,
+        CweHyperPowerFruit = 32,
+        CweShinyFruit = 33,
+    }
+}
+serde_try_from!(ChaoFruit, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoFavoriteFruit: u8 {
+        RoundFruit1 = 0,
+        RoundFruit2,
+        TriangleFruit1,
+        TriangleFruit2,
+        SquareFruit1,
+        SquareFruit2,
+        None1,
+        None2,
+        NoneChaos = 16,
+    }
+}
+serde_try_from!(ChaoFavoriteFruit, u8);
+
+try_from_enum! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
+    pub enum ChaoFruitSeed: u8 {
+        Strong = 0,
+        Tasty,
+        Hero,
+        Dark,
+        Round,
+        Triangle,
+        Square,
+    }
+}
+serde_try_from!(ChaoFruitSeed, u8);
+
 
 bitflags! {
     #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    pub struct Toys: u32 {
+    pub struct ChaoToys: u32 {
         const Rattle = 1 << 0;
         const Car = 1 << 1;
         const PictureBook = 1 << 2;
@@ -596,11 +993,12 @@ bitflags! {
         const WateringCan = 1 << 11;
     }
 }
-try_from_bitflags!(Toys, u32);
+try_from_bitflags!(ChaoToys, u32);
+serde_try_from!(ChaoToys, u32);
 
 bitflags! {
     #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    pub struct ClassroomSkills: u32 {
+    pub struct ChaoClassroomSkills: u32 {
         const Drawing1 = 1 << 0;
         const Drawing2 = 1 << 1;
         const Drawing3 = 1 << 2;
@@ -635,11 +1033,12 @@ bitflags! {
         const Tambourine = 1 << 31;
     }
 }
-try_from_bitflags!(ClassroomSkills, u32);
+try_from_bitflags!(ChaoClassroomSkills, u32);
+serde_try_from!(ChaoClassroomSkills, u32);
 
 bitflags! {
     #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    pub struct SAAnimalBehaviors: u32 {
+    pub struct ChaoSaAnimalBehaviors: u32 {
         const Seal = 1 << 0;
         const Penguin = 1 << 1;
         const Otter = 1 << 2;
@@ -657,11 +1056,12 @@ bitflags! {
         const Skunk = 1 << 14;
     }
 }
-try_from_bitflags!(SAAnimalBehaviors, u32);
+try_from_bitflags!(ChaoSaAnimalBehaviors, u32);
+serde_try_from!(ChaoSaAnimalBehaviors, u32);
 
 bitflags! {
     #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    pub struct SA2AnimalBehaviors: u32 {
+    pub struct ChaoSa2AnimalBehaviors: u32 {
         const Penguin = 1 << 0;
         const Seal = 1 << 1;
         const Otter = 1 << 2;
@@ -685,377 +1085,8 @@ bitflags! {
         const Phoenix = 1 << 20;
     }
 }
-try_from_bitflags!(SA2AnimalBehaviors, u32);
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoType: u8 {
-        Empty = 0,
-        Egg,
-        Child,
-        UNUSEDGood,
-        UNUSEDBad,
-        NormalNeutral,
-        NormalHero,
-        NormalDark,
-        SwimNeutral,
-        SwimHero,
-        SwimDark,
-        FlyNeutral,
-        FlyHero,
-        FlyDark,
-        RunNeutral,
-        RunHero,
-        RunDark,
-        PowerNeutral,
-        PowerHero,
-        PowerDark,
-        ChaosNeutral,
-        ChaosHero,
-        ChaosDark,
-        Tails,
-        Knuckles,
-        Amy,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoEyes: u8 {
-        Normal = 0,
-        Painful,
-        ClosedStraight,
-        ClosedHappy,
-        ClosedUp,
-        Tiny,
-        Circles,
-        ClosedDown,
-        Tiny2,
-        HalfClosed,
-        Mean,
-        GreenChaos,
-        BlueChaos,
-        YellowChaos,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoMouth: u8 {
-        None = 0,
-        ToothySmile,
-        Open,
-        ClosedSmile,
-        ClosedFrown,
-        OpenSmile,
-        OpenFrown,
-        CloseSmile2,
-        Squiggly,
-        ToothyFrown,
-        ClosedFrown2,
-        WideOpen,
-        ClosedFrown3,
-        StraightMustache,
-        StraightMustache2,
-        StraightMustache3,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoEmotiball: u8 {
-        Normal = 0,
-        Flame,
-        None,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoBodyType: u8 {
-        Normal = 0,
-        Egg,
-        Omochao,
-        Animal,
-        UNUSED,
-        None,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoMedal: u8 {
-        None = 0,
-        Aquamarine,
-        Topaz,
-        Peridot,
-        Garnet,
-        Onyx,
-        Diamond,
-        Beginner,
-        Challenge,
-        Hero,
-        Dark,
-        Pearl,
-        Amethyst,
-        Emerald,
-        Ruby,
-        Sapphire,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoAnimal: u8 {
-        Penguin = 0,
-        Seal = 1,
-        Otter = 2,
-        Rabbit = 3,
-        Cheetah = 4,
-        Warthog = 5,
-        Bear = 6,
-        Tiger = 7,
-        Gorilla = 8,
-        Peacock = 9,
-        Parrot = 10,
-        Condor = 11,
-        Skunk = 12,
-        Sheep = 13,
-        Raccoon = 14,
-        HalfFish = 15,
-        SkeletonDog = 16,
-        Bat = 17,
-        Dragon = 18,
-        Unicorn = 19,
-        Phoenix = 20,
-        None = 255,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoAnimalPartHorns: u8 {
-        BLANKKKKK = 0,
-        Sheep = 13,
-        Dragon = 18,
-        None = 255,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoAnimalPartForehead: u8 {
-        Penguin = 0,
-        Gorilla = 8,
-        Peacock = 9,
-        Parrot = 10,
-        Skunk = 12,
-        Unicorn = 19,
-        Phoenix = 20,
-        None = 255,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoAnimalPartEars: u8 {
-        BLANKKKKK = 0,
-        Otter = 2,
-        Rabbit = 3,
-        Cheetah = 4,
-        Warthog = 5,
-        Bear = 6,
-        Tiger = 7,
-        Gorilla = 8,
-        Condor = 11,
-        Sheep = 13,
-        Raccoon = 14,
-        Dragon = 18,
-        Unicorn = 19,
-        None = 255,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoAnimalPartArms: u8 {
-        Penguin = 0,
-        Seal = 1,
-        Otter = 2,
-        Rabbit = 3,
-        Cheetah = 4,
-        Warthog = 5,
-        Bear = 6,
-        Tiger = 7,
-        Gorilla = 8,
-        Skunk = 12,
-        Sheep = 13,
-        Raccoon = 14,
-        Dragon = 18,
-        Unicorn = 19,
-        None = 255,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoAnimalPartFace: u8 {
-        BLANKKKKK = 0,
-        Otter = 2,
-        Warthog = 5,
-        None = 255,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoAnimalPartBody: u8 {
-        Penguin = 0,
-        Seal = 1,
-        Otter = 2,
-        Rabbit = 3,
-        Cheetah = 4,
-        Warthog = 5,
-        Bear = 6,
-        Tiger = 7,
-        Gorilla = 8,
-        Peacock = 9,
-        Parrot = 10,
-        Condor = 11,
-        Skunk = 12,
-        Sheep = 13,
-        Raccoon = 14,
-        HalfFish = 15,
-        SkeletonDog = 16,
-        Bat = 17,
-        Dragon = 18,
-        Unicorn = 19,
-        Phoenix = 20,
-        None = 255,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoAnimalPartWings: u8 {
-        BLANKKKKK = 0,
-        Peacock = 9,
-        Parrot = 10,
-        Condor = 11,
-        Dragon = 18,
-        Phoenix = 20,
-        None = 255,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoAnimalPartTail: u8 {
-        BLANKKKKK = 0,
-        Seal = 1,
-        Otter = 2,
-        Rabbit = 3,
-        Cheetah = 4,
-        Warthog = 5,
-        Tiger = 7,
-        Peacock = 9,
-        Parrot = 10,
-        Condor = 11,
-        Skunk = 12,
-        Sheep = 13,
-        Dragon = 18,
-        Unicorn = 19,
-        Phoenix = 20,
-        None = 255,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum ChaoAnimalPartLegs: u8 {
-        Penguin = 0,
-        Otter = 2,
-        Rabbit = 3,
-        Cheetah = 4,
-        Warthog = 5,
-        Bear = 6,
-        Tiger = 7,
-        Gorilla = 8,
-        Peacock = 9,
-        Parrot = 10,
-        Condor = 11,
-        Skunk = 12,
-        Sheep = 13,
-        Raccoon = 14,
-        Dragon = 18,
-        Unicorn = 19,
-        Phoenix = 20,
-        None = 255,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum Fruit: u8 {
-        ChaoGardenFruit = 0,
-        HeroGardenFruit,
-        DarkGardenFruit,
-        StrongFruit,
-        TastyFruit,
-        HeroFruit,
-        DarkFruit,
-        RoundFruit,
-        TriangleFruit,
-        SquareFruit,
-        HeartFruit,
-        ChaoFruit,
-        SmartFruit,
-        OrangeFruit,
-        BlueFruit,
-        PinkFruit,
-        GreenFruit,
-        PurpleFruit,
-        YellowFruit,
-        RedFruit,
-        Mushroom,
-        MushroomX2,
-        MintCandy,
-        Grapes,
-        CweHyperSwimFruit = 29,
-        CweHyperFlyFruit = 30,
-        CweHyperRunFruit = 31,
-        CweHyperPowerFruit = 32,
-        CweShinyFruit = 33,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum FavoriteFruit: u8 {
-        RoundFruit1 = 0,
-        RoundFruit2,
-        TriangleFruit1,
-        TriangleFruit2,
-        SquareFruit1,
-        SquareFruit2,
-        None1,
-        None2,
-        NoneChaos = 16,
-    }
-}
-
-try_from_enum! {
-    #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter)]
-    pub enum FruitSeed: u8 {
-        Strong = 0,
-        Tasty,
-        Hero,
-        Dark,
-        Round,
-        Triangle,
-        Square,
-    }
-}
+try_from_bitflags!(ChaoSa2AnimalBehaviors, u32);
+serde_try_from!(ChaoSa2AnimalBehaviors, u32);
 
 pub fn chao_char_to_byte(c: char) -> Option<u8> {
     Some(match c {
