@@ -25,7 +25,7 @@ fn load_relevant_files(file_paths: &[String]) -> Vec<LoadedFile> {
         if path.ends_with("ALF") {
             if let Ok(data) = std::fs::read(path) {
                 Some(LoadedFile {
-                    file_path: path.clone(),
+                    _file_path: path.clone(),
                     save_type: SaveType::Chao,
                     data,
                 })
@@ -51,7 +51,7 @@ enum SaveType {
 
 #[derive(Debug)]
 struct LoadedFile {
-    file_path: String,
+    _file_path: String,
     save_type: SaveType,
     data: Vec<u8>,
 }

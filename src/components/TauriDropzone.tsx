@@ -7,16 +7,10 @@ interface DropzoneProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export default function Dropzone({ children, onZoneDrop, ...props }: DropzoneProps) {
     const handleDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-        console.log("drag over");
         event.preventDefault();
     }, []);
 
-    useEffect(() => {
-        return onFileDrop((files) => {
-            console.log("TDROPPPP");
-            onZoneDrop(files)
-        })
-    }, [])
+    useEffect(() => onFileDrop(onZoneDrop), [])
 
     return (
         <div

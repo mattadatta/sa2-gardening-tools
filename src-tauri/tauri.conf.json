@@ -37,6 +37,7 @@
       {
         "fullscreen": false,
         "resizable": true,
+        "fileDropEnabled": true,
         "title": "sa2-gardening-tools",
         "width": 1200,
         "height": 800
