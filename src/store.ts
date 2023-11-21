@@ -61,8 +61,12 @@ export interface UseWriteChaoData {
 export function useWriteChaoAtIndex(index: number): UseWriteChaoData {
   const updateChaoAtIndex = useAppState((state) => state.updateChaoAtIndex)
   const commitChaoAtIndex = useAppState((state) => state.commitChaoAtIndex)
-  const updateChao = useCallback((update: (_: Chao) => void) => updateChaoAtIndex(index, update), [index, updateChaoAtIndex])
-  const commitChao = useCallback(() => commitChaoAtIndex(index), [index, commitChaoAtIndex])
+  const updateChao = useCallback(
+    (update: (_: Chao) => void) => updateChaoAtIndex(index, update),
+    [index, updateChaoAtIndex])
+  const commitChao = useCallback(
+    () => commitChaoAtIndex(index),
+    [index, commitChaoAtIndex])
   return {
     updateChao,
     commitChao

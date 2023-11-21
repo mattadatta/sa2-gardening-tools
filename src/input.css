@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: 'NunitoSans';
+    src: url('./assets/fonts/NunitoSans.ttf') format('truetype');
+    font-weight: 100 900;
+}
+
+@font-face {
+    font-family: 'PixelifySans';
+    src: url('./assets/fonts/PixelifySans.ttf') format('truetype');
+    font-weight: 100 900;
+}
+
+@font-face {
+    font-family: 'SourceCodePro';
+    src: url('./assets/fonts/SourceCodePro.ttf') format('truetype');
+    font-weight: 100 900;
+}
+
 :root {
     color: #f6f6f6;
     background-color: #2f2f2f;

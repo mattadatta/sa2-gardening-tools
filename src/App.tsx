@@ -2,7 +2,6 @@ import { memo, useCallback } from "react"
 import { processFiles } from "./backend"
 import Dropzone from "./components/util/TauriDropzone"
 import { useAppState } from "./store"
-import PauseMenu from "./PauseMenu"
 import MainContent from "./MainContent"
 
 const App = memo(() => {
@@ -17,10 +16,10 @@ const App = memo(() => {
   }, [])
 
   return (
-    <div className="w-screen h-screen flex flex-col bg-slate-800 text-white">
+    <div className="w-screen h-screen flex flex-col bg-gray-900 text-white font-nunito">
       {!loadedSaves ? (
         <Dropzone
-          className="m-auto border border-gray-700 p-20 rounded-lg bg-slate-900 flex flex-col items-center justify-center"
+          className="m-auto border border-gray-700 p-20 rounded-lg bg-gray-800 flex flex-col items-center justify-center font-pixelify"
           onZoneDrop={handleTauriDrop}
         >
           <p>Drop save file(s)</p>

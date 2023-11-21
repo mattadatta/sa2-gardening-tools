@@ -9,11 +9,11 @@ interface ChaoCellProps {
 
 const ChaoCellImpl = memo(({ index, isSelected, onSelect }: ChaoCellProps) => {
   const { chaoData } = useChao((c) => c.levels.swim)
-  const selectedStyle = isSelected ? 'bg-slate-600' : ''
+  const selectedStyle = isSelected ? 'bg-gray-800' : ''
 
   return (
     <div
-      className={`p-4 cursor-pointer hover:bg-slate-500 ${selectedStyle}`}
+      className={`p-4 cursor-pointer hover:bg-gray-700 ${selectedStyle}`}
       onClick={() => onSelect(index)}
     >
       Chao Cell {`${chaoData}`}

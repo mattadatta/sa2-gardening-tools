@@ -41,7 +41,7 @@ const IconButton = memo(({
       onClick={onClick}
       className={`${baseStyles} ${hoverStyles} ${className}`}
     >
-      <Icon {...iconProps} className={`${iconProps.className} fill-current text-blue-300`} />
+      <Icon {...iconProps} className={`fill-current ${iconProps.className}`} />
     </Button>
   );
 })
@@ -59,8 +59,8 @@ const TabButton = memo(({
   isDisabled,
   onClick
 }: TabButtonProps) => {
-  const activeStyle = isActive ? 'bg-slate-700' : ''
-  const disabledStyle = isDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-slate-600'
+  const activeStyle = isActive ? 'bg-gray-800' : ''
+  const disabledStyle = isDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-700'
 
   return (
     <Button

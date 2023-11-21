@@ -21,7 +21,7 @@ const Input = memo(({
   onBlur,
   className,
 }: InputProps) => {
-  const inputClasses = `w-24 bg-gray-800 text-white border border-gray-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none rounded-md py-1 px-2 ${className}`;
+  const inputClasses = `w-24 bg-gray-800 text-white border border-gray-600 focus:border-gray-500 focus:ring-2 focus:ring-gray-500 focus:outline-none rounded-md py-1 px-2 ${className}`;
 
   const onTextChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     onChange?.(e.target.value)

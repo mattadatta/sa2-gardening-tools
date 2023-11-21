@@ -5,7 +5,7 @@ interface ChaoProviderData extends UseWriteChaoData {
   index: number
 }
 
-interface UseChao<R> extends UseReadChaoData<R>, UseWriteChaoData {
+interface UseChao<R> extends UseReadChaoData<R>, ChaoProviderData {
 }
 
 const ChaoContext = createContext<ChaoProviderData | null>(null)
@@ -35,9 +35,11 @@ function useReadChaoData<R>(selector: (_: Chao) => R): UseReadChaoData<R> {
 }
 
 function useChao<R>(selector: (_: Chao) => R): UseChao<R> {
+  const index = useContext(ChaoContext)!.index
   const readChao = useReadChaoData(selector)
   const writeChao = useWriteChaoData()
   return {
+    index,
     ...readChao,
     ...writeChao
   }

@@ -8,8 +8,8 @@ interface ChaoProps {
 
 const ChaoImpl = memo(({ selectedIndex }: ChaoProps) => {
   return (
-    <div className="flex-1 p-4 flex flex-col items-start overflow-y-scroll dark-scrollbar">
-      <span className="">Chao {selectedIndex}</span>
+    <div className="flex-1 p-4 flex flex-col items-start overflow-y-scroll dark-scrollbar space-y-1">
+      <span className="font-pixelify text-sm text-gray-400">chao {selectedIndex}</span>
       <ChaoName />
     </div>
   )
