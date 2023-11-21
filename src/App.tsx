@@ -1,11 +1,11 @@
-import { useCallback } from "react";
-import { processFiles } from "./backend";
-import Dropzone from "./components/TauriDropzone";
-import { useAppState } from "./store";
-import PauseMenu from "./PauseMenu";
-import MainContent from "./MainContent";
+import { memo, useCallback } from "react"
+import { processFiles } from "./backend"
+import Dropzone from "./components/util/TauriDropzone"
+import { useAppState } from "./store"
+import PauseMenu from "./PauseMenu"
+import MainContent from "./MainContent"
 
-export default function App() {
+const App = memo(() => {
 
   const setLoadedSaves = useAppState((state) => state.setLoadedSaves)
   const loadedSaves = useAppState((state) => state.loadedSaves)
@@ -29,5 +29,7 @@ export default function App() {
         <MainContent />
       )}
     </div>
-  );
-}
+  )
+})
+
+export default App

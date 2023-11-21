@@ -245,3 +245,7 @@ rust-project.json
 # .pnp.*
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,visualstudiocode,rust,rust-analyzer,node,react,yarn
+
+### sa2-gardening-tools ###
+# Chao save files
+*__ALF

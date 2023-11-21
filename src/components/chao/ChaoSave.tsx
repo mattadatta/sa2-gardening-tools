@@ -1,13 +1,13 @@
-import { useState } from "react";
-import ChaoCell from "./ChaoCell";
-import Chao from "./Chao";
+import { memo, useCallback, useState } from "react"
+import ChaoCell from "./ChaoCell"
+import Chao from "./Chao"
 
-export default function ChaoSave() {
-  const [selectedChaoIndex, setSelectedChaoIndex] = useState<number | null>(null);
+const ChaoSave = memo(() => {
+  const [selectedChaoIndex, setSelectedChaoIndex] = useState<number | null>(null)
 
-  const handleSelectChao = (index: number) => {
-    setSelectedChaoIndex(index);
-  };
+  const handleSelectChao = useCallback((index: number) => {
+    setSelectedChaoIndex(index)
+  }, [setSelectedChaoIndex])
 
   return (
     <div className="flex-1 flex overflow-y-hidden">
@@ -24,4 +24,6 @@ export default function ChaoSave() {
       {selectedChaoIndex !== null && <Chao selectedIndex={selectedChaoIndex} />}
     </div>
   );
-}
+})
+
+export default ChaoSave

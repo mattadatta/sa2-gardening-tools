@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import ChaoSave from './components/ChaoSave';
-import TabButton from './components/TabButton';
+import ChaoSave from './components/chao/ChaoSave';
+import { TabButton } from './components/ui/buttons';
 
 const tabs = [
   { key: 'main', name: 'Main Save', component: ChaoSave, disabled: true },
