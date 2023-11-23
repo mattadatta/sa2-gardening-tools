@@ -6,7 +6,7 @@ interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 const Button = memo(({ className = '', children, ...props }: ButtonProps) => {
   return (
     <button
-      className={`text-white cursor-pointer ${className}`}
+      className={`${className}`}
       {...props}>
       {children}
     </button>
@@ -16,14 +16,14 @@ const Button = memo(({ className = '', children, ...props }: ButtonProps) => {
 import React from 'react';
 
 type IconProps = {
-  className?: string | undefined;
-  'aria-label'?: string | undefined;
+  className?: string;
+  'aria-label'?: string;
 };
 
 type IconButtonProps = {
-  className?: string | undefined;
+  className?: string;
   Icon: React.ComponentType<IconProps>;
-  iconProps?: IconProps | undefined;
+  iconProps?: IconProps;
   onClick: () => void;
 };
 
@@ -33,15 +33,15 @@ const IconButton = memo(({
   iconProps = {},
   onClick
 }: IconButtonProps) => {
-  const baseStyles = 'bg-transparent border-none p-0 transition-transform duration-200';
-  const hoverStyles = 'hover:scale-110 focus:outline-none';
+  const baseStyles = 'flex flex-col justify-center items-center p-0 transition-transform duration-200';
+  const hoverStyles = 'hover:scale-110';
 
   return (
     <Button
-      onClick={onClick}
       className={`${baseStyles} ${hoverStyles} ${className}`}
+      onClick={onClick}
     >
-      <Icon {...iconProps} className={`fill-current ${iconProps.className}`} />
+      <Icon {...iconProps} className={`fill-current ${iconProps.className ?? ''}`} />
     </Button>
   );
 })

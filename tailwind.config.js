@@ -11,6 +11,13 @@ export default {
         black: colors.black,
         white: colors.white,
         gray: colors.zinc,
+        'chao-swim': '#FFFF00',
+        'chao-fly': '#DC4FFF',
+        'chao-run': '#00FF00',
+        'chao-power': '#FF0000',
+        'chao-stamina': '#00FFFF',
+        'chao-intelligence': '#FFFFFF',
+        'chao-luck': '#AAAAAA',
       },
       fontFamily: {
         pixelify: ['PixelifySans', 'sans-serif'],

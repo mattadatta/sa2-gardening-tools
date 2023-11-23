@@ -9,10 +9,11 @@ const ChaoName = memo(() => {
   const { chaoData, updateChao, index } = useChao((c) => c.name as number[])
   const [isEditing, setEditing] = useState(false)
   const [name, setName] = useState("")
+  const existingName = chaoBytesToString(chaoData)
 
   useEffect(() => {
     setEditing(false)
-    setName(chaoBytesToString(chaoData))
+    setName(existingName)
   }, [index, chaoData])
 
   const onTextChange = useCallback((text: string) => {
@@ -30,7 +31,7 @@ const ChaoName = memo(() => {
 
   const onCancel = useCallback(() => {
     setEditing(false)
-    setName(chaoBytesToString(chaoData))
+    setName(existingName)
   }, [chaoData])
 
   const onBeginEditing = useCallback(() => {
@@ -40,10 +41,10 @@ const ChaoName = memo(() => {
   const editingElement = (
     <>
       <Input
+        className="w-24"
         value={name}
         onChange={onTextChange}
-        placeholder={name}
-      />
+        placeholder={existingName} />
       <IconButton
         className="text-red-300"
         Icon={Crossmark}
@@ -57,7 +58,7 @@ const ChaoName = memo(() => {
 
   const sealedElement = (
     <>
-      <span className="text-white border border-gray-800 rounded-md px-2 py-1">{name}</span>
+      <span className="text-white border border-gray-800 rounded-md px-2 pt-2 pb-1">{name}</span>
       <IconButton
         iconProps={{ className: "w-6 h-6" }}
         Icon={Pencil}

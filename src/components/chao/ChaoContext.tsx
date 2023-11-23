@@ -12,7 +12,7 @@ const ChaoContext = createContext<ChaoProviderData | null>(null)
 
 interface ChaoProviderProps {
   index: number
-  children?: ReactNode | undefined
+  children?: ReactNode
 }
 
 const ChaoProvider = memo(({ index, children }: ChaoProviderProps) => {
