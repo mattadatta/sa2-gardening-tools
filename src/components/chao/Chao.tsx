@@ -1,10 +1,30 @@
 import { memo } from "react"
 import { ChaoProvider } from "./context/ChaoContext"
+import ChaoAppearance from "./ChaoAppearance"
 import ChaoName from "./ChaoName"
 import ChaoStats from "./ChaoStats"
-import ChaoBitflags from "./ChaoBitflags"
-import * as Types from "../../gen/types"
+import ChaoItems from "./ChaoItems"
+import { Category, Stats, Tag, Toy } from "../ui/icons"
+import { Section } from "../ui/layout"
 
+const ChaoData = memo(() => {
+  return (
+    <>
+      <Section Icon={Tag} label="Basics">
+        <ChaoName />
+      </Section>
+      <Section Icon={Stats} label="Stats">
+        <ChaoStats />
+      </Section>
+      <Section Icon={Category} label="Items">
+        <ChaoItems />
+      </Section>
+      <Section Icon={Toy} label="Appearance">
+        <ChaoAppearance />
+      </Section>
+    </>
+  )
+})
 interface ChaoProps {
   selectedIndex: number
 }
@@ -12,17 +32,15 @@ interface ChaoProps {
 const ChaoContainer = memo(({ selectedIndex }: ChaoProps) => {
   return (
     <>
-      <span className="font-comfortaa text-sm text-gray-400">chao {selectedIndex}</span>
-      <ChaoName />
-      <ChaoStats />
-      <ChaoBitflags path="toys" type={Types.ChaoToys} />
+      <span className="font-comfortaa text-sm">chao {selectedIndex}</span>
+      <ChaoData />
     </>
   )
 })
 
 const ChaoImpl = memo(({ selectedIndex }: ChaoProps) => {
   return (
-    <div className="flex-1 p-4 flex flex-col items-start overflow-y-scroll dark-scrollbar space-y-1">
+    <div className="flex-1 p-2 flex flex-col items-stretch overflow-y-scroll dark-scrollbar space-y-2">
       <ChaoContainer
         // key={selectedIndex.toString()} // Unplesasnt experience if uncommented
         selectedIndex={selectedIndex} />

@@ -29,13 +29,17 @@ const ChaoEnumProvider = memo(({ path, children }: ChaoEnumProviderProps) => {
   )
 })
 
+function useChaoEnum(): ChaoEnumProviderData {
+  return useContext(Context)!
+}
+
 interface ChaoEnumValueData {
   isSelected: boolean
   setSelected: () => void
 }
 
 function useChaoEnumValue(value: number): ChaoEnumValueData {
-  const providerData = useContext(Context)!
+  const providerData = useChaoEnum()
   const isSelected = (providerData.value === value)
   const setValueSelected = providerData.setValueSelected
   const setSelected = useCallback(() => {
@@ -47,4 +51,4 @@ function useChaoEnumValue(value: number): ChaoEnumValueData {
   }
 }
 
-export { ChaoEnumProvider, useChaoEnumValue }
+export { ChaoEnumProvider, useChaoEnum, useChaoEnumValue }

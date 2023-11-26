@@ -70,7 +70,6 @@ const ChaoName = memo(() => {
 
   return (
     <div className="flex items-center space-x-2">
-      <Tag className="fill-current text-gray-400 w-4 h-4" />
       {childElement}
     </div>
   )

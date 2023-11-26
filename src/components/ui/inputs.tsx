@@ -246,8 +246,8 @@ const ComboSlider = memo(({
   )
 })
 
-interface SelectOption {
-  key: string
+export interface SelectOption {
+  value: string
   label: string
 }
 
@@ -255,7 +255,7 @@ interface SelectProps {
   className?: string
   options: SelectOption[]
   value: string
-  onChange: (key: string) => void
+  onChange: (key: SelectOption) => void
 }
 
 const Select = memo(({
@@ -266,23 +266,29 @@ const Select = memo(({
 }: SelectProps) => {
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    onChange(e.target.value)
-  }, [onChange])
+    const option = options.find((o) => o.value === e.target.value)
+    if (option) {
+      onChange(option)
+    }
+  }, [options, onChange])
 
   const inputClasses = `flex flex-col relative ${className}`;
 
   return (
     <div className={inputClasses}>
-      <select className={`appearance-none pr-8 bg-gray-800 text-white border border-gray-600 focus:border-gray-500 focus:ring-2 focus:ring-gray-500 focus:outline-none rounded-md py-1 px-2`} value={value} onChange={handleChange}>
+      <select
+        className={`appearance-none pr-8 bg-gray-800 text-white border border-gray-600 focus:border-gray-500 focus:ring-2 focus:ring-gray-500 focus:outline-none rounded-md py-1 px-2`}
+        value={value}
+        onChange={handleChange}
+      >
         {options.map(option => (
-          <option key={option.key} value={option.key}>
+          <option key={option.value} value={option.value}>
             {option.label}
           </option>
         ))}
       </select>
       <div className="absolute top-0 right-0 bottom-0 w-6 mr-[1px] p-[1px] flex flex-col items-stretch pointer-events-none">
-        <ArrowDown
-          className="relative flex-1 bg-gray-700 rounded-md fill-current" />
+        <ArrowDown className="relative flex-1 bg-gray-700 rounded-md fill-current" />
       </div>
     </div>
   )

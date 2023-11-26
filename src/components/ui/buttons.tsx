@@ -13,19 +13,17 @@ const Button = memo(({ className = '', children, ...props }: ButtonProps) => {
   )
 })
 
-import React from 'react';
+interface IconProps {
+  className?: string
+  'aria-label'?: string
+}
 
-type IconProps = {
-  className?: string;
-  'aria-label'?: string;
-};
-
-type IconButtonProps = {
-  className?: string;
-  Icon: React.ComponentType<IconProps>;
-  iconProps?: IconProps;
-  onClick: () => void;
-};
+interface IconButtonProps {
+  className?: string
+  Icon: React.ComponentType<IconProps>
+  iconProps?: IconProps
+  onClick: () => void
+}
 
 const IconButton = memo(({
   className = '',
@@ -33,8 +31,8 @@ const IconButton = memo(({
   iconProps = {},
   onClick
 }: IconButtonProps) => {
-  const baseStyles = 'flex flex-col justify-center items-center p-0 transition-transform duration-200';
-  const hoverStyles = 'hover:scale-110';
+  const baseStyles = 'flex flex-col justify-center items-center p-0 transition-transform duration-200 text-white'
+  const hoverStyles = 'hover:scale-110'
 
   return (
     <Button
@@ -43,7 +41,7 @@ const IconButton = memo(({
     >
       <Icon {...iconProps} className={`fill-current ${iconProps.className ?? ''}`} />
     </Button>
-  );
+  )
 })
 
 interface TabButtonProps {

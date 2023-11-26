@@ -16,7 +16,7 @@ const App = memo(() => {
   }, [])
 
   return (
-    <div className="w-screen h-screen flex flex-col bg-gray-900 text-white font-nunito">
+    <div className="w-screen h-screen flex flex-col bg-gray-900 text-white/60 font-nunito">
       {!loadedSaves ? (
         <Dropzone
           className="m-auto border border-gray-700 p-20 rounded-lg bg-gray-800 flex flex-col items-center justify-center font-pixelify"
