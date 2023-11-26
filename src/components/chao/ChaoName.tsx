@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useState } from "react"
-import { useChao } from "./ChaoContext"
+import { useChao } from "./context/ChaoContext"
 import { chaoBytesToString, chaoStringToBytes } from "../../util/chao/name"
 import { Input } from "../ui/inputs"
 import { IconButton } from "../ui/buttons"
@@ -46,11 +46,11 @@ const ChaoName = memo(() => {
         onChange={onTextChange}
         placeholder={existingName} />
       <IconButton
-        className="text-red-300"
+        className="text-red-400"
         Icon={Crossmark}
         onClick={onCancel} />
       <IconButton
-        className="text-green-300"
+        className="text-green-400"
         Icon={Checkmark}
         onClick={onConfirm} />
     </>

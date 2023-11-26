@@ -1,8 +1,6 @@
-import { memo, useCallback, useEffect, useState } from "react"
-import { useChao } from "./ChaoContext"
-import { Select, Input, Spinner, Slider, NumberInput, ComboSlider } from "../ui/inputs"
-import { IconButton } from "../ui/buttons"
-import { Checkmark, Crossmark, Pencil, Tag } from "../ui/icons"
+import { memo, useCallback } from "react"
+import { useChao } from "./context/ChaoContext"
+import { Spinner } from "../ui/inputs"
 
 const sections = ['levels', 'bars', 'points', 'grades']
 const stats = ['swim', 'fly', 'run', 'power', 'stamina', 'intelligence', 'luck']
@@ -13,7 +11,7 @@ interface ChaoStatProps {
 }
 
 const ChaoStat = memo(({ section, stat }: ChaoStatProps) => {
-  const { chaoData, updateChao, index } = useChao((c) => c[section][stat])
+  const { chaoData, updateChao } = useChao((c) => c[section][stat])
 
   const updateStat = useCallback((newValue: number) => {
     updateChao((c) => {
@@ -24,19 +22,19 @@ const ChaoStat = memo(({ section, stat }: ChaoStatProps) => {
   const ringColor = (() => {
     switch (stat) {
       case 'swim':
-        return 'ring-chao-swim'
+        return 'focus:ring-chao-swim'
       case 'fly':
-        return 'ring-chao-fly'
+        return 'focus:ring-chao-fly'
       case 'run':
-        return 'ring-chao-run'
+        return 'focus:ring-chao-run'
       case 'power':
-        return 'ring-chao-power'
+        return 'focus:ring-chao-power'
       case 'stamina':
-        return 'ring-chao-stamina'
+        return 'focus:ring-chao-stamina'
       case 'intelligence':
-        return 'ring-chao-intelligence'
+        return 'focus:ring-chao-intelligence'
       case 'luck':
-        return 'ring-chao-luck'
+        return 'focus:ring-chao-luck'
       default:
         return ''
     }
@@ -46,14 +44,14 @@ const ChaoStat = memo(({ section, stat }: ChaoStatProps) => {
     switch (section) {
       case 'levels':
         return <Spinner
-          inputClassName={`focus:${ringColor}`}
+          inputClassName={`${ringColor}`}
           value={chaoData}
           onChange={updateStat}
           min={0}
           max={99} />
       case 'bars':
         return <Spinner
-          inputClassName={`focus:${ringColor}`}
+          inputClassName={`${ringColor}`}
           value={chaoData}
           onChange={updateStat}
           min={0}
@@ -61,7 +59,7 @@ const ChaoStat = memo(({ section, stat }: ChaoStatProps) => {
       case 'points':
         return <Spinner
           className="w-20"
-          inputClassName={`focus:${ringColor}`}
+          inputClassName={`${ringColor}`}
           value={chaoData}
           onChange={updateStat}
           min={0}
@@ -69,7 +67,7 @@ const ChaoStat = memo(({ section, stat }: ChaoStatProps) => {
           step={10} />
       case 'grades':
         return <Spinner
-          inputClassName={`focus:${ringColor}`}
+          inputClassName={`${ringColor}`}
           value={chaoData}
           onChange={updateStat}
           min={0}
@@ -97,6 +95,7 @@ const ChaoStatColumn = memo(({ section }: ChaoStatColumnProps) => {
     <div className="flex flex-col space-y-2">
       {stats.map(stat => (
         <ChaoStat
+          key={stat}
           section={section}
           stat={stat} />
       ))}
@@ -104,30 +103,43 @@ const ChaoStatColumn = memo(({ section }: ChaoStatColumnProps) => {
   )
 })
 
-// const ChaoStats = memo(() => {
-//   // const { chaoData, updateChao, index } = useChao((c) => c.name as number[])
-//   const [nummy, setNummer] = useState(3)
-//   const [sel, setSel] = useState('fd')
-
-//   return (
-//     <div className="flex flex-col items-start space-y-2">
-//       <Spinner value={nummy} onChange={setNummer} />
-//       <Select value={sel} onChange={setSel} options={[
-//         { key: 'fd', label: 'fdslkfjsd' },
-//         { key: 'fddd', label: 'eeee' }]} />
-//       <ComboSlider className="w-32" value={nummy} onChange={setNummer} min={-100} max={100} step={1}/>
-//     </div>
-//   )
-// })
-
-// export default ChaoStats
+const textColorForStat = (stat: string) => {
+  switch (stat) {
+    case 'swim':
+      return 'text-chao-swim'
+    case 'fly':
+      return 'text-chao-fly'
+    case 'run':
+      return 'text-chao-run'
+    case 'power':
+      return 'text-chao-power'
+    case 'stamina':
+      return 'text-chao-stamina'
+    case 'intelligence':
+      return 'text-chao-intelligence'
+    case 'luck':
+      return 'text-chao-luck'
+    default:
+      return ''
+  }
+}
 
 const ChaoStats = memo(() => {
 
   return (
-    <div className="flex flex-row space-x-2">
+    <div className="flex flex-row space-x-4">
+      <div className="flex flex-col self-stretch space-y-2">
+        {stats.map(stat => (
+          <span
+            key={stat}
+            className={`flex-1 flex pt-1 justify-start items-center font-comfortaa ${textColorForStat(stat)}`}>
+            {stat}
+          </span>
+        ))}
+      </div>
       {sections.map(section => (
         <ChaoStatColumn
+          key={section}
           section={section} />
       ))}
     </div>

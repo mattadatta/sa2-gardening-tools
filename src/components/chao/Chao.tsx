@@ -1,7 +1,9 @@
 import { memo } from "react"
-import { ChaoProvider } from "./ChaoContext"
+import { ChaoProvider } from "./context/ChaoContext"
 import ChaoName from "./ChaoName"
 import ChaoStats from "./ChaoStats"
+import ChaoBitflags from "./ChaoBitflags"
+import * as Types from "../../gen/types"
 
 interface ChaoProps {
   selectedIndex: number
@@ -10,9 +12,10 @@ interface ChaoProps {
 const ChaoContainer = memo(({ selectedIndex }: ChaoProps) => {
   return (
     <>
-      <span className="font-pixelify text-sm text-gray-400">chao {selectedIndex}</span>
+      <span className="font-comfortaa text-sm text-gray-400">chao {selectedIndex}</span>
       <ChaoName />
       <ChaoStats />
+      <ChaoBitflags path="toys" type={Types.ChaoToys} />
     </>
   )
 })

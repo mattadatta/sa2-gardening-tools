@@ -30,12 +30,12 @@ const Input = memo(({
   const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
       case 'Enter':
-        e.currentTarget.blur()
         onReturnKey?.()
+        e.currentTarget.blur()
         break;
       case 'Escape':
-        e.currentTarget.blur()
         onEscKey?.()
+        e.currentTarget.blur()
         break;
       default:
         break;
@@ -45,8 +45,6 @@ const Input = memo(({
   return (
     <input
       className={inputClasses}
-      size={1}
-      width={1}
       type={type}
       onChange={onTextChange}
       onKeyDown={onKeyDown}

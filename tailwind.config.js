@@ -20,6 +20,9 @@ export default {
         'chao-luck': '#AAAAAA',
       },
       fontFamily: {
+        bitter: ['Bitter', 'sans-serif'],
+        comfortaa: ['Comfortaa', 'sans-serif'],
+        'crimson-pro': ['CrimsonPro', 'sans-serif'],
         pixelify: ['PixelifySans', 'sans-serif'],
         nunito: ['NunitoSans', 'sans-serif'],
         'source-code-pro': ['SourceCodePro', 'sans-serif'],

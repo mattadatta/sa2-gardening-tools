@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { ChaoProvider, useChao } from "./ChaoContext";
+import { ChaoProvider, useChao } from "./context/ChaoContext";
 
 interface ChaoCellProps {
   index: number
