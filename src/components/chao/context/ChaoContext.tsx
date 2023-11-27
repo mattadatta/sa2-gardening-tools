@@ -1,5 +1,6 @@
-import { createContext, memo, ReactNode, useContext } from 'react'
+import { createContext, memo, ReactNode, useCallback, useContext } from 'react'
 import { Chao, useReadChaoAtIndex, UseReadChaoData, useWriteChaoAtIndex, UseWriteChaoData } from '../../../store'
+import { getValue, setValue } from '../../../util/object_path'
 
 interface ChaoProviderData extends UseWriteChaoData {
   index: number
@@ -34,4 +35,22 @@ function useChao<R>(selector: (_: Chao) => R): UseChao<R> {
   }
 }
 
-export { ChaoProvider, useChao }
+interface UseChaoPath<RW> extends UseReadChaoData<RW> {
+  index: number
+  updateChao: (value: RW) => void
+  commitChao: () => void
+}
+
+function useChaoPath<RW>(path: string): UseChaoPath<RW> {
+  const { updateChao, ...useChaoData } = useChao((c) => getValue(c, path) as RW)
+  const updateChaoPath = useCallback((value: RW) => {
+    updateChao((c) => setValue(c, path, value))
+  }, [path, updateChao])
+
+  return {
+    updateChao: updateChaoPath,
+    ...useChaoData
+  }
+}
+
+export { ChaoProvider, useChao, useChaoPath }

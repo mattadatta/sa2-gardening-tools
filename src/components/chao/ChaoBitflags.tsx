@@ -1,22 +1,32 @@
 import { memo } from "react"
 import { ChaoBitflagProvider, useChaoBitflagValue } from "./context/ChaoBitflagContext"
-import { Button } from "../ui/buttons"
+import { Checkbox } from "../ui/buttons"
 
 interface ChaoBitflagProps {
-  name: string
+  label: string
   value: number
 }
 
-const ChaoBitflag = memo(({ name, value }: ChaoBitflagProps) => {
-  const { isSelected, toggleSelected } = useChaoBitflagValue(value)
-  const baseStyles = 'border-[1px] rounded-md py-1'
-  const selectedStyle = isSelected ? 'border-blue-400 text-white' : 'border-gray-400/20'
+// const ChaoBitflag = memo(({ label, value }: ChaoBitflagProps) => {
+//   const { isSelected, toggleSelected } = useChaoBitflagValue(value)
+//   const baseStyles = 'border-[1px] rounded-md py-1'
+//   const selectedStyle = isSelected ? 'border-blue-400 text-white' : 'border-gray-400/20'
+//   return (
+//     <Button className={`${baseStyles} ${selectedStyle} transition-all`} onClick={toggleSelected}>
+//       <span>
+//         {label}
+//       </span>
+//     </Button>
+//   )
+// })
+
+const ChaoBitflag = memo(({ label, value }: ChaoBitflagProps) => {
+  const { isSelected, setSelected } = useChaoBitflagValue(value)
   return (
-    <Button className={`${baseStyles} ${selectedStyle} transition-all`} onClick={toggleSelected}>
-      <span>
-        {name}
-      </span>
-    </Button>
+    <Checkbox
+      label={label}
+      isSelected={isSelected}
+      setSelected={setSelected} />
   )
 })
 
@@ -37,7 +47,7 @@ const ChaoBitflags = memo(({ path, type }: ChaoBitflagsProps) => {
           return (
             <ChaoBitflag
               key={name as string}
-              name={name as string}
+              label={name as string}
               value={value as number} />
           )
         })}

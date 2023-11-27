@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from "react"
+import { memo, useCallback, useEffect, useMemo, useState } from "react"
 import { ArrowDown, ArrowUp } from "./icons"
 import { IconButton } from "./buttons"
 
@@ -265,11 +265,17 @@ const Select = memo(({
   onChange
 }: SelectProps) => {
 
+  const optionsByValue = useMemo(() => {
+    return options.reduce((map, option) => {
+      map[option.value] = option;
+      return map;
+    }, {} as { [key: string]: SelectOption })
+  }, [options])
+
   const handleChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    const option = options.find((o) => o.value === e.target.value)
-    if (option) {
-      onChange(option)
-    }
+    // const option = options.find((o) => o.value === e.target.value)
+    const option = optionsByValue[e.target.value]
+    onChange(option)
   }, [options, onChange])
 
   const inputClasses = `flex flex-col relative ${className}`;
@@ -288,7 +294,7 @@ const Select = memo(({
         ))}
       </select>
       <div className="absolute top-0 right-0 bottom-0 w-6 mr-[1px] p-[1px] flex flex-col items-stretch pointer-events-none">
-        <ArrowDown className="relative flex-1 bg-gray-700 rounded-md fill-current" />
+        <ArrowDown className="relative flex-1 text-white bg-gray-700 rounded-md fill-current" />
       </div>
     </div>
   )

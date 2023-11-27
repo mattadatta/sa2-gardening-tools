@@ -11,7 +11,7 @@ const ChaoSave = memo(() => {
 
   return (
     <div className="flex-1 flex overflow-y-hidden">
-      <div className="w-64 self-stretch overflow-y-scroll dark-scrollbar">
+      <div className="w-48 self-stretch overflow-y-scroll dark-scrollbar">
         {Array.from({ length: 24 }, (_, index) => (
           <ChaoCell
             key={index}

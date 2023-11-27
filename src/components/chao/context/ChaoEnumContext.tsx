@@ -1,5 +1,5 @@
 import { createContext, memo, ReactNode, useCallback, useContext } from 'react'
-import { useChao } from './ChaoContext'
+import { useChaoPath } from './ChaoContext'
 
 interface ChaoEnumProviderData {
   value: number
@@ -14,12 +14,12 @@ interface ChaoEnumProviderProps {
 }
 
 const ChaoEnumProvider = memo(({ path, children }: ChaoEnumProviderProps) => {
-  const { chaoData, updateChao } = useChao((c) => c[path] as number)
+  const { chaoData, updateChao } = useChaoPath<number>(path)
   const setValueSelected = useCallback((value: number) => {
     if (chaoData === value) {
       return;
     }
-    updateChao((c) => c[path] = value)
+    updateChao(value)
   }, [chaoData, updateChao])
 
   return (

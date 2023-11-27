@@ -29,7 +29,7 @@ pub struct Chao {
     #[sieve(offset(0x80), try_from)]
     pub chao_type: ChaoType,
     #[sieve(try_from)]
-    pub chao_garden: ChaoGarden,
+    pub garden: ChaoGarden,
     pub happiness: i16,
     pub init_chao: u8,
     #[sieve(offset(0x8A))]

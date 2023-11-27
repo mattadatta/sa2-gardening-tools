@@ -1,4 +1,4 @@
-import { memo } from "react"
+import { memo, useCallback } from "react"
 
 interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 }
@@ -70,4 +70,27 @@ const TabButton = memo(({
   )
 })
 
-export { Button, IconButton, TabButton }
+interface CheckboxProps {
+  className?: string
+  label: string
+  isSelected: boolean
+  setSelected: (enabled: boolean) => void
+}
+
+const Checkbox = memo(({ className = '', label, isSelected, setSelected }: CheckboxProps) => {
+  const toggleSelected = useCallback(() => {
+    (setSelected(!isSelected))
+  }, [isSelected, setSelected])
+  const baseStyles = 'border-[1px] rounded-md px-4 py-1 transition-all'
+  const selectedStyle = isSelected ? 'border-blue-400 text-white' : 'border-gray-400/20'
+  return (
+    <Button
+      className={`${baseStyles} ${selectedStyle} ${className}`}
+      onClick={toggleSelected}
+    >
+      <span>{label}</span>
+    </Button>
+  )
+})
+
+export { Button, IconButton, TabButton, Checkbox }

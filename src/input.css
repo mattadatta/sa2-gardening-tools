@@ -57,10 +57,12 @@ body,
 
 .dark-scrollbar::-webkit-scrollbar-track {
   background: rgba(44, 44, 44, 1.0);
+  border-radius: 2px;
 }
 
 .dark-scrollbar::-webkit-scrollbar-thumb {
   background-color: rgba(88, 88, 88, 1.0);
+  border-radius: 2px;
 }
 
 .dark-scrollbar::-webkit-scrollbar-thumb:hover {

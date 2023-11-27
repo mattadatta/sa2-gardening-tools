@@ -1,5 +1,6 @@
 import { memo } from "react";
-import { ChaoProvider, useChao } from "./context/ChaoContext";
+import { ChaoProvider, useChao, useChaoPath } from "./context/ChaoContext";
+import { chaoBytesToString } from "../../util/chao/name";
 
 interface ChaoCellProps {
   index: number
@@ -8,15 +9,17 @@ interface ChaoCellProps {
 }
 
 const ChaoCellImpl = memo(({ index, isSelected, onSelect }: ChaoCellProps) => {
-  const { chaoData } = useChao((c) => c.levels.swim)
+  const { chaoData } = useChaoPath<number[]>("name")
+  const chaoName = chaoBytesToString(chaoData)
   const selectedStyle = isSelected ? 'bg-gray-800' : ''
 
   return (
     <div
-      className={`p-4 cursor-pointer hover:bg-gray-700 ${selectedStyle}`}
+      className={`flex flex-col p-4 cursor-pointer hover:bg-gray-700 ${selectedStyle}`}
       onClick={() => onSelect(index)}
     >
-      Chao Cell {`${chaoData}`}
+      <span className="font-comfortaa text-sm">chao {index}</span>
+      <span className="font-comfortaa">{chaoName}</span>
     </div>
   )
 })

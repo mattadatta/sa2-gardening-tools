@@ -1,12 +1,12 @@
 import { memo, useCallback, useEffect, useState } from "react"
-import { useChao } from "./context/ChaoContext"
+import { useChaoPath } from "./context/ChaoContext"
 import { chaoBytesToString, chaoStringToBytes } from "../../util/chao/name"
 import { Input } from "../ui/inputs"
 import { IconButton } from "../ui/buttons"
 import { Checkmark, Crossmark, Pencil, Tag } from "../ui/icons"
 
 const ChaoName = memo(() => {
-  const { chaoData, updateChao, index } = useChao((c) => c.name as number[])
+  const { chaoData, updateChao, index } = useChaoPath<number[]>("name")
   const [isEditing, setEditing] = useState(false)
   const [name, setName] = useState("")
   const existingName = chaoBytesToString(chaoData)
@@ -23,9 +23,7 @@ const ChaoName = memo(() => {
 
   const onConfirm = useCallback(() => {
     const bytes = chaoStringToBytes(name)
-    updateChao((c) => {
-      c.name = bytes
-    })
+    updateChao(bytes)
     setEditing(false)
   }, [name, updateChao])
 
@@ -44,13 +42,15 @@ const ChaoName = memo(() => {
         className="w-24"
         value={name}
         onChange={onTextChange}
-        placeholder={existingName} />
+        placeholder={existingName}
+        onEscKey={onCancel}
+        onReturnKey={onConfirm} />
       <IconButton
-        className="text-red-400"
+        iconProps={{className: "text-red-400"}}
         Icon={Crossmark}
         onClick={onCancel} />
       <IconButton
-        className="text-green-400"
+        iconProps={{className: "text-green-400"}}
         Icon={Checkmark}
         onClick={onConfirm} />
     </>

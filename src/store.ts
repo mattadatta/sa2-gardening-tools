@@ -74,17 +74,20 @@ export function useWriteChaoAtIndex(index: number): UseWriteChaoData {
 }
 
 export function useReadChaoAtIndex<R>(index: number, selector: (_: Chao) => R): UseReadChaoData<R> {
-  const chaoData = useAppState(useShallow((state) => selector(state.loadedSaves!.chaoSave.chao[index])))
-  const modifiedData = useAppState(useShallow((state) => {
-    const chao = state.modifiedChao.get(index)
-    if (chao !== undefined) {
-      return selector(chao)
-    } else {
-      return undefined
-    }
+  const [chaoData, modifiedData] = useAppState(useShallow((state) => {
+    return [
+      selector(state.loadedSaves!.chaoSave.chao[index]),
+      (() => {
+        const chao = state.modifiedChao.get(index)
+        if (chao !== undefined) {
+          return selector(chao)
+        } else {
+          return undefined
+        }
+      })()]
   }))
   return {
-    chaoData: modifiedData || chaoData,
+    chaoData: modifiedData ?? chaoData,
     originalData: chaoData,
     hasChanges: modifiedData !== undefined
   }

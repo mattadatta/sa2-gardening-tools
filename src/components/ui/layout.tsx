@@ -21,7 +21,7 @@ const Header = memo(({
   label
 }: HeaderProps) => {
   return (
-    <span className={`flex flex-row items-center space-x-2 text-lg font-comfortaa ${className}`}>
+    <span className={`flex items-center space-x-2 text-lg font-bold font-comfortaa ${className}`}>
       <Icon {...iconProps} className={`mb-1 fill-current ${iconProps.className ?? ''}`} />
       <span>{label}</span>
     </span>
@@ -49,7 +49,7 @@ const Section = memo(({
 
   return (
     <div className={`flex flex-col items-stretch space-y-2 ${className}`}>
-      <Button className="flex flex-row items-center space-x-1" onClick={toggleCollapsed}>
+      <Button className="flex items-center space-x-1" onClick={toggleCollapsed}>
         <ArrowDown className={`fill-current transform transition-transform w-6 h-6 ${isCollapsed ? '-rotate-90' : ''}`} />
         <Header Icon={Icon} label={label} />
       </Button>

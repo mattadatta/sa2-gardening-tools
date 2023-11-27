@@ -10,7 +10,7 @@ interface ChaoItemSectionProps {
 
 const ChaoItemSection = memo(({ label, path, type }: ChaoItemSectionProps) => {
   return (
-    <div className="flex flex-col space-y-2">
+    <div className="flex flex-col space-y-1">
       <span>{label}</span>
       <ChaoBitflags path={path} type={type} />
     </div>
@@ -19,7 +19,7 @@ const ChaoItemSection = memo(({ label, path, type }: ChaoItemSectionProps) => {
 
 const ChaoItems = memo(() => {
   return (
-    <div className="flex flex-row space-x-2">
+    <div className="flex space-x-2">
       <ChaoItemSection label="Toys" path="toys" type={Types.ChaoToys} />
       <ChaoItemSection label="Skills" path="classroomSkills" type={Types.ChaoClassroomSkills} />
       <ChaoItemSection label="SA2 Behaviors" path="sa2AnimalBehaviors" type={Types.ChaoSa2AnimalBehaviors} />

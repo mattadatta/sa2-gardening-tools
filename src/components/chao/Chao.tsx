@@ -1,17 +1,19 @@
 import { memo } from "react"
-import { ChaoProvider } from "./context/ChaoContext"
 import ChaoAppearance from "./ChaoAppearance"
-import ChaoName from "./ChaoName"
+import ChaoBasics from "./ChaoBasics"
+import ChaoEmotions from "./ChaoEmotions"
+import ChaoEvolution from "./ChaoEvolution"
 import ChaoStats from "./ChaoStats"
 import ChaoItems from "./ChaoItems"
-import { Category, Stats, Tag, Toy } from "../ui/icons"
+import { ChaoProvider } from "./context/ChaoContext"
+import { Category, Happy, PersonDots, Stats, Tag, Toy } from "../ui/icons"
 import { Section } from "../ui/layout"
 
 const ChaoData = memo(() => {
   return (
     <>
       <Section Icon={Tag} label="Basics">
-        <ChaoName />
+        <ChaoBasics />
       </Section>
       <Section Icon={Stats} label="Stats">
         <ChaoStats />
@@ -21,6 +23,12 @@ const ChaoData = memo(() => {
       </Section>
       <Section Icon={Toy} label="Appearance">
         <ChaoAppearance />
+      </Section>
+      <Section Icon={PersonDots} label="Evolution">
+        <ChaoEvolution />
+      </Section>
+      <Section Icon={Happy} label="Emotions">
+        <ChaoEmotions />
       </Section>
     </>
   )

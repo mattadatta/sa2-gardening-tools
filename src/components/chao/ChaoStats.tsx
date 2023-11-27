@@ -1,6 +1,99 @@
 import { memo, useCallback } from "react"
-import { useChao } from "./context/ChaoContext"
+import { useChao, useChaoPath } from "./context/ChaoContext"
 import { Spinner } from "../ui/inputs"
+
+interface GradeSpinnerProps {
+  inputClassName?: string
+  stat: string
+  value: number
+  onChange: (value: number) => void
+}
+
+const GradeSpinner = memo(({ inputClassName, stat, value, onChange }: GradeSpinnerProps) => {
+  const maxValue = (() => {
+    switch (stat) {
+      case 'swim':
+      case 'fly':
+      case 'run':
+      case 'power':
+      case 'stamina':
+        return 6
+      default:
+        return 99
+    }
+  })()
+
+  const [label, labelColor] = (() => {
+    switch (value) {
+      case 0:
+        return ['E', 'text-blue-500']
+      case 1:
+        return ['D', 'text-green-500']
+      case 2:
+        return ['C', 'text-yellow-300']
+      case 3:
+        return ['B', 'text-orange-500']
+      case 4:
+        return ['A', 'text-red-500']
+      case 5:
+        return ['S', 'text-yellow-500']
+      case 6:
+        return ['X', 'text-white']
+      default:
+        return ['', '']
+    }
+  })()
+
+  return (
+    <div className="flex items-center space-x-2">
+      <Spinner
+        inputClassName={inputClassName}
+        value={value}
+        onChange={onChange}
+        min={0}
+        max={maxValue} />
+      <span className={`${labelColor} w-4 font-black`}>{label}</span>
+    </div>
+  )
+})
+
+interface ChaoDnaStatProps {
+  stat: string
+  path: string
+}
+
+const ChaoDnaStat = memo(({ stat, path }: ChaoDnaStatProps) => {
+  const { chaoData, updateChao } = useChaoPath<number>(path)
+
+  const ringColor = (() => {
+    switch (stat) {
+      case 'swim':
+        return 'focus:ring-chao-swim'
+      case 'fly':
+        return 'focus:ring-chao-fly'
+      case 'run':
+        return 'focus:ring-chao-run'
+      case 'power':
+        return 'focus:ring-chao-power'
+      case 'stamina':
+        return 'focus:ring-chao-stamina'
+      case 'intelligence':
+        return 'focus:ring-chao-intelligence'
+      case 'luck':
+        return 'focus:ring-chao-luck'
+      default:
+        return ''
+    }
+  })()
+
+  return (
+    <GradeSpinner
+      inputClassName={`${ringColor}`}
+      stat={stat}
+      value={chaoData}
+      onChange={updateChao} />
+  )
+})
 
 interface ChaoStatProps {
   section: string
@@ -10,9 +103,9 @@ interface ChaoStatProps {
 const ChaoStat = memo(({ section, stat }: ChaoStatProps) => {
   const { chaoData, updateChao } = useChao((c) => c[section][stat])
 
-  const updateStat = useCallback((newValue: number) => {
+  const updateStat = useCallback((value: number) => {
     updateChao((c) => {
-      c[section][stat] = newValue
+      c[section][stat] = value
     })
   }, [updateChao])
 
@@ -70,12 +163,11 @@ const ChaoStat = memo(({ section, stat }: ChaoStatProps) => {
         )
       case 'grades':
         return (
-          <Spinner
+          <GradeSpinner
             inputClassName={`${ringColor}`}
+            stat={stat}
             value={chaoData}
-            onChange={updateStat}
-            min={0}
-            max={99} />
+            onChange={updateStat} />
         )
       default:
         return (<div>Unknown state</div>)
@@ -113,11 +205,13 @@ const ChaoStatRow = memo(({ stat }: ChaoStatRowProps) => {
 
   return (
     <tr className="">
-      <th scope="row" className="text-sm font-comfortaa text-start">{stat}</th>
+      <th scope="row" className="text-sm text-start">{stat}</th>
       <td><ChaoStat section="levels" stat={stat} /></td>
       <td><ChaoStat section="bars" stat={stat} /></td>
       <td><ChaoStat section="points" stat={stat} /></td>
       <td><ChaoStat section="grades" stat={stat} /></td>
+      <td><ChaoDnaStat path={`dnaStatGrades.${stat}1`} stat={stat} /></td>
+      <td><ChaoDnaStat path={`dnaStatGrades.${stat}2`} stat={stat} /></td>
     </tr>
   )
 })
@@ -125,12 +219,14 @@ const ChaoStatRow = memo(({ stat }: ChaoStatRowProps) => {
 const ChaoStatsHeaderRow = memo(() => {
   const headerStyles = `text-start pl-1`
   return (
-    <tr className="text-sm font-comfortaa">
+    <tr className="text-sm">
       <td />
       <th className={`${headerStyles}`}>Level</th>
       <th className={`${headerStyles}`}>EXP</th>
       <th className={`${headerStyles}`}>Points</th>
       <th className={`${headerStyles}`}>Grade</th>
+      <th className={`${headerStyles}`}>DNA 1</th>
+      <th className={`${headerStyles}`}>DNA 2</th>
     </tr>
   )
 })
