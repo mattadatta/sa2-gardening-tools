@@ -21,7 +21,7 @@ const Input = memo(({
   onEscKey,
   ...props
 }: InputProps) => {
-  const inputClasses = `bg-gray-800 text-white border border-gray-600 focus:ring-2 focus:ring-gray-500 focus:outline-none rounded-md pt-2 pb-1 px-2 min-w-0 ${className}`;
+  const inputClasses = `bg-gray-800 text-white border border-gray-600 focus:ring-2 focus:ring-gray-500 focus:outline-none rounded-md pt-2 pb-1 px-2 min-w-0 min-h-0 ${className}`;
 
   const onTextChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     onChange?.(e.target.value)

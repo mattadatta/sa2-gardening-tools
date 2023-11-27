@@ -1,12 +1,15 @@
 import { memo } from "react"
 import ChaoAppearance from "./ChaoAppearance"
 import ChaoBasics from "./ChaoBasics"
+import ChaoBonds from "./ChaoBonds"
 import ChaoEmotions from "./ChaoEmotions"
 import ChaoEvolution from "./ChaoEvolution"
-import ChaoStats from "./ChaoStats"
+import ChaoHealth from "./ChaoHealth"
 import ChaoItems from "./ChaoItems"
+import ChaoPersonality from "./ChaoPersonality"
+import ChaoStats from "./ChaoStats"
 import { ChaoProvider } from "./context/ChaoContext"
-import { Category, Happy, PersonDots, Stats, Tag, Toy } from "../ui/icons"
+import { Category, Happy, Heart, MedicalBox, PersonDots, Psychology, Stats, Tag, Toy } from "../ui/icons"
 import { Section } from "../ui/layout"
 
 const ChaoData = memo(() => {
@@ -27,8 +30,17 @@ const ChaoData = memo(() => {
       <Section Icon={PersonDots} label="Evolution">
         <ChaoEvolution />
       </Section>
+      <Section Icon={Psychology} label="Personality">
+        <ChaoPersonality />
+      </Section>
       <Section Icon={Happy} label="Emotions">
         <ChaoEmotions />
+      </Section>
+      <Section Icon={Heart} label="Bonds">
+        <ChaoBonds />
+      </Section>
+      <Section Icon={MedicalBox} label="Health">
+        <ChaoHealth />
       </Section>
     </>
   )

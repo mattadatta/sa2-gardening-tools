@@ -1,5 +1,11 @@
 import { createContext, memo, ReactNode, useCallback, useContext } from 'react'
-import { Chao, useReadChaoAtIndex, UseReadChaoData, useWriteChaoAtIndex, UseWriteChaoData } from '../../../store'
+import { 
+  Chao, 
+  useChaoHasChangesAtIndex,
+  useChaoOrganizing as useStoreChaoOrganizing, UseChaoOrganizing as UseStoreChaoOrganizing,
+  useReadChaoAtIndex, UseReadChaoData, 
+  useWriteChaoAtIndex, UseWriteChaoData 
+} from '../../../store'
 import { getValue, setValue } from '../../../util/object_path'
 
 interface ChaoProviderData extends UseWriteChaoData {
@@ -53,4 +59,32 @@ function useChaoPath<RW>(path: string): UseChaoPath<RW> {
   }
 }
 
-export { ChaoProvider, useChao, useChaoPath }
+interface UseChaoHasChanges extends ChaoProviderData {
+  hasChanges: boolean
+}
+
+function useChaoHasChanges(): UseChaoHasChanges {
+  const data = useContext(Context)!
+  const hasChanges = useChaoHasChangesAtIndex(data.index)
+  return {
+    ...hasChanges,
+    ...data
+  }
+}
+
+interface UseChaoOrganizing extends UseStoreChaoOrganizing {
+  isValid: boolean
+  isFirstInvalid: boolean
+}
+
+function useChaoOrganizing(): UseChaoOrganizing {
+  const { index } = useContext(Context)!
+  const chaoOrganizing = useStoreChaoOrganizing()
+  return {
+    isValid: index >= (chaoOrganizing.chaoCount - 1),
+    isFirstInvalid: index === chaoOrganizing.chaoCount,
+    ...chaoOrganizing,
+  }
+}
+
+export { ChaoProvider, useChao, useChaoPath, useChaoHasChanges, useChaoOrganizing }

@@ -92,7 +92,7 @@ pub struct Chao {
     #[sieve(offset(0x150))]
     pub normal_to_big_eater: i8,
     #[sieve(offset(0x155))]
-    pub normal_to_care_free: i8,
+    pub normal_to_carefree: i8,
     #[sieve(offset(0x157), try_from)]
     pub favorite_fruit: ChaoFavoriteFruit,
     #[sieve(offset(0x15A))]

@@ -6,7 +6,6 @@ import { produce, enableMapSet } from 'immer'
 enableMapSet()
 
 export interface Chao extends Record<string, any> {
-
 }
 
 interface ChaoSave {
@@ -23,6 +22,9 @@ interface AppState {
   setLoadedSaves: (saves: LoadedSaves) => void
   updateChaoAtIndex: (index: number, update: (_: Chao) => void) => void
   commitChaoAtIndex: (index: number) => void
+  abandonChangesAtIndex: (index: number) => void
+  swapChao: (index1: number, index2: number) => void
+  copyChao: (src: number, dst: number) => void
 }
 
 export const useAppState = create<AppState>()((set) => ({
@@ -45,6 +47,37 @@ export const useAppState = create<AppState>()((set) => ({
     state.loadedSaves!.chaoSave.chao[index] = state.modifiedChao.get(index)!
     state.modifiedChao.delete(index)
   })),
+  abandonChangesAtIndex: (index: number) => set(produce((state: AppState) => {
+    state.modifiedChao.delete(index)
+  })),
+  swapChao: (index1: number, index2: number) => set(produce((state: AppState) => {
+    const chao1 = state.loadedSaves!.chaoSave.chao[index1]
+    const chao2 = state.loadedSaves!.chaoSave.chao[index2]
+    state.loadedSaves!.chaoSave.chao[index1] = chao2
+    state.loadedSaves!.chaoSave.chao[index2] = chao1
+    const modifiedChao1 = state.modifiedChao.get(index1)
+    const modifiedChao2 = state.modifiedChao.get(index2)
+    if (modifiedChao2) {
+      state.modifiedChao.set(index1, modifiedChao2)
+    } else {
+      state.modifiedChao.delete(index1)
+    }
+    if (modifiedChao1) {
+      state.modifiedChao.set(index2, modifiedChao1)
+    } else {
+      state.modifiedChao.delete(index2)
+    }
+  })),
+  copyChao: (src: number, dst: number) => set(produce((state: AppState) => {
+    const srcChao = state.loadedSaves!.chaoSave.chao[src]
+    state.loadedSaves!.chaoSave.chao[dst] = srcChao
+    const srcModifiedChao = state.modifiedChao.get(src)
+    if (srcModifiedChao) {
+      state.modifiedChao.set(dst, srcModifiedChao)
+    } else {
+      state.modifiedChao.delete(dst)
+    }
+  })),
 }))
 
 export interface UseReadChaoData<R> {
@@ -56,20 +89,26 @@ export interface UseReadChaoData<R> {
 export interface UseWriteChaoData {
   updateChao: (update: (_: Chao) => void) => void
   commitChao: () => void
+  abandonChanges: () => void
 }
 
 export function useWriteChaoAtIndex(index: number): UseWriteChaoData {
   const updateChaoAtIndex = useAppState((state) => state.updateChaoAtIndex)
   const commitChaoAtIndex = useAppState((state) => state.commitChaoAtIndex)
+  const abandonChangesAtIndex = useAppState((state) => state.abandonChangesAtIndex)
   const updateChao = useCallback(
     (update: (_: Chao) => void) => updateChaoAtIndex(index, update),
     [index, updateChaoAtIndex])
   const commitChao = useCallback(
     () => commitChaoAtIndex(index),
     [index, commitChaoAtIndex])
+  const abandonChanges = useCallback(
+    () => abandonChangesAtIndex(index),
+    [index, abandonChangesAtIndex])
   return {
     updateChao,
-    commitChao
+    commitChao,
+    abandonChanges
   }
 }
 
@@ -79,7 +118,7 @@ export function useReadChaoAtIndex<R>(index: number, selector: (_: Chao) => R): 
       selector(state.loadedSaves!.chaoSave.chao[index]),
       (() => {
         const chao = state.modifiedChao.get(index)
-        if (chao !== undefined) {
+        if (chao) {
           return selector(chao)
         } else {
           return undefined
@@ -90,5 +129,33 @@ export function useReadChaoAtIndex<R>(index: number, selector: (_: Chao) => R): 
     chaoData: modifiedData ?? chaoData,
     originalData: chaoData,
     hasChanges: modifiedData !== undefined
+  }
+}
+
+export interface UseChaoHasChanges {
+  hasChanges: boolean
+}
+
+export function useChaoHasChangesAtIndex(index: number): UseChaoHasChanges {
+  const hasChanges = useAppState((state) => state.modifiedChao.has(index))
+  return {
+    hasChanges
+  }
+}
+
+export interface UseChaoOrganizing {
+  chaoCount: number
+  swapChao: (index1: number, index2: number) => void
+  copyChao: (src: number, dst: number) => void
+}
+
+export function useChaoOrganizing(): UseChaoOrganizing {
+  const chaoCount = useAppState((state) => state.loadedSaves!.chaoSave.chao.findIndex((c) => c.garden === 0))
+  const swapChao = useAppState((state) => state.swapChao)
+  const copyChao = useAppState((state) => state.copyChao)
+  return {
+    chaoCount,
+    swapChao,
+    copyChao
   }
 }

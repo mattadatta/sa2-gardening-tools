@@ -2,6 +2,8 @@ import { ReactNode, memo, useCallback } from "react"
 import ChaoEnum from "./ChaoEnum"
 import * as Types from "../../gen/types"
 import ChaoSliderInput from "./ChaoSliderInput"
+import { Spinner } from "../ui/inputs"
+import { useChaoPath } from "./context/ChaoContext"
 
 interface ChaoLabelledItemProps {
   label: string
@@ -47,9 +49,28 @@ const AlignmentRow = memo(() => {
         <ChaoSliderInput className="w-44" path="swimToFlyTransformation" min={-1} max={1} step={0.1} />
       </ChaoLabelledItem>
       <ChaoLabelledItem label="Transformation Magnitude">
-        <ChaoSliderInput className="w-56" path="transformationMagnitude" min={0} max={1.2} step={0.1} />
+        <ChaoSliderInput className="w-44" path="transformationMagnitude" min={0} max={1.2} step={0.1} />
       </ChaoLabelledItem>
     </div>
+  )
+})
+
+interface ChaoSpinnerProps {
+  inputClassName?: string
+  path: string
+  min: number
+  max: number
+}
+
+const ChaoSpinner = memo(({ inputClassName = '', path, min, max }: ChaoSpinnerProps) => {
+  const { chaoData, updateChao } = useChaoPath<number>(path)
+  return (
+    <Spinner
+      className={inputClassName}
+      value={chaoData}
+      onChange={updateChao}
+      min={min}
+      max={max} />
   )
 })
 
@@ -58,6 +79,9 @@ const TypeRow = memo(() => {
     <div className="flex space-x-2">
       <ChaoLabelledItem label="Type">
         <ChaoEnum path="chaoType" type={Types.ChaoType} />
+      </ChaoLabelledItem>
+      <ChaoLabelledItem label="Reincarnations">
+        <ChaoSpinner inputClassName="w-20 h-[34px]" path="reincarnations" min={0} max={255} />
       </ChaoLabelledItem>
     </div>
   )

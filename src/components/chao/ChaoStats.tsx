@@ -52,7 +52,7 @@ const GradeSpinner = memo(({ inputClassName, stat, value, onChange }: GradeSpinn
         onChange={onChange}
         min={0}
         max={maxValue} />
-      <span className={`${labelColor} w-4 font-black`}>{label}</span>
+      {(maxValue <= 6) && <span className={`${labelColor} w-4 font-black`}>{label}</span>}
     </div>
   )
 })

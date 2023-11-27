@@ -547,8 +547,7 @@ export enum ChaoHat {
 }
 
 export enum ChaoGarden {
-  None = 0,
-  NeutralGarden,
+  NeutralGarden = 1,
   HeroGarden,
   DarkGarden,
   StationSquare,

@@ -19,7 +19,7 @@ const ChaoLabelledItem = memo(({ label, rightLabel, children }: ChaoLabelledItem
   )
 })
 
-const EmotionsRow2 = memo(() => {
+const EmotionsRow3 = memo(() => {
   return (
     <div className="flex space-x-8">
       <ChaoLabelledItem label="Joy">
@@ -38,7 +38,7 @@ const EmotionsRow2 = memo(() => {
   )
 })
 
-const EmotionsRow1 = memo(() => {
+const EmotionsRow2 = memo(() => {
   return (
     <div className="flex space-x-8">
       <ChaoLabelledItem label="Desire to mate">
@@ -63,11 +63,22 @@ const EmotionsRow1 = memo(() => {
   )
 })
 
+const EmotionsRow1 = memo(() => {
+  return (
+    <div className="flex space-x-8">
+      <ChaoLabelledItem label="Happiness">
+        <ChaoSliderInput className="w-44" path="happiness" min={-100} max={100} step={10} />
+      </ChaoLabelledItem>
+    </div>
+  )
+})
+
 const ChaoEmotions = memo(() => {
   return (
     <div className="flex flex-col space-y-2">
       <EmotionsRow1 />
       <EmotionsRow2 />
+      <EmotionsRow3 />
     </div>
   )
 })
