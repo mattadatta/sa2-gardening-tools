@@ -2,6 +2,8 @@ import { useCallback } from "react";
 import { create } from "zustand";
 import { useShallow } from 'zustand/react/shallow'
 import { produce, enableMapSet } from 'immer'
+import { readInChao, writeOutChao, writeOutChaoSave } from "./backend";
+import { chaoBytesToString } from "./util/chao/name";
 
 enableMapSet()
 
@@ -19,17 +21,24 @@ interface LoadedSaves {
 interface AppState {
   loadedSaves: LoadedSaves | null
   modifiedChao: Map<number, Chao>
+  isReading: boolean
+  isWriting: boolean
   setLoadedSaves: (saves: LoadedSaves) => void
   updateChaoAtIndex: (index: number, update: (_: Chao) => void) => void
   commitChaoAtIndex: (index: number) => void
+  readChaoAtIndex: (index: number) => void
+  writeChaoAtIndex: (index: number) => void
   abandonChangesAtIndex: (index: number) => void
   swapChao: (index1: number, index2: number) => void
   copyChao: (src: number, dst: number) => void
+  writeChanges: () => Promise<void>
 }
 
-export const useAppState = create<AppState>()((set) => ({
+export const useAppState = create<AppState>()((set, get) => ({
   loadedSaves: null,
   modifiedChao: new Map<number, Chao>(),
+  isReading: false,
+  isWriting: false,
   setLoadedSaves: (saves: LoadedSaves) => set((_) => ({ loadedSaves: saves })),
   updateChaoAtIndex: (index: number, update: (_: Chao) => void) => set((state) => {
     var withMod = state
@@ -47,6 +56,27 @@ export const useAppState = create<AppState>()((set) => ({
     state.loadedSaves!.chaoSave.chao[index] = state.modifiedChao.get(index)!
     state.modifiedChao.delete(index)
   })),
+  readChaoAtIndex: async (index: number) => {
+    set(produce((state: AppState) => {
+      state.isReading = true
+    }))
+    const chao = JSON.parse(await readInChao())
+    set(produce((state: AppState) => {
+      state.loadedSaves!.chaoSave.chao[index] = chao
+      state.isReading = false
+    }))
+  },
+  writeChaoAtIndex: async (index: number) => {
+    set(produce((state: AppState) => {
+      state.isWriting = true
+    }))
+    const chao = get().loadedSaves!.chaoSave.chao[index]
+    const chaoName = chaoBytesToString(chao.name)
+    await writeOutChao(chaoName, JSON.stringify(chao))
+    set(produce((state: AppState) => {
+      state.isWriting = false
+    }))
+  },
   abandonChangesAtIndex: (index: number) => set(produce((state: AppState) => {
     state.modifiedChao.delete(index)
   })),
@@ -78,6 +108,15 @@ export const useAppState = create<AppState>()((set) => ({
       state.modifiedChao.delete(dst)
     }
   })),
+  writeChanges: async () => {
+    set(produce((state: AppState) => {
+      state.isWriting = true
+    }))
+    await writeOutChaoSave(JSON.stringify(get().loadedSaves!.chaoSave))
+    set(produce((state: AppState) => {
+      state.isWriting = false
+    }))
+  }
 }))
 
 export interface UseReadChaoData<R> {
@@ -89,12 +128,16 @@ export interface UseReadChaoData<R> {
 export interface UseWriteChaoData {
   updateChao: (update: (_: Chao) => void) => void
   commitChao: () => void
+  readChao: () => void
+  writeChao: () => void
   abandonChanges: () => void
 }
 
 export function useWriteChaoAtIndex(index: number): UseWriteChaoData {
   const updateChaoAtIndex = useAppState((state) => state.updateChaoAtIndex)
   const commitChaoAtIndex = useAppState((state) => state.commitChaoAtIndex)
+  const readChaoAtIndex = useAppState((state) => state.readChaoAtIndex)
+  const writeChaoAtIndex = useAppState((state) => state.writeChaoAtIndex)
   const abandonChangesAtIndex = useAppState((state) => state.abandonChangesAtIndex)
   const updateChao = useCallback(
     (update: (_: Chao) => void) => updateChaoAtIndex(index, update),
@@ -102,12 +145,20 @@ export function useWriteChaoAtIndex(index: number): UseWriteChaoData {
   const commitChao = useCallback(
     () => commitChaoAtIndex(index),
     [index, commitChaoAtIndex])
+  const readChao = useCallback(
+    () => readChaoAtIndex(index),
+    [index, readChaoAtIndex])
+  const writeChao = useCallback(
+    () => writeChaoAtIndex(index),
+    [index, writeChaoAtIndex])
   const abandonChanges = useCallback(
     () => abandonChangesAtIndex(index),
     [index, abandonChangesAtIndex])
   return {
     updateChao,
     commitChao,
+    readChao,
+    writeChao,
     abandonChanges
   }
 }
@@ -147,15 +198,18 @@ export interface UseChaoOrganizing {
   chaoCount: number
   swapChao: (index1: number, index2: number) => void
   copyChao: (src: number, dst: number) => void
+  writeChaoSave: () => Promise<void>
 }
 
 export function useChaoOrganizing(): UseChaoOrganizing {
   const chaoCount = useAppState((state) => state.loadedSaves!.chaoSave.chao.findIndex((c) => c.garden === 0))
   const swapChao = useAppState((state) => state.swapChao)
   const copyChao = useAppState((state) => state.copyChao)
+  const writeChaoSave = useAppState((state) => state.writeChanges)
   return {
     chaoCount,
     swapChao,
-    copyChao
+    copyChao,
+    writeChaoSave,
   }
 }

@@ -14,7 +14,7 @@ license-file = "LICENSE"
 tauri-build = { version = "1.5", features = [] }
 
 [dependencies]
-tauri = { version = "1.5", features = ["shell-open"] }
+tauri = { version = "1.5", features = [ "fs-write-file", "dialog-all", "shell-open"] }
 ts-rs = "7.0"
 cursieve = { path = "../../cursieve/cursieve" }
 byteorder = "1.5.0"

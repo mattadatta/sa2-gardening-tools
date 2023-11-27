@@ -2,7 +2,7 @@ import { createContext, memo, ReactNode, useCallback, useContext } from 'react'
 import { 
   Chao, 
   useChaoHasChangesAtIndex,
-  useChaoOrganizing as useStoreChaoOrganizing, UseChaoOrganizing as UseStoreChaoOrganizing,
+  useChaoOrganizing as useStoreChaoOrganizing,
   useReadChaoAtIndex, UseReadChaoData, 
   useWriteChaoAtIndex, UseWriteChaoData 
 } from '../../../store'
@@ -72,18 +72,18 @@ function useChaoHasChanges(): UseChaoHasChanges {
   }
 }
 
-interface UseChaoOrganizing extends UseStoreChaoOrganizing {
+interface UseChaoOrganizing extends ChaoProviderData {
   isValid: boolean
   isFirstInvalid: boolean
 }
 
 function useChaoOrganizing(): UseChaoOrganizing {
-  const { index } = useContext(Context)!
+  const chaoProviderData = useContext(Context)!
   const chaoOrganizing = useStoreChaoOrganizing()
   return {
-    isValid: index >= (chaoOrganizing.chaoCount - 1),
-    isFirstInvalid: index === chaoOrganizing.chaoCount,
-    ...chaoOrganizing,
+    isValid: chaoProviderData.index <= (chaoOrganizing.chaoCount - 1),
+    isFirstInvalid: chaoProviderData.index === chaoOrganizing.chaoCount,
+    ...chaoProviderData
   }
 }
 
