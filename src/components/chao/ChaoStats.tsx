@@ -182,26 +182,26 @@ interface ChaoStatRowProps {
 }
 
 const ChaoStatRow = memo(({ stat }: ChaoStatRowProps) => {
-  const textColorForStat = (stat: string) => {
-    switch (stat) {
-      case 'swim':
-        return 'text-chao-swim'
-      case 'fly':
-        return 'text-chao-fly'
-      case 'run':
-        return 'text-chao-run'
-      case 'power':
-        return 'text-chao-power'
-      case 'stamina':
-        return 'text-chao-stamina'
-      case 'intelligence':
-        return 'text-chao-intelligence'
-      case 'luck':
-        return 'text-chao-luck'
-      default:
-        return ''
-    }
-  }
+  // const textColorForStat = (stat: string) => {
+  //   switch (stat) {
+  //     case 'swim':
+  //       return 'text-chao-swim'
+  //     case 'fly':
+  //       return 'text-chao-fly'
+  //     case 'run':
+  //       return 'text-chao-run'
+  //     case 'power':
+  //       return 'text-chao-power'
+  //     case 'stamina':
+  //       return 'text-chao-stamina'
+  //     case 'intelligence':
+  //       return 'text-chao-intelligence'
+  //     case 'luck':
+  //       return 'text-chao-luck'
+  //     default:
+  //       return ''
+  //   }
+  // }
 
   return (
     <tr className="">

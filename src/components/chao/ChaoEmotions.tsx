@@ -1,4 +1,4 @@
-import { ReactNode, memo, useCallback } from "react"
+import { ReactNode, memo } from "react"
 import ChaoSliderInput from "./ChaoSliderInput"
 
 interface ChaoLabelledItemProps {
