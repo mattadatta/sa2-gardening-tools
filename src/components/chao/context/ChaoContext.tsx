@@ -44,7 +44,8 @@ function useChao<R>(selector: (_: Chao) => R): UseChao<R> {
 interface UseChaoPath<RW> extends UseReadChaoData<RW> {
   index: number
   updateChao: (value: RW) => void
-  commitChao: () => void
+  commitChanges: () => void
+  abandonChanges: () => void
 }
 
 function useChaoPath<RW>(path: string): UseChaoPath<RW> {

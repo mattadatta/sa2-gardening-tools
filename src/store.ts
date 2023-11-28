@@ -25,7 +25,7 @@ interface AppState {
   isWriting: boolean
   setLoadedSaves: (saves: LoadedSaves) => void
   updateChaoAtIndex: (index: number, update: (_: Chao) => void) => void
-  commitChaoAtIndex: (index: number) => void
+  commitChangesAtIndex: (index: number) => void
   readChaoAtIndex: (index: number) => void
   writeChaoAtIndex: (index: number) => void
   abandonChangesAtIndex: (index: number) => void
@@ -52,7 +52,7 @@ export const useAppState = create<AppState>()((set, get) => ({
       update(state.modifiedChao.get(index)!)
     })
   }),
-  commitChaoAtIndex: (index: number) => set(produce((state: AppState) => {
+  commitChangesAtIndex: (index: number) => set(produce((state: AppState) => {
     state.loadedSaves!.chaoSave.chao[index] = state.modifiedChao.get(index)!
     state.modifiedChao.delete(index)
   })),
@@ -127,39 +127,41 @@ export interface UseReadChaoData<R> {
 
 export interface UseWriteChaoData {
   updateChao: (update: (_: Chao) => void) => void
-  commitChao: () => void
+  commitChanges: () => void
+  abandonChanges: () => void
   readChao: () => void
   writeChao: () => void
-  abandonChanges: () => void
 }
 
 export function useWriteChaoAtIndex(index: number): UseWriteChaoData {
   const updateChaoAtIndex = useAppState((state) => state.updateChaoAtIndex)
-  const commitChaoAtIndex = useAppState((state) => state.commitChaoAtIndex)
+  const commitChangesAtIndex = useAppState((state) => state.commitChangesAtIndex)
+  const abandonChangesAtIndex = useAppState((state) => state.abandonChangesAtIndex)
   const readChaoAtIndex = useAppState((state) => state.readChaoAtIndex)
   const writeChaoAtIndex = useAppState((state) => state.writeChaoAtIndex)
-  const abandonChangesAtIndex = useAppState((state) => state.abandonChangesAtIndex)
+  
   const updateChao = useCallback(
     (update: (_: Chao) => void) => updateChaoAtIndex(index, update),
     [index, updateChaoAtIndex])
-  const commitChao = useCallback(
-    () => commitChaoAtIndex(index),
-    [index, commitChaoAtIndex])
+  const commitChanges = useCallback(
+    () => commitChangesAtIndex(index),
+    [index, commitChangesAtIndex])
+    const abandonChanges = useCallback(
+      () => abandonChangesAtIndex(index),
+      [index, abandonChangesAtIndex])
   const readChao = useCallback(
     () => readChaoAtIndex(index),
     [index, readChaoAtIndex])
   const writeChao = useCallback(
     () => writeChaoAtIndex(index),
     [index, writeChaoAtIndex])
-  const abandonChanges = useCallback(
-    () => abandonChangesAtIndex(index),
-    [index, abandonChangesAtIndex])
+    
   return {
     updateChao,
-    commitChao,
+    commitChanges,
+    abandonChanges,
     readChao,
-    writeChao,
-    abandonChanges
+    writeChao
   }
 }
 
@@ -202,7 +204,7 @@ export interface UseChaoOrganizing {
 }
 
 export function useChaoOrganizing(): UseChaoOrganizing {
-  const chaoCount = useAppState((state) => state.loadedSaves!.chaoSave.chao.findIndex((c) => c.garden === 0))
+  const chaoCount = useAppState((state) => state.loadedSaves!.chaoSave.chao.findIndex((c) => c.chaoType === 0))
   const swapChao = useAppState((state) => state.swapChao)
   const copyChao = useAppState((state) => state.copyChao)
   const writeChaoSave = useAppState((state) => state.writeChanges)

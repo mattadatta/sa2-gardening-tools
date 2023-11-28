@@ -547,6 +547,7 @@ export enum ChaoHat {
 }
 
 export enum ChaoGarden {
+  // None = 0,
   NeutralGarden = 1,
   HeroGarden,
   DarkGarden,
@@ -556,8 +557,8 @@ export enum ChaoGarden {
 }
 
 export enum ChaoType {
-  Empty = 0,
-  Egg,
+  // Empty = 0,
+  Egg = 1,
   Child,
   UNUSEDGood,
   UNUSEDBad,

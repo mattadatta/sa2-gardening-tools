@@ -15,9 +15,9 @@ const ChaoSave = memo(() => {
 
   return (
     <div className="flex-1 flex flex-col overflow-x-hidden">
-      <div className="flex items-center justify-between space-x-2 p-4 bg-gray-800 border-b-[1px] border-white border-opacity-20">
+      <div className="flex items-center justify-between space-x-2 p-2 bg-gray-800 border-b-[1px] border-white border-opacity-20">
         <div className="flex items-center">
-          <span>{`Count ${chaoCount}`}</span>
+          <span>{`${chaoCount} / 24`}</span>
         </div>
         <div className="flex items-center space-x-2">
           <IconButton

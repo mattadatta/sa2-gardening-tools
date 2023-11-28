@@ -129,6 +129,22 @@ pub struct Chao {
 }
 
 impl Chao {
+    
+    // pub fn create() -> Self {
+    //     Self {
+    //         name: vec![0; 7],
+    //         bars: Default::default(),
+    //         grades: Default::default(),
+    //         levels: Default::default(),
+    //         points: Default::default(),
+    //         chao_type: ChaoType::Egg,
+    //         garden: ChaoGarden::NeutralGarden,
+    //         happiness: 0, 
+    //         init_chao: (), lifespan_1: (), lifespan_2: (), reincarnations: (), run_to_power_transformation: (), swim_to_fly_transformation: (), alignment: (), transformation_magnitude: (), eyes: (), mouth: (), emotiball: (), hat: (), feet_hidden: (), medal: (), color: (), monotone: (), texture: (), shiny: (), egg_color: (), body_type: (), body_type_animal: (), sa2_animal_behaviors: (), body_parts: (), joy: (), urge_to_cry: (), fear: (), dizziness: (), sleepiness: (), tiredness: (), hunger: (), desire_to_mate: (), boredom: (), energy: (), normal_to_curious: (), cry_baby_to_energetic: (), naive_to_normal: (), normal_to_big_eater: (), normal_to_carefree: (), favorite_fruit: (), cough: (), cold: (), rash: (), runny_nose: (), hiccups: (), stomach_ache: (), classroom_skills: (), toys: (), sonic_bond: (), shadow_bond: (), tails_bond: (), eggman_bond: (), knuckles_bond: (), rouge_bond: (), reset_trigger: (), dna_stat_grades: (), dna_props: (), sa_animal_behaviors: () }
+    // }
+}
+
+impl Chao {
     pub fn name_as_str(&self) -> String {
         // self.data.iter().map(|b|
         //     *CHAO_STRING_MAPPINGS.get_by_right(&b).unwrap_or(&' ')
@@ -145,7 +161,7 @@ impl Chao {
     }
 }
 
-#[derive(Debug, Sieve, Serialize, Deserialize)]
+#[derive(Debug, Default, Sieve, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ChaoPropsU8 {
     pub swim: u8,
@@ -157,7 +173,7 @@ pub struct ChaoPropsU8 {
     pub intelligence: u8,
 }
 
-#[derive(Debug, Sieve, Serialize, Deserialize)]
+#[derive(Debug, Default, Sieve, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ChaoPropsU16 {
     pub swim: u16,
