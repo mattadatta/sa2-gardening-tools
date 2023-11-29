@@ -864,6 +864,16 @@ export enum ChaoFruitSeed {
   Square,
 }
 
+export enum ChaoPortals {
+  // const Unknown = 1 << 0,
+  Kindergarten = 1 << 1,
+  NeutralGarden = 1 << 2,
+  // const Unknown1 = 1 << 3,
+  HeroGarden = 1 << 4,
+  // const Unknown2 = 1 << 5,
+  DarkGarden = 1 << 6,
+}
+
 export enum ChaoToys {
   Rattle = 1 << 0,
   Car = 1 << 1,

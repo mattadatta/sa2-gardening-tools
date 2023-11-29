@@ -975,6 +975,20 @@ try_from_enum! {
 }
 serde_try_from!(ChaoFruitSeed, u8);
 
+bitflags! {
+    #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct ChaoPortals: u32 {
+        // const Unknown = 1 << 0;
+        const Kindergarten = 1 << 1;
+        const NeutralGarden = 1 << 2;
+        // const Unknown1 = 1 << 3;
+        const HeroGarden = 1 << 4;
+        // const Unknown2 = 1 << 5;
+        const DarkGarden = 1 << 6;
+    }
+}
+try_from_bitflags!(ChaoPortals, u32);
+serde_try_from!(ChaoPortals, u32);
 
 bitflags! {
     #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]

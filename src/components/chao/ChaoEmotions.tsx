@@ -25,6 +25,9 @@ const EmotionsRow3 = memo(() => {
       <ChaoLabelledItem label="Joy">
         <ChaoSliderInput className="w-44" path="joy" min={0} max={200} step={10} />
       </ChaoLabelledItem>
+      <ChaoLabelledItem label="Anger">
+        <ChaoSliderInput className="w-44" path="anger" min={0} max={200} step={10} />
+      </ChaoLabelledItem>
       <ChaoLabelledItem label="Urge to cry">
         <ChaoSliderInput className="w-44" path="urgeToCry" min={0} max={200} step={10} />
       </ChaoLabelledItem>

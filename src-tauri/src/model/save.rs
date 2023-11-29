@@ -5,6 +5,8 @@ use serde::{Serialize, Deserialize};
 #[derive(Debug, Sieve, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ChaoSave {
+    #[sieve(offset(0x304C), try_from(u32))]
+    pub portals: ChaoPortals,
     // #[sieve(offset(0x3A50))]
     // pub market_count: u8,
     // #[sieve(offset(0x3A54))]
@@ -71,7 +73,7 @@ pub struct Chao {
     pub body_parts: ChaoBodyParts,
     #[sieve(offset(0x12C))]
     pub joy: u8,
-    #[sieve(offset(0x12E))]
+    pub anger: u8,
     pub urge_to_cry: u8,
     pub fear: u8,
     #[sieve(offset(0x131))]
@@ -164,6 +166,7 @@ impl Chao {
             sa2_animal_behaviors: ChaoSa2AnimalBehaviors::from_bits_retain(0),
             body_parts: ChaoBodyParts::create(),
             joy: 0,
+            anger: 0,
             urge_to_cry: 0,
             fear: 0,
             dizziness: 0,
@@ -234,6 +237,7 @@ impl Chao {
             sa2_animal_behaviors: ChaoSa2AnimalBehaviors::from_bits_retain(0),
             body_parts: ChaoBodyParts::deleted(),
             joy: 0,
+            anger: 0,
             urge_to_cry: 0,
             fear: 0,
             dizziness: 0,

@@ -1,11 +1,14 @@
 import { memo, useCallback, useState } from "react"
 import ChaoCell from "./ChaoCell"
 import Chao from "./Chao"
-import { useChaoOrganizing } from "../../store"
+import { useChaoOrganizing, useChaoSavePath } from "../../store"
+import Bitflags from "../Bitflags"
 import { IconButton } from "../ui/buttons"
 import { Addmark, ToFile } from "../ui/icons"
+import * as Types from "../../gen/types"
 
 const ChaoSave = memo(() => {
+  const portalData = useChaoSavePath<number>("portals")
   const { chaoCount, createChao, writeChaoSave } = useChaoOrganizing()
   const [selectedChaoIndex, setSelectedChaoIndex] = useState<number | null>(null)
 
@@ -16,8 +19,9 @@ const ChaoSave = memo(() => {
   return (
     <div className="flex-1 flex flex-col overflow-x-hidden">
       <div className="flex items-center justify-between space-x-2 p-2 bg-gray-800 border-b-[1px] border-white border-opacity-20">
-        <div className="flex items-center">
+        <div className="flex items-center px-2 space-x-2">
           <span>{`${chaoCount} / 24`}</span>
+          <Bitflags value={portalData.value} setValue={portalData.setValue} type={Types.ChaoPortals} />
         </div>
         <div className="flex items-center space-x-4">
           <IconButton

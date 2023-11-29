@@ -4,13 +4,14 @@ import { useShallow } from 'zustand/react/shallow'
 import { produce, enableMapSet } from 'immer'
 import { createDeletedChao, createNewChao, readInChao, writeOutChao, writeOutChaoSave } from "./backend";
 import { chaoBytesToString } from "./util/chao/name";
+import { getValue, setValue } from "./util/object_path";
 
 enableMapSet()
 
 export interface Chao extends Record<string, any> {
 }
 
-interface ChaoSave {
+interface ChaoSave extends Record<string, any> {
   chao: Chao[]
 }
 
@@ -25,6 +26,7 @@ interface AppState {
   isReading: boolean
   isWriting: boolean
   setLoadedSaves: (saves: LoadedSaves) => void
+  updateChaoSavePath: (path: string, value: any) => void
   updateChaoAtIndex: (index: number, update: (_: Chao) => void) => void
   commitChangesAtIndex: (index: number) => void
   readChaoAtIndex: (index: number, useNew: boolean) => void
@@ -43,6 +45,11 @@ export const useAppState = create<AppState>()((set, get) => ({
   isReading: false,
   isWriting: false,
   setLoadedSaves: (saves: LoadedSaves) => set((_) => ({ loadedSaves: saves })),
+  updateChaoSavePath: (path: string, value: any) => set((state) => {
+    return produce(state, (state: AppState) => {
+      setValue(state.loadedSaves!.chaoSave, path, value)
+    })
+  }),
   updateChaoAtIndex: (index: number, update: (_: Chao) => void) => set((state) => {
     if (state.immediateChanges) {
       return produce(state, (state: AppState) => {
@@ -158,6 +165,24 @@ export const useAppState = create<AppState>()((set, get) => ({
     }))
   }
 }))
+
+export interface UseChaoSavePath<RW> {
+  value: RW
+  setValue: (value: RW) => void
+}
+
+export function useChaoSavePath<RW>(path: string): UseChaoSavePath<RW> {
+  const value = useAppState((state) => getValue(state.loadedSaves!.chaoSave, path) as RW)
+  const updateChaoSavePath = useAppState((state) => state.updateChaoSavePath)
+  const setValue = useCallback((value: RW) => {
+    updateChaoSavePath(path, value)
+  }, [updateChaoSavePath])
+
+  return {
+    value,
+    setValue
+  }
+}
 
 export interface UseReadChaoData<R> {
   chaoData: R
