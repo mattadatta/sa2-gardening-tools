@@ -9,7 +9,7 @@ import ChaoItems from "./ChaoItems"
 import ChaoPersonality from "./ChaoPersonality"
 import ChaoStats from "./ChaoStats"
 import { ChaoProvider, useChaoHasChanges, useChaoOrganizing, useChaoPath } from "./context/ChaoContext"
-import { Category, Checkmark, Crossmark, FileSave, FolderOpen, Happy, Heart, MedicalBox, PersonDots, Psychology, Stats, Tag, Toy } from "../ui/icons"
+import { Addmark, Category, Checkmark, Crossmark, FileSave, FolderOpen, Happy, Heart, MedicalBox, PersonDots, Psychology, Stats, Tag, Toy, Trash } from "../ui/icons"
 import { Section } from "../ui/layout"
 import { IconButton } from "../ui/buttons"
 import { chaoBytesToString } from "../../util/chao/name"
@@ -52,7 +52,7 @@ const CommitOptionsRow = memo(() => {
   const { abandonChanges, commitChanges } = useChaoHasChanges()
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-4">
       <IconButton
         iconProps={{ className: "text-white" }}
         Icon={Crossmark}
@@ -66,16 +66,24 @@ const CommitOptionsRow = memo(() => {
 })
 
 const FileOptionsRow = memo(() => {
-  const { readChao, writeChao } = useChaoOrganizing()
+  const { createChao, readChao, writeChao, deleteChao } = useChaoOrganizing()
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-4">
       <IconButton
-        iconProps={{ className: "text-white" }}
+        iconProps={{ className: "text-blue-300" }}
+        Icon={Addmark}
+        onClick={createChao} />
+        <IconButton
+        iconProps={{ className: "text-red-300" }}
+        Icon={Trash}
+        onClick={deleteChao} />
+      <IconButton
+        iconProps={{ className: "text-yellow-200" }}
         Icon={FolderOpen}
         onClick={readChao} />
       <IconButton
-        iconProps={{ className: "text-white" }}
+        iconProps={{ className: "text-yellow-200" }}
         Icon={FileSave}
         onClick={writeChao} />
     </div>

@@ -2,6 +2,7 @@ import { ReactNode, memo } from "react"
 import ChaoName from "./ChaoName"
 import ChaoEnum from "./ChaoEnum"
 import * as Types from "../../gen/types"
+import ChaoCheckbox from "./ChaoCheckbox"
 // import ChaoCheckbox from "./ChaoCheckbox"
 
 interface ChaoLabelledItemProps {
@@ -22,15 +23,15 @@ const ChaoLabelledItem = memo(({ label, rightLabel, children }: ChaoLabelledItem
   )
 })
 
-// const Row2 = memo(() => {
-//   return (
-//     <div className="flex space-x-8">
-//       <ChaoLabelledItem label="Reset?">
-//         <ChaoCheckbox path="resetTrigger" label="Reset" />
-//       </ChaoLabelledItem>
-//     </div>
-//   )
-// })
+const Row2 = memo(() => {
+  return (
+    <div className="flex space-x-8">
+      <ChaoLabelledItem label="Reset?">
+        <ChaoCheckbox path="resetTrigger" label="Reset" />
+      </ChaoLabelledItem>
+    </div>
+  )
+})
 
 const Row1 = memo(() => {
   return (

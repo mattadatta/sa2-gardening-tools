@@ -106,7 +106,7 @@ pub struct Chao {
     pub classroom_skills: ChaoClassroomSkills,
     #[sieve(try_from(u32))]
     pub toys: ChaoToys,
-    #[sieve(stride(0x6))]
+    #[sieve(offset(0x16C), stride(0x6))]
     pub sonic_bond: ChaoBond,
     #[sieve(stride(0x6))]
     pub shadow_bond: ChaoBond,
@@ -130,18 +130,145 @@ pub struct Chao {
 
 impl Chao {
     
-    // pub fn create() -> Self {
-    //     Self {
-    //         name: vec![0; 7],
-    //         bars: Default::default(),
-    //         grades: Default::default(),
-    //         levels: Default::default(),
-    //         points: Default::default(),
-    //         chao_type: ChaoType::Egg,
-    //         garden: ChaoGarden::NeutralGarden,
-    //         happiness: 0, 
-    //         init_chao: (), lifespan_1: (), lifespan_2: (), reincarnations: (), run_to_power_transformation: (), swim_to_fly_transformation: (), alignment: (), transformation_magnitude: (), eyes: (), mouth: (), emotiball: (), hat: (), feet_hidden: (), medal: (), color: (), monotone: (), texture: (), shiny: (), egg_color: (), body_type: (), body_type_animal: (), sa2_animal_behaviors: (), body_parts: (), joy: (), urge_to_cry: (), fear: (), dizziness: (), sleepiness: (), tiredness: (), hunger: (), desire_to_mate: (), boredom: (), energy: (), normal_to_curious: (), cry_baby_to_energetic: (), naive_to_normal: (), normal_to_big_eater: (), normal_to_carefree: (), favorite_fruit: (), cough: (), cold: (), rash: (), runny_nose: (), hiccups: (), stomach_ache: (), classroom_skills: (), toys: (), sonic_bond: (), shadow_bond: (), tails_bond: (), eggman_bond: (), knuckles_bond: (), rouge_bond: (), reset_trigger: (), dna_stat_grades: (), dna_props: (), sa_animal_behaviors: () }
-    // }
+    pub fn create() -> Self {
+        Self {
+            name: vec![0; 7],
+            bars: Default::default(),
+            grades: Default::default(),
+            levels: Default::default(),
+            points: Default::default(),
+            chao_type: ChaoType::Egg,
+            garden: ChaoGarden::NeutralGarden,
+            happiness: 0,
+            init_chao: 255,
+            lifespan_1: 3600,
+            lifespan_2: 3600,
+            reincarnations: 0,
+            run_to_power_transformation: 0.0,
+            swim_to_fly_transformation: 0.0,
+            alignment: 0.0,
+            transformation_magnitude: 0.0,
+            eyes: ChaoEyes::Normal,
+            mouth: ChaoMouth::None,
+            emotiball: ChaoEmotiball::Normal,
+            hat: ChaoHat::None,
+            feet_hidden: false,
+            medal: ChaoMedal::None,
+            color: ChaoColor::Normal,
+            monotone: false,
+            texture: ChaoTexture::None,
+            shiny: false,
+            egg_color: ChaoEggColor::Normal,
+            body_type: ChaoBodyType::Normal,
+            body_type_animal: ChaoAnimal::Penguin,
+            sa2_animal_behaviors: ChaoSa2AnimalBehaviors::from_bits_retain(0),
+            body_parts: ChaoBodyParts::create(),
+            joy: 0,
+            urge_to_cry: 0,
+            fear: 0,
+            dizziness: 0,
+            sleepiness: 0,
+            tiredness: 0,
+            hunger: 0,
+            desire_to_mate: 0,
+            boredom: 0,
+            energy: 0,
+            normal_to_curious: 0,
+            cry_baby_to_energetic: 0,
+            naive_to_normal: 0,
+            normal_to_big_eater: 0,
+            normal_to_carefree: 0,
+            favorite_fruit: ChaoFavoriteFruit::RoundFruit1,
+            cough: 0,
+            cold: 0,
+            rash: 0,
+            runny_nose: 0,
+            hiccups: 0,
+            stomach_ache: 0,
+            classroom_skills: ChaoClassroomSkills::from_bits_retain(0),
+            toys: ChaoToys::from_bits_retain(0),
+            sonic_bond: Default::default(),
+            shadow_bond: Default::default(),
+            tails_bond: Default::default(),
+            eggman_bond: Default::default(),
+            knuckles_bond: Default::default(),
+            rouge_bond: Default::default(),
+            reset_trigger: true,
+            dna_stat_grades: Default::default(),
+            dna_props: Default::default(),
+            sa_animal_behaviors: ChaoSaAnimalBehaviors::from_bits_retain(0),
+        }
+    }
+
+    pub fn deleted() -> Self {
+        Self {
+            name: vec![0; 7],
+            bars: Default::default(),
+            grades: Default::default(),
+            levels: Default::default(),
+            points: Default::default(),
+            chao_type: ChaoType::Empty,
+            garden: ChaoGarden::None,
+            happiness: 0,
+            init_chao: 0,
+            lifespan_1: 0,
+            lifespan_2: 0,
+            reincarnations: 0,
+            run_to_power_transformation: 0.0,
+            swim_to_fly_transformation: 0.0,
+            alignment: 0.0,
+            transformation_magnitude: 0.0,
+            eyes: ChaoEyes::Normal,
+            mouth: ChaoMouth::None,
+            emotiball: ChaoEmotiball::Normal,
+            hat: ChaoHat::None,
+            feet_hidden: false,
+            medal: ChaoMedal::None,
+            color: ChaoColor::Normal,
+            monotone: false,
+            texture: ChaoTexture::None,
+            shiny: false,
+            egg_color: ChaoEggColor::Normal,
+            body_type: ChaoBodyType::Normal,
+            body_type_animal: ChaoAnimal::Penguin,
+            sa2_animal_behaviors: ChaoSa2AnimalBehaviors::from_bits_retain(0),
+            body_parts: ChaoBodyParts::deleted(),
+            joy: 0,
+            urge_to_cry: 0,
+            fear: 0,
+            dizziness: 0,
+            sleepiness: 0,
+            tiredness: 0,
+            hunger: 0,
+            desire_to_mate: 0,
+            boredom: 0,
+            energy: 0,
+            normal_to_curious: 0,
+            cry_baby_to_energetic: 0,
+            naive_to_normal: 0,
+            normal_to_big_eater: 0,
+            normal_to_carefree: 0,
+            favorite_fruit: ChaoFavoriteFruit::RoundFruit1,
+            cough: 0,
+            cold: 0,
+            rash: 0,
+            runny_nose: 0,
+            hiccups: 0,
+            stomach_ache: 0,
+            classroom_skills: ChaoClassroomSkills::from_bits_retain(0),
+            toys: ChaoToys::from_bits_retain(0),
+            sonic_bond: Default::default(),
+            shadow_bond: Default::default(),
+            tails_bond: Default::default(),
+            eggman_bond: Default::default(),
+            knuckles_bond: Default::default(),
+            rouge_bond: Default::default(),
+            reset_trigger: false,
+            dna_stat_grades: Default::default(),
+            dna_props: Default::default(),
+            sa_animal_behaviors: ChaoSaAnimalBehaviors::from_bits_retain(0),
+        }
+    }
 }
 
 impl Chao {
@@ -200,13 +327,47 @@ pub struct ChaoBodyParts {
     pub face: ChaoAnimalPartFace,
 }
 
-#[derive(Debug, Sieve, Serialize, Deserialize)]
+impl ChaoBodyParts {
+
+    fn create() -> Self {
+        Self { 
+            arms: ChaoAnimalPartArms::None,
+            ears: ChaoAnimalPartEars::None,
+            forehead: ChaoAnimalPartForehead::None,
+            horns: ChaoAnimalPartHorns::None,
+            legs: ChaoAnimalPartLegs::None,
+            tail: ChaoAnimalPartTail::None,
+            wings: ChaoAnimalPartWings::None,
+            face: ChaoAnimalPartFace::None,
+        }
+    }
+
+    fn deleted() -> Self {
+        Self { 
+            arms: ChaoAnimalPartArms::Penguin,
+            ears: ChaoAnimalPartEars::Invalid,
+            forehead: ChaoAnimalPartForehead::Penguin,
+            horns: ChaoAnimalPartHorns::Invalid,
+            legs: ChaoAnimalPartLegs::Penguin,
+            tail: ChaoAnimalPartTail::Invalid,
+            wings: ChaoAnimalPartWings::Invalid,
+            face: ChaoAnimalPartFace::Invalid,
+        }
+    }
+}
+
+#[derive(Debug, Default, Sieve, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ChaoBond {
     pub bond: i8,
+    // pub stat2: i8,
+    // pub stat3: i8,
+    // pub stat4: i8,
+    // pub stat5: i8,
+    // pub always_zero: u8,
 }
 
-#[derive(Debug, Sieve, Serialize, Deserialize)]
+#[derive(Debug, Default, Sieve, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ChaoDnaStatGrades {
     pub swim_1: u8,
@@ -248,4 +409,24 @@ pub struct ChaoDnaProps {
     pub egg_color_1: ChaoEggColor,
     #[sieve(try_from)]
     pub egg_color_2: ChaoEggColor,
+}
+
+impl Default for ChaoDnaProps {
+
+    fn default() -> Self {
+        Self {
+            favorite_fruit_1: ChaoFavoriteFruit::RoundFruit1,
+            favorite_fruit_2: ChaoFavoriteFruit::RoundFruit1,
+            color_1: ChaoColor::Normal,
+            color_2: ChaoColor::Normal,
+            monotone_1: false,
+            monotone_2: false,
+            texture_1: ChaoTexture::None,
+            texture_2: ChaoTexture::None,
+            shiny_1: false,
+            shiny_2: false,
+            egg_color_1: ChaoEggColor::Normal,
+            egg_color_2: ChaoEggColor::Normal
+        }
+    }
 }

@@ -3,10 +3,10 @@ import ChaoCell from "./ChaoCell"
 import Chao from "./Chao"
 import { useChaoOrganizing } from "../../store"
 import { IconButton } from "../ui/buttons"
-import { ToFile } from "../ui/icons"
+import { Addmark, ToFile } from "../ui/icons"
 
 const ChaoSave = memo(() => {
-  const { chaoCount, writeChaoSave } = useChaoOrganizing()
+  const { chaoCount, createChao, writeChaoSave } = useChaoOrganizing()
   const [selectedChaoIndex, setSelectedChaoIndex] = useState<number | null>(null)
 
   const handleSelectChao = useCallback((index: number) => {
@@ -19,9 +19,13 @@ const ChaoSave = memo(() => {
         <div className="flex items-center">
           <span>{`${chaoCount} / 24`}</span>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-4">
           <IconButton
-            iconProps={{ className: "text-white" }}
+            iconProps={{ className: "text-blue-300" }}
+            Icon={Addmark}
+            onClick={createChao} />
+          <IconButton
+            iconProps={{ className: "text-yellow-200" }}
             Icon={ToFile}
             onClick={writeChaoSave} />
         </div>

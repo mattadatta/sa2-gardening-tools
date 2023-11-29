@@ -36,6 +36,18 @@ fn process_files(file_paths: Vec<String>, state: tauri::State<std::sync::Mutex<S
 }
 
 #[tauri::command]
+fn create_new_chao() -> String {
+    let new_chao = Chao::create();
+    serde_json::to_string(&new_chao).unwrap()
+}
+
+#[tauri::command]
+fn create_deleted_chao() -> String {
+    let new_chao = Chao::deleted();
+    serde_json::to_string(&new_chao).unwrap()
+}
+
+#[tauri::command]
 async fn read_in_chao() -> Result<String, String> {
     let file_path = tauri::api::dialog::blocking::FileDialogBuilder::new()
         .set_title("Open Chao")
@@ -95,6 +107,8 @@ fn main() {
         .manage(std::sync::Mutex::<State>::default())
         .invoke_handler(tauri::generate_handler![
             process_files,
+            create_new_chao,
+            create_deleted_chao,
             read_in_chao,
             write_out_chao,
             write_out_chao_save

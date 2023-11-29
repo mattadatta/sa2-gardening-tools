@@ -83,6 +83,9 @@ const TypeRow = memo(() => {
       <ChaoLabelledItem label="Reincarnations">
         <ChaoSpinner inputClassName="w-20 h-[34px]" path="reincarnations" min={0} max={255} />
       </ChaoLabelledItem>
+      {/* <ChaoLabelledItem label="Init Chao?">
+        <ChaoSpinner inputClassName="w-20 h-[34px]" path="initChao" min={0} max={255} />
+      </ChaoLabelledItem> */}
     </div>
   )
 })

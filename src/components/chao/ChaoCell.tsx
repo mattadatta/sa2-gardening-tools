@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { ChaoProvider, useChaoPath } from "./context/ChaoContext";
+import { ChaoProvider, useChaoOrganizing, useChaoPath } from "./context/ChaoContext";
 import { chaoBytesToString } from "../../util/chao/name";
 
 interface ChaoCellProps {
@@ -9,8 +9,9 @@ interface ChaoCellProps {
 }
 
 const ChaoCellImpl = memo(({ index, isSelected, onSelect }: ChaoCellProps) => {
+  const { isValid } = useChaoOrganizing()
   const chaoName = chaoBytesToString(useChaoPath<number[]>("name").chaoData)
-  const selectedStyle = isSelected ? 'bg-gray-800' : ''
+  const selectedStyle = isSelected ? 'bg-gray-600' : 'bg-gray-800'
 
   return (
     <div
@@ -18,7 +19,7 @@ const ChaoCellImpl = memo(({ index, isSelected, onSelect }: ChaoCellProps) => {
       onClick={() => onSelect(index)}
     >
       <span className="font-comfortaa text-xs">chao {index}</span>
-      <span className="text-white text-lg font-bold">{chaoName}</span>
+      {isValid && <span className="text-white text-lg font-bold">{chaoName}</span>}
     </div>
   )
 })
