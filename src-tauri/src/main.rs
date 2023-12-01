@@ -86,7 +86,7 @@ async fn write_out_chao_save(json: String, state: tauri::State<'_, std::sync::Mu
     let file_path = tauri::api::dialog::blocking::FileDialogBuilder::new()
         .set_title("Export Chao Save")
         .set_directory(".")
-        .set_file_name("SONIC2B__ALF_1")
+        .set_file_name("SONIC2B__ALF")
         .save_file()
         .ok_or("UserCancelled".to_string())?;
 
