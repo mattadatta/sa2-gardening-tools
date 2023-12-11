@@ -31,7 +31,7 @@ const ChaoBitflag = memo(({ label, value }: ChaoBitflagProps) => {
 })
 
 interface ChaoBitflagsProps {
-  path: string
+  path: any[]
   type: any
 }
 

@@ -1,18 +1,12 @@
 import { createContext, memo, ReactNode, useCallback, useContext } from 'react'
-import { 
-  Chao, 
-  useChaoHasChangesAtIndex,
-  useChaoOrganizing as useStoreChaoOrganizing,
-  useReadChaoAtIndex, UseReadChaoData, 
-  useWriteChaoAtIndex, UseWriteChaoData 
+import {
+  useChaoSavePath, UseSavePath,
+  useWriteChaoAtIndex, UseWriteChaoData,
+  useChaoOrganizing as useStoreChaoOrganizing
 } from '../../../store'
-import { getValue, setValue } from '../../../util/object_path'
 
-interface ChaoProviderData extends UseWriteChaoData {
+interface ChaoProviderData {
   index: number
-}
-
-interface UseChao<R> extends UseReadChaoData<R>, ChaoProviderData {
 }
 
 const Context = createContext<ChaoProviderData | null>(null)
@@ -23,69 +17,60 @@ interface ChaoProviderProps {
 }
 
 const ChaoProvider = memo(({ index, children }: ChaoProviderProps) => {
-  const data = useWriteChaoAtIndex(index)
-
   return (
-    <Context.Provider value={{ index, ...data }}>
+    <Context.Provider value={{ index }}>
       {children}
     </Context.Provider>
   )
 })
 
-function useChao<R>(selector: (_: Chao) => R): UseChao<R> {
-  const data = useContext(Context)!
-  const readChao = useReadChaoAtIndex(data.index, selector)
+interface UseChao extends ChaoProviderData {
+}
+
+function useChao(): UseChao | null {
+  return useContext(Context)
+}
+
+interface UseChaoPath<RW> extends UseChao, UseSavePath<RW> {
+}
+
+function useChaoPath<RW>(path: any[], shallow: boolean = false): UseChaoPath<RW> {
+  const chao = useChao()!
+  const savePath = useChaoSavePath<RW>(['chao', chao.index, ...path], shallow)
   return {
-    ...readChao,
-    ...data
+    ...chao,
+    ...savePath
   }
 }
 
-interface UseChaoPath<RW> extends UseReadChaoData<RW> {
-  index: number
-  updateChao: (value: RW) => void
-  commitChanges: () => void
-  abandonChanges: () => void
-}
-
-function useChaoPath<RW>(path: string): UseChaoPath<RW> {
-  const { updateChao, ...useChaoData } = useChao((c) => getValue(c, path) as RW)
-  const updateChaoPath = useCallback((value: RW) => {
-    updateChao((c) => setValue(c, path, value))
-  }, [path, updateChao])
-
-  return {
-    updateChao: updateChaoPath,
-    ...useChaoData
-  }
-}
-
-interface UseChaoHasChanges extends ChaoProviderData {
-  hasChanges: boolean
-}
-
-function useChaoHasChanges(): UseChaoHasChanges {
-  const data = useContext(Context)!
-  const hasChanges = useChaoHasChangesAtIndex(data.index)
-  return {
-    ...hasChanges,
-    ...data
-  }
-}
-
-interface UseChaoOrganizing extends ChaoProviderData {
+interface UseChaoOrganizing extends ChaoProviderData, UseWriteChaoData {
   isValid: boolean
+  isLastValid: boolean
   isFirstInvalid: boolean
+  copyChao: (offset: number) => void
+  swapChao: (offset: number) => void
 }
 
 function useChaoOrganizing(): UseChaoOrganizing {
-  const chaoProviderData = useContext(Context)!
-  const chaoOrganizing = useStoreChaoOrganizing()
+  const { index } = useContext(Context)!
+  const { chaoCount, copyChao, swapChao } = useStoreChaoOrganizing()
+  const writeChao = useWriteChaoAtIndex(index)
+  const copyChaoOffset = useCallback((offset: number) => {
+    copyChao(index, index + offset)
+  }, [copyChao, index])
+  const swapChaoOffset = useCallback((offset: number) => {
+    swapChao(index, index + offset)
+  }, [swapChao, index])
+  
   return {
-    isValid: chaoProviderData.index <= (chaoOrganizing.chaoCount - 1),
-    isFirstInvalid: chaoProviderData.index === chaoOrganizing.chaoCount,
-    ...chaoProviderData
+    index,
+    isValid: index <= (chaoCount - 1),
+    isLastValid: index === (chaoCount - 1),
+    isFirstInvalid: index === chaoCount,
+    copyChao: copyChaoOffset,
+    swapChao: swapChaoOffset,
+    ...writeChao,
   }
 }
 
-export { ChaoProvider, useChao, useChaoPath, useChaoHasChanges, useChaoOrganizing }
+export { ChaoProvider, useChao, useChaoPath, useChaoOrganizing }

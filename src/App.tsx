@@ -1,8 +1,8 @@
-import { memo, useCallback } from "react"
-import { processFiles } from "./backend"
+import { memo } from "react"
 import Dropzone from "./components/util/TauriDropzone"
-import { useAppState } from "./store"
+import ErrorModal from "./components/ErrorModal"
 import MainContent from "./MainContent"
+import { useLoadedSave, useProcessFiles } from "./store"
 
 const EmptyContent = memo(() => {
   return (
@@ -13,24 +13,18 @@ const EmptyContent = memo(() => {
 })
 
 const App = memo(() => {
-
-  const setLoadedSaves = useAppState((state) => state.setLoadedSaves)
-  const loadedSaves = useAppState((state) => state.loadedSaves)
-
-  const handleTauriDrop = useCallback(async (files: string[]) => {
-    const response = await processFiles(files)
-    const data = JSON.parse(response)
-    setLoadedSaves(data)
-  }, [])
+  const { processFiles } = useProcessFiles()
+  const loadedSave = useLoadedSave();
 
   return (
     <div className="w-screen h-screen flex flex-col bg-gray-900 text-white/60 font-nunito">
       <Dropzone
-          className="w-full h-full flex flex-col"
-          onZoneDrop={handleTauriDrop}
-        >
-          {loadedSaves ? <MainContent /> : <EmptyContent />}
-        </Dropzone>
+        className="w-full h-full flex flex-col"
+        onZoneDrop={processFiles}
+      >
+        {loadedSave ? <MainContent /> : <EmptyContent />}
+      </Dropzone>
+      <ErrorModal />
     </div>
   )
 })

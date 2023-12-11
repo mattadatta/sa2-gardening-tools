@@ -34,10 +34,15 @@ const IconButton = memo(({
   const baseStyles = 'flex flex-col justify-center items-center p-0 transition-transform duration-200 text-white'
   const hoverStyles = 'hover:scale-110'
 
+  const handleClick = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation()
+    onClick()
+  }, [onClick])
+
   return (
     <Button
       className={`${baseStyles} ${hoverStyles} ${className}`}
-      onClick={onClick}
+      onClick={handleClick}
     >
       <Icon {...iconProps} className={`fill-current ${iconProps.className ?? ''}`} />
     </Button>

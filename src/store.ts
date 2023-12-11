@@ -2,75 +2,73 @@ import { useCallback } from "react";
 import { create } from "zustand";
 import { useShallow } from 'zustand/react/shallow'
 import { produce, enableMapSet } from 'immer'
-import { createDeletedChao, createNewChao, readInChao, writeOutChao, writeOutChaoSave } from "./backend";
+import { processFiles, createDeletedChao, createNewChao, readInChao, writeOutChao, writeOutChaoSave } from "./backend";
 import { chaoBytesToString } from "./util/chao/name";
 import { getValue, setValue } from "./util/object_path";
 
 enableMapSet()
 
-export interface Chao extends Record<string, any> {
+interface LoadedSave {
+  chaoSave: ChaoSave
 }
 
 interface ChaoSave extends Record<string, any> {
   chao: Chao[]
 }
 
-interface LoadedSaves {
-  chaoSave: ChaoSave
+export interface Chao extends Record<string, any> {
 }
 
+export type ObjectPath = string | any[]
+
 interface AppState {
-  loadedSaves: LoadedSaves | null
-  modifiedChao: Map<number, Chao>
-  immediateChanges: boolean
+  loadedSave: LoadedSave | null
   isReading: boolean
   isWriting: boolean
-  setLoadedSaves: (saves: LoadedSaves) => void
-  updateChaoSavePath: (path: string, value: any) => void
-  updateChaoAtIndex: (index: number, update: (_: Chao) => void) => void
-  commitChangesAtIndex: (index: number) => void
+  currentError: any | null
+  setCurrentError: (e: any | null) => void
+  processFiles: (paths: string[]) => void
+  getSavePathValue: (path: ObjectPath) => any
+  setSavePathValue: (path: ObjectPath, value: any | ((value: any) => void)) => void
+
   readChaoAtIndex: (index: number, useNew: boolean) => void
   writeChaoAtIndex: (index: number) => void
   deleteChaoAtIndex: (index: number) => void
-  abandonChangesAtIndex: (index: number) => void
+
   swapChao: (index1: number, index2: number) => void
   copyChao: (src: number, dst: number) => void
   writeChaoSave: () => void
 }
 
 export const useAppState = create<AppState>()((set, get) => ({
-  loadedSaves: null,
-  modifiedChao: new Map<number, Chao>(),
-  immediateChanges: true,
+  loadedSave: null,
   isReading: false,
   isWriting: false,
-  setLoadedSaves: (saves: LoadedSaves) => set((_) => ({ loadedSaves: saves })),
-  updateChaoSavePath: (path: string, value: any) => set((state) => {
-    return produce(state, (state: AppState) => {
-      setValue(state.loadedSaves!.chaoSave, path, value)
-    })
-  }),
-  updateChaoAtIndex: (index: number, update: (_: Chao) => void) => set((state) => {
-    if (state.immediateChanges) {
-      return produce(state, (state: AppState) => {
-        update(state.loadedSaves!.chaoSave.chao[index])
-      })
-    } else {
-      var withMod = state
-      if (!state.modifiedChao.has(index)) {
-        withMod = produce(state, (state: AppState) => {
-          state.modifiedChao.set(index, state.loadedSaves!.chaoSave.chao[index])
-        })
-      }
-
-      return produce(withMod, (state: AppState) => {
-        update(state.modifiedChao.get(index)!)
-      })
+  currentError: null,
+  setCurrentError: (e) => set(produce((state: AppState) => {
+    state.currentError = e
+  })),
+  processFiles: async (paths: string[]) => {
+    try {
+      const save = JSON.parse(await processFiles(paths)) as LoadedSave
+      set(produce((state: AppState) => {
+        state.loadedSave = save
+      }))
+    } catch (e: any) {
+      set(produce((state: AppState) => {
+        state.loadedSave = null
+        state.currentError = e
+      }))
     }
-  }),
-  commitChangesAtIndex: (index: number) => set(produce((state: AppState) => {
-    state.loadedSaves!.chaoSave.chao[index] = state.modifiedChao.get(index)!
-    state.modifiedChao.delete(index)
+  },
+  getSavePathValue: (path) => getValue(get().loadedSave!, path),
+  setSavePathValue: (path, value) => set(produce((state: AppState) => {
+    if (typeof value === "function") {
+      const existingValue = getValue(state.loadedSave!, path)
+      setValue(state.loadedSave!, path, value(existingValue))
+    } else {
+      setValue(state.loadedSave!, path, value)
+    }
   })),
   readChaoAtIndex: async (index: number, useNew: boolean) => {
     set(produce((state: AppState) => {
@@ -79,9 +77,12 @@ export const useAppState = create<AppState>()((set, get) => ({
     try {
       const chao = JSON.parse(useNew ? await createNewChao() : await readInChao())
       set(produce((state: AppState) => {
-        state.loadedSaves!.chaoSave.chao[index] = chao
+        state.loadedSave!.chaoSave.chao[index] = chao
       }))
     } catch (e: any) {
+      set(produce((state: AppState) => {
+        state.currentError = e
+      }))
     }
     set(produce((state: AppState) => {
       state.isReading = false
@@ -91,11 +92,14 @@ export const useAppState = create<AppState>()((set, get) => ({
     set(produce((state: AppState) => {
       state.isWriting = true
     }))
-    const chao = get().loadedSaves!.chaoSave.chao[index]
+    const chao = get().loadedSave!.chaoSave.chao[index]
     const chaoName = chaoBytesToString(chao.name)
     try {
       await writeOutChao(chaoName, JSON.stringify(chao))
     } catch (e: any) {
+      set(produce((state: AppState) => {
+        state.currentError = e
+      }))
     }
     set(produce((state: AppState) => {
       state.isWriting = false
@@ -110,55 +114,40 @@ export const useAppState = create<AppState>()((set, get) => ({
       set(produce((state: AppState) => {
         state.isWriting = false
         for (let i = index; i < 23; i++) {
-          const srcChao = state.loadedSaves!.chaoSave.chao[i + 1]
-          state.loadedSaves!.chaoSave.chao[i] = srcChao
+          const srcChao = state.loadedSave!.chaoSave.chao[i + 1]
+          state.loadedSave!.chaoSave.chao[i] = srcChao
         }
-        state.loadedSaves!.chaoSave.chao[23] = deletedChao
+        state.loadedSave!.chaoSave.chao[23] = deletedChao
       }))
     } catch (e: any) {
+      set(produce((state: AppState) => {
+        state.currentError = e
+      }))
     }
     set(produce((state: AppState) => {
       state.isWriting = false
     }))
   },
-  abandonChangesAtIndex: (index: number) => set(produce((state: AppState) => {
-    state.modifiedChao.delete(index)
-  })),
   swapChao: (index1: number, index2: number) => set(produce((state: AppState) => {
-    const chao1 = state.loadedSaves!.chaoSave.chao[index1]
-    const chao2 = state.loadedSaves!.chaoSave.chao[index2]
-    state.loadedSaves!.chaoSave.chao[index1] = chao2
-    state.loadedSaves!.chaoSave.chao[index2] = chao1
-    const modifiedChao1 = state.modifiedChao.get(index1)
-    const modifiedChao2 = state.modifiedChao.get(index2)
-    if (modifiedChao2) {
-      state.modifiedChao.set(index1, modifiedChao2)
-    } else {
-      state.modifiedChao.delete(index1)
-    }
-    if (modifiedChao1) {
-      state.modifiedChao.set(index2, modifiedChao1)
-    } else {
-      state.modifiedChao.delete(index2)
-    }
+    const chao1 = state.loadedSave!.chaoSave.chao[index1]
+    const chao2 = state.loadedSave!.chaoSave.chao[index2]
+    state.loadedSave!.chaoSave.chao[index1] = chao2
+    state.loadedSave!.chaoSave.chao[index2] = chao1
   })),
   copyChao: (src: number, dst: number) => set(produce((state: AppState) => {
-    const srcChao = state.loadedSaves!.chaoSave.chao[src]
-    state.loadedSaves!.chaoSave.chao[dst] = srcChao
-    const srcModifiedChao = state.modifiedChao.get(src)
-    if (srcModifiedChao) {
-      state.modifiedChao.set(dst, srcModifiedChao)
-    } else {
-      state.modifiedChao.delete(dst)
-    }
+    const srcChao = state.loadedSave!.chaoSave.chao[src]
+    state.loadedSave!.chaoSave.chao[dst] = srcChao
   })),
   writeChaoSave: async () => {
     set(produce((state: AppState) => {
       state.isWriting = true
     }))
     try {
-      await writeOutChaoSave(JSON.stringify(get().loadedSaves!.chaoSave))
+      await writeOutChaoSave(JSON.stringify(get().loadedSave))
     } catch (e: any) {
+      set(produce((state: AppState) => {
+        state.currentError = e
+      }))
     }
     set(produce((state: AppState) => {
       state.isWriting = false
@@ -166,17 +155,51 @@ export const useAppState = create<AppState>()((set, get) => ({
   }
 }))
 
-export interface UseChaoSavePath<RW> {
-  value: RW
-  setValue: (value: RW) => void
+export interface UseCurrentError {
+  error: any | null
+  setError: (e: any | null) => void
 }
 
-export function useChaoSavePath<RW>(path: string): UseChaoSavePath<RW> {
-  const value = useAppState((state) => getValue(state.loadedSaves!.chaoSave, path) as RW)
-  const updateChaoSavePath = useAppState((state) => state.updateChaoSavePath)
-  const setValue = useCallback((value: RW) => {
-    updateChaoSavePath(path, value)
-  }, [updateChaoSavePath])
+export function useCurrentError(): UseCurrentError {
+  const error = useAppState((state) => state.currentError)
+  const setError = useAppState((state) => state.setCurrentError)
+  return {
+    error,
+    setError
+  }
+}
+
+export interface UseProcessFiles {
+  processFiles: (paths: string[]) => void
+}
+
+export function useProcessFiles(): UseProcessFiles {
+  const processFiles = useAppState((state) => state.processFiles)
+  return {
+    processFiles
+  }
+}
+
+export interface UseLoadedSave extends LoadedSave {
+}
+
+export function useLoadedSave(): UseLoadedSave | null {
+  return useAppState((state) => state.loadedSave)
+}
+
+export interface UseSavePath<RW> {
+  value: RW
+  setValue: (value: RW | ((value: RW) => void)) => void
+}
+
+export function useSavePath<RW>(path: ObjectPath, shallow: boolean = false): UseSavePath<RW> {
+  const value = useAppState(shallow ?
+    useShallow((state) => state.getSavePathValue(path) as RW) :
+    (state) => state.getSavePathValue(path) as RW)
+  const setSavePathValue = useAppState((state) => state.setSavePathValue)
+  const setValue = useCallback((value: RW | ((value: RW) => void)) => {
+    setSavePathValue(path, value)
+  }, [path, setSavePathValue])
 
   return {
     value,
@@ -184,16 +207,11 @@ export function useChaoSavePath<RW>(path: string): UseChaoSavePath<RW> {
   }
 }
 
-export interface UseReadChaoData<R> {
-  chaoData: R
-  originalData: R
-  hasChanges: boolean
+export function useChaoSavePath<RW>(path: ObjectPath, shallow: boolean = false): UseSavePath<RW> {
+  return useSavePath<RW>(['chaoSave', ...path], shallow)
 }
 
 export interface UseWriteChaoData {
-  updateChao: (update: (_: Chao) => void) => void
-  commitChanges: () => void
-  abandonChanges: () => void
   createChao: () => void
   deleteChao: () => void
   readChao: () => void
@@ -201,22 +219,10 @@ export interface UseWriteChaoData {
 }
 
 export function useWriteChaoAtIndex(index: number): UseWriteChaoData {
-  const updateChaoAtIndex = useAppState((state) => state.updateChaoAtIndex)
-  const commitChangesAtIndex = useAppState((state) => state.commitChangesAtIndex)
-  const abandonChangesAtIndex = useAppState((state) => state.abandonChangesAtIndex)
   const readChaoAtIndex = useAppState((state) => state.readChaoAtIndex)
   const writeChaoAtIndex = useAppState((state) => state.writeChaoAtIndex)
   const deleteChaoAtIndex = useAppState((state) => state.deleteChaoAtIndex)
 
-  const updateChao = useCallback(
-    (update: (_: Chao) => void) => updateChaoAtIndex(index, update),
-    [index, updateChaoAtIndex])
-  const commitChanges = useCallback(
-    () => commitChangesAtIndex(index),
-    [index, commitChangesAtIndex])
-  const abandonChanges = useCallback(
-    () => abandonChangesAtIndex(index),
-    [index, abandonChangesAtIndex])
   const createChao = useCallback(
     () => readChaoAtIndex(index, true),
     [index, readChaoAtIndex])
@@ -231,44 +237,10 @@ export function useWriteChaoAtIndex(index: number): UseWriteChaoData {
     [index, deleteChaoAtIndex])
 
   return {
-    updateChao,
-    commitChanges,
-    abandonChanges,
     createChao,
     readChao,
     writeChao,
     deleteChao
-  }
-}
-
-export function useReadChaoAtIndex<R>(index: number, selector: (_: Chao) => R): UseReadChaoData<R> {
-  const [chaoData, modifiedData] = useAppState(useShallow((state) => {
-    return [
-      selector(state.loadedSaves!.chaoSave.chao[index]),
-      (() => {
-        const chao = state.modifiedChao.get(index)
-        if (chao) {
-          return selector(chao)
-        } else {
-          return undefined
-        }
-      })()]
-  }))
-  return {
-    chaoData: modifiedData ?? chaoData,
-    originalData: chaoData,
-    hasChanges: modifiedData !== undefined
-  }
-}
-
-export interface UseChaoHasChanges {
-  hasChanges: boolean
-}
-
-export function useChaoHasChangesAtIndex(index: number): UseChaoHasChanges {
-  const hasChanges = useAppState((state) => state.modifiedChao.has(index))
-  return {
-    hasChanges
   }
 }
 
@@ -281,7 +253,7 @@ export interface UseChaoOrganizing {
 }
 
 export function useChaoOrganizing(): UseChaoOrganizing {
-  const chaoCount = useAppState((state) => Math.max(state.loadedSaves!.chaoSave.chao.findIndex((c) => c.chaoType === 0), 0))
+  const chaoCount = useAppState((state) => Math.max(state.loadedSave!.chaoSave.chao.findIndex((c) => c.chaoType === 0), 0))
   const readChaoAtIndex = useAppState((state) => state.readChaoAtIndex)
   const createChao = useCallback(() => {
     readChaoAtIndex(chaoCount, true)

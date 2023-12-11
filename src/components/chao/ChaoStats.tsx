@@ -59,11 +59,11 @@ const GradeSpinner = memo(({ inputClassName, stat, value, onChange }: GradeSpinn
 
 interface ChaoDnaStatProps {
   stat: string
-  path: string
+  path: any[]
 }
 
 const ChaoDnaStat = memo(({ stat, path }: ChaoDnaStatProps) => {
-  const { chaoData, updateChao } = useChaoPath<number>(path)
+  const { value, setValue } = useChaoPath<number>(path)
 
   const ringColor = (() => {
     switch (stat) {
@@ -90,8 +90,8 @@ const ChaoDnaStat = memo(({ stat, path }: ChaoDnaStatProps) => {
     <GradeSpinner
       inputClassName={`${ringColor}`}
       stat={stat}
-      value={chaoData}
-      onChange={updateChao} />
+      value={value}
+      onChange={setValue} />
   )
 })
 
@@ -101,13 +101,7 @@ interface ChaoStatProps {
 }
 
 const ChaoStat = memo(({ section, stat }: ChaoStatProps) => {
-  const { chaoData, updateChao } = useChao((c) => c[section][stat])
-
-  const updateStat = useCallback((value: number) => {
-    updateChao((c) => {
-      c[section][stat] = value
-    })
-  }, [updateChao])
+  const { value, setValue } = useChaoPath<number>([section, stat])
 
   const ringColor = (() => {
     switch (stat) {
@@ -136,8 +130,8 @@ const ChaoStat = memo(({ section, stat }: ChaoStatProps) => {
         return (
           <Spinner
             inputClassName={`${ringColor}`}
-            value={chaoData}
-            onChange={updateStat}
+            value={value}
+            onChange={setValue}
             min={0}
             max={99} />
         )
@@ -145,8 +139,8 @@ const ChaoStat = memo(({ section, stat }: ChaoStatProps) => {
         return (
           <Spinner
             inputClassName={`${ringColor}`}
-            value={chaoData}
-            onChange={updateStat}
+            value={value}
+            onChange={setValue}
             min={0}
             max={99} />
         )
@@ -155,8 +149,8 @@ const ChaoStat = memo(({ section, stat }: ChaoStatProps) => {
           <Spinner
             className="w-20"
             inputClassName={`${ringColor}`}
-            value={chaoData}
-            onChange={updateStat}
+            value={value}
+            onChange={setValue}
             min={0}
             max={65535}
             step={10} />
@@ -166,8 +160,8 @@ const ChaoStat = memo(({ section, stat }: ChaoStatProps) => {
           <GradeSpinner
             inputClassName={`${ringColor}`}
             stat={stat}
-            value={chaoData}
-            onChange={updateStat} />
+            value={value}
+            onChange={setValue} />
         )
       default:
         return (<div>Unknown state</div>)
@@ -210,8 +204,8 @@ const ChaoStatRow = memo(({ stat }: ChaoStatRowProps) => {
       <td><ChaoStat section="bars" stat={stat} /></td>
       <td><ChaoStat section="points" stat={stat} /></td>
       <td><ChaoStat section="grades" stat={stat} /></td>
-      <td><ChaoDnaStat path={`dnaStatGrades.${stat}1`} stat={stat} /></td>
-      <td><ChaoDnaStat path={`dnaStatGrades.${stat}2`} stat={stat} /></td>
+      <td><ChaoDnaStat path={['dnaStatGrades', `${stat}1`]} stat={stat} /></td>
+      <td><ChaoDnaStat path={['dnaStatGrades', `${stat}2`]} stat={stat} /></td>
     </tr>
   )
 })

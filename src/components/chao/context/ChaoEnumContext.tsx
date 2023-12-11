@@ -9,21 +9,21 @@ interface ChaoEnumProviderData {
 const Context = createContext<ChaoEnumProviderData | null>(null)
 
 interface ChaoEnumProviderProps {
-  path: string
+  path: any[]
   children?: ReactNode
 }
 
 const ChaoEnumProvider = memo(({ path, children }: ChaoEnumProviderProps) => {
-  const { chaoData, updateChao } = useChaoPath<number>(path)
-  const setValueSelected = useCallback((value: number) => {
-    if (chaoData === value) {
+  const { value, setValue } = useChaoPath<number>(path)
+  const setValueSelected = useCallback((newValue: number) => {
+    if (value === newValue) {
       return;
     }
-    updateChao(value)
-  }, [chaoData, updateChao])
+    setValue(newValue)
+  }, [value, setValue])
 
   return (
-    <Context.Provider value={{ value: chaoData, setValueSelected }}>
+    <Context.Provider value={{ value, setValueSelected }}>
       {children}
     </Context.Provider>
   )

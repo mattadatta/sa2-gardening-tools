@@ -27,10 +27,10 @@ const LifespanRow = memo(() => {
   return (
     <div className="flex space-x-8">
       <ChaoLabelledItem label="Lifespan 1">
-        <ChaoSliderInput className="w-44" path="lifespan1" min={0} max={9999} step={10} />
+        <ChaoSliderInput className="w-44" path={['lifespan1']} min={0} max={9999} step={10} />
       </ChaoLabelledItem>
       <ChaoLabelledItem label="Lifespan 2">
-        <ChaoSliderInput className="w-44" path="lifespan2" min={0} max={9999} step={10} />
+        <ChaoSliderInput className="w-44" path={['lifespan2']} min={0} max={9999} step={10} />
       </ChaoLabelledItem>
     </div>
   )
@@ -40,16 +40,16 @@ const AlignmentRow = memo(() => {
   return (
     <div className="flex space-x-8">
       <ChaoLabelledItem label="Dark" rightLabel="Hero">
-        <ChaoSliderInput className="w-44" path="alignment" min={-1} max={1} step={0.1} />
+        <ChaoSliderInput className="w-44" path={['alignment']} min={-1} max={1} step={0.1} />
       </ChaoLabelledItem>
       <ChaoLabelledItem label="Run" rightLabel="Power">
-        <ChaoSliderInput className="w-44" path="runToPowerTransformation" min={-1} max={1} step={0.1} />
+        <ChaoSliderInput className="w-44" path={['runToPowerTransformation']} min={-1} max={1} step={0.1} />
       </ChaoLabelledItem>
       <ChaoLabelledItem label="Swim" rightLabel="Fly">
-        <ChaoSliderInput className="w-44" path="swimToFlyTransformation" min={-1} max={1} step={0.1} />
+        <ChaoSliderInput className="w-44" path={['swimToFlyTransformation']} min={-1} max={1} step={0.1} />
       </ChaoLabelledItem>
       <ChaoLabelledItem label="Transformation Magnitude">
-        <ChaoSliderInput className="w-44" path="transformationMagnitude" min={0} max={1.2} step={0.1} />
+        <ChaoSliderInput className="w-44" path={['transformationMagnitude']} min={0} max={1.2} step={0.1} />
       </ChaoLabelledItem>
     </div>
   )
@@ -57,18 +57,18 @@ const AlignmentRow = memo(() => {
 
 interface ChaoSpinnerProps {
   inputClassName?: string
-  path: string
+  path: any[]
   min: number
   max: number
 }
 
 const ChaoSpinner = memo(({ inputClassName = '', path, min, max }: ChaoSpinnerProps) => {
-  const { chaoData, updateChao } = useChaoPath<number>(path)
+  const { value, setValue } = useChaoPath<number>(path)
   return (
     <Spinner
       className={inputClassName}
-      value={chaoData}
-      onChange={updateChao}
+      value={value}
+      onChange={setValue}
       min={min}
       max={max} />
   )
@@ -78,13 +78,13 @@ const TypeRow = memo(() => {
   return (
     <div className="flex space-x-2">
       <ChaoLabelledItem label="Type">
-        <ChaoEnum path="chaoType" type={Types.ChaoType} />
+        <ChaoEnum path={['chaoType']} type={Types.ChaoType} />
       </ChaoLabelledItem>
       <ChaoLabelledItem label="Reincarnations">
-        <ChaoSpinner inputClassName="w-20 h-[34px]" path="reincarnations" min={0} max={255} />
+        <ChaoSpinner inputClassName="w-20 h-[34px]" path={['reincarnations']} min={0} max={255} />
       </ChaoLabelledItem>
       {/* <ChaoLabelledItem label="Init Chao?">
-        <ChaoSpinner inputClassName="w-20 h-[34px]" path="initChao" min={0} max={255} />
+        <ChaoSpinner inputClassName="w-20 h-[34px]" path={['initChao']} min={0} max={255} />
       </ChaoLabelledItem> */}
     </div>
   )

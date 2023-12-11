@@ -8,7 +8,7 @@ import { Addmark, ToFile } from "../ui/icons"
 import * as Types from "../../gen/types"
 
 const ChaoSave = memo(() => {
-  const portalData = useChaoSavePath<number>("portals")
+  const portalData = useChaoSavePath<number>(["portals"])
   const { chaoCount, createChao, writeChaoSave } = useChaoOrganizing()
   const [selectedChaoIndex, setSelectedChaoIndex] = useState<number | null>(null)
 

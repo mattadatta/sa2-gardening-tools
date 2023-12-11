@@ -1,6 +1,7 @@
-use cursieve::Sieve;
-use crate::model::types::*;
-use serde::{Serialize, Deserialize};
+use cursieve::{Sieve, SieveDisperse, SieveSift};
+use serde::{Deserialize, Serialize};
+
+use crate::model::{save_pack::UnpackedSave, types::*};
 
 #[derive(Debug, Sieve, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -15,9 +16,21 @@ pub struct ChaoSave {
     pub chao: Vec<Chao>,
 }
 
+impl ChaoSave {
+    pub fn from_unpacked(save: &UnpackedSave) -> Result<Self, cursieve::Error> {
+        Self::sift(&save.data)
+    }
+
+    pub fn to_unpacked(&self, save: &mut UnpackedSave) -> Result<(), cursieve::Error> {
+        self.disperse(&mut save.data)
+    }
+}
+
 #[derive(Debug, Sieve, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Chao {
+    #[sieve(offset(0), stride(0x0))]
+    pub unknowns: ChaoUnknowns,
     #[sieve(offset(0x12), count(7))]
     pub name: Vec<u8>,
     #[sieve(offset(0x20), stride(7))]
@@ -131,9 +144,9 @@ pub struct Chao {
 }
 
 impl Chao {
-    
     pub fn create() -> Self {
         Self {
+            unknowns: ChaoUnknowns::new(),
             name: vec![0; 7],
             bars: Default::default(),
             grades: Default::default(),
@@ -205,6 +218,7 @@ impl Chao {
 
     pub fn deleted() -> Self {
         Self {
+            unknowns: Default::default(),
             name: vec![0; 7],
             bars: Default::default(),
             grades: Default::default(),
@@ -280,15 +294,20 @@ impl Chao {
         // self.data.iter().map(|b|
         //     *CHAO_STRING_MAPPINGS.get_by_right(&b).unwrap_or(&' ')
         // ).collect()
-        self.name.iter().map(|b| chao_byte_to_char(*b).unwrap_or('_')).collect()
+        self.name
+            .iter()
+            .map(|b| chao_byte_to_char(*b).unwrap_or('_'))
+            .collect()
     }
 
     pub fn as_str_set_name(&mut self, value: String) {
         // input.chars().map(|c|
         //     *CHAO_STRING_MAPPINGS.get_by_left(&c).unwrap_or(&0)
         // ).collect()
-        self.name = value.chars().map(|c| chao_char_to_byte(c).unwrap_or(0x3F)).collect();
-        
+        self.name = value
+            .chars()
+            .map(|c| chao_char_to_byte(c).unwrap_or(0x3F))
+            .collect();
     }
 }
 
@@ -316,7 +335,6 @@ pub struct ChaoPropsU16 {
     pub intelligence: u16,
 }
 
-
 #[derive(Debug, Sieve, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 #[sieve(try_from)]
@@ -332,9 +350,8 @@ pub struct ChaoBodyParts {
 }
 
 impl ChaoBodyParts {
-
     fn create() -> Self {
-        Self { 
+        Self {
             arms: ChaoAnimalPartArms::None,
             ears: ChaoAnimalPartEars::None,
             forehead: ChaoAnimalPartForehead::None,
@@ -347,7 +364,7 @@ impl ChaoBodyParts {
     }
 
     fn deleted() -> Self {
-        Self { 
+        Self {
             arms: ChaoAnimalPartArms::Penguin,
             ears: ChaoAnimalPartEars::Invalid,
             forehead: ChaoAnimalPartForehead::Penguin,
@@ -416,7 +433,6 @@ pub struct ChaoDnaProps {
 }
 
 impl Default for ChaoDnaProps {
-
     fn default() -> Self {
         Self {
             favorite_fruit_1: ChaoFavoriteFruit::RoundFruit1,
@@ -430,7 +446,198 @@ impl Default for ChaoDnaProps {
             shiny_1: false,
             shiny_2: false,
             egg_color_1: ChaoEggColor::Normal,
-            egg_color_2: ChaoEggColor::Normal
+            egg_color_2: ChaoEggColor::Normal,
+        }
+    }
+}
+
+#[derive(Debug, Sieve, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ChaoUnknowns {
+    #[sieve(offset(0x78))]
+    pub field_01: u32,
+    #[sieve(offset(0x86))]
+    pub field_02: u16,
+    #[sieve(offset(0x88))]
+    pub field_03: u16,
+    #[sieve(offset(0x90))]
+    pub field_04: u32,
+    #[sieve(offset(0x98))]
+    pub field_05: u32,
+    #[sieve(offset(0xA0))]
+    pub field_06: u32,
+    #[sieve(offset(0xA4))]
+    pub field_07: u32,
+    #[sieve(offset(0xBC))]
+    pub field_08: u32,
+    #[sieve(offset(0x10E))]
+    pub field_09: u16,
+    #[sieve(offset(0x110))]
+    pub field_10: u16,
+    #[sieve(offset(0x126))]
+    pub field_11: u16,
+    #[sieve(offset(0x128))]
+    pub field_12: u16,
+    #[sieve(offset(0x12A))]
+    pub field_13: u16,
+    #[sieve(offset(0x13E))]
+    pub field_14: u16,
+    #[sieve(offset(0x140))]
+    pub field_15: u16,
+    #[sieve(offset(0x16E))]
+    pub field_16: u16,
+    #[sieve(offset(0x174))]
+    pub field_17: u16,
+    #[sieve(offset(0x17A))]
+    pub field_18: u16,
+    #[sieve(offset(0x180))]
+    pub field_19: u16,
+    #[sieve(offset(0x182))]
+    pub field_20: u16,
+    #[sieve(offset(0x186))]
+    pub field_21: u16,
+    #[sieve(offset(0x188))]
+    pub field_22: u16,
+    #[sieve(offset(0x18C))]
+    pub field_23: u16,
+    #[sieve(offset(0x1A6))]
+    pub field_24: u16,
+    #[sieve(offset(0x1C2))]
+    pub field_25: u16,
+    #[sieve(offset(0x1DE))]
+    pub field_26: u16,
+    #[sieve(offset(0x1FA))]
+    pub field_27: u16,
+    #[sieve(offset(0x216))]
+    pub field_28: u16,
+    #[sieve(offset(0x232))]
+    pub field_29: u16,
+    #[sieve(offset(0x24E))]
+    pub field_30: u16,
+    #[sieve(offset(0x26A))]
+    pub field_31: u16,
+    #[sieve(offset(0x286))]
+    pub field_32: u16,
+    #[sieve(offset(0x2A2))]
+    pub field_33: u16,
+    #[sieve(offset(0x2BE))]
+    pub field_34: u16,
+    #[sieve(offset(0x2DA))]
+    pub field_35: u16,
+    #[sieve(offset(0x2F6))]
+    pub field_36: u16,
+    #[sieve(offset(0x312))]
+    pub field_37: u16,
+    #[sieve(offset(0x32E))]
+    pub field_38: u16,
+    #[sieve(offset(0x34A))]
+    pub field_39: u16,
+    #[sieve(offset(0x366))]
+    pub field_40: u16,
+    #[sieve(offset(0x382))]
+    pub field_41: u16,
+    #[sieve(offset(0x39E))]
+    pub field_42: u16,
+    #[sieve(offset(0x3BA))]
+    pub field_43: u16,
+}
+
+impl Default for ChaoUnknowns {
+    fn default() -> Self {
+        Self {
+            field_01: 0,
+            field_02: 0,
+            field_03: 0,
+            field_04: 0,
+            field_05: 0,
+            field_06: 0,
+            field_07: 0,
+            field_08: 0,
+            field_09: 0,
+            field_10: 0,
+            field_11: 0,
+            field_12: 0,
+            field_13: 0,
+            field_14: 0,
+            field_15: 0,
+            field_16: 0,
+            field_17: 0,
+            field_18: 0,
+            field_19: 0,
+            field_20: 0,
+            field_21: 0,
+            field_22: 0,
+            field_23: 0,
+            field_24: 0,
+            field_25: 0,
+            field_26: 0,
+            field_27: 0,
+            field_28: 0,
+            field_29: 0,
+            field_30: 0,
+            field_31: 0,
+            field_32: 0,
+            field_33: 0,
+            field_34: 0,
+            field_35: 0,
+            field_36: 0,
+            field_37: 0,
+            field_38: 0,
+            field_39: 0,
+            field_40: 0,
+            field_41: 0,
+            field_42: 0,
+            field_43: 0,
+        }
+    }
+}
+
+impl ChaoUnknowns {
+    fn new() -> Self {
+        Self {
+            field_01: 0,
+            field_02: 0,
+            field_03: 0,
+            field_04: 0,
+            field_05: 0,
+            field_06: 1,
+            field_07: 10,
+            field_08: 0,
+            field_09: 0,
+            field_10: 0,
+            field_11: 2,
+            field_12: 10,
+            field_13: 10,
+            field_14: 0,
+            field_15: 0,
+            field_16: 0,
+            field_17: 0,
+            field_18: 0,
+            field_19: 0,
+            field_20: 0,
+            field_21: 0,
+            field_22: 0,
+            field_23: 0,
+            field_24: 0,
+            field_25: 0,
+            field_26: 0,
+            field_27: 0,
+            field_28: 0,
+            field_29: 0,
+            field_30: 0,
+            field_31: 0,
+            field_32: 0,
+            field_33: 0,
+            field_34: 0,
+            field_35: 0,
+            field_36: 0,
+            field_37: 0,
+            field_38: 0,
+            field_39: 0,
+            field_40: 0,
+            field_41: 0,
+            field_42: 0,
+            field_43: 0,
         }
     }
 }

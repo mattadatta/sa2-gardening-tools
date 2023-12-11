@@ -23,22 +23,22 @@ const HealthRow = memo(() => {
   return (
     <div className="flex space-x-8">
       <ChaoLabelledItem label="Cough">
-        <ChaoSliderInput className="w-44" path="cough" min={-100} max={100} step={1} />
+        <ChaoSliderInput className="w-44" path={['cough']} min={-100} max={100} step={1} />
       </ChaoLabelledItem>
       <ChaoLabelledItem label="Cold">
-        <ChaoSliderInput className="w-44" path="cold" min={-100} max={100} step={1} />
+        <ChaoSliderInput className="w-44" path={['cold']} min={-100} max={100} step={1} />
       </ChaoLabelledItem>
       <ChaoLabelledItem label="Rash">
-        <ChaoSliderInput className="w-44" path="rash" min={-100} max={100} step={1} />
+        <ChaoSliderInput className="w-44" path={['rash']} min={-100} max={100} step={1} />
       </ChaoLabelledItem>
       <ChaoLabelledItem label="Runny Nose">
-        <ChaoSliderInput className="w-44" path="runnyNose" min={-100} max={100} step={1} />
+        <ChaoSliderInput className="w-44" path={['runnyNose']} min={-100} max={100} step={1} />
       </ChaoLabelledItem>
       <ChaoLabelledItem label="Hiccups">
-        <ChaoSliderInput className="w-44" path="hiccups" min={-100} max={100} step={1} />
+        <ChaoSliderInput className="w-44" path={['hiccups']} min={-100} max={100} step={1} />
       </ChaoLabelledItem>
       <ChaoLabelledItem label="Stomach ache">
-        <ChaoSliderInput className="w-44" path="stomachAche" min={-100} max={100} step={1} />
+        <ChaoSliderInput className="w-44" path={['stomachAche']} min={-100} max={100} step={1} />
       </ChaoLabelledItem>
     </div>
   )

@@ -1,5 +1,5 @@
 import { createContext, memo, ReactNode, useCallback, useContext } from 'react'
-import { useChao } from './ChaoContext'
+import { useChaoPath } from './ChaoContext'
 
 interface ChaoBitflagProviderData {
   value: number
@@ -10,32 +10,27 @@ interface ChaoBitflagProviderData {
 const Context = createContext<ChaoBitflagProviderData | null>(null)
 
 interface ChaoBitflagProviderProps {
-  path: string
+  path: any[]
   type: any
   children?: ReactNode
 }
 
 const ChaoBitflagProvider = memo(({ path, type, children }: ChaoBitflagProviderProps) => {
-  const { chaoData, updateChao } = useChao((c) => c[path] as number)
-  const setValueSelected = useCallback((value: number, selected: boolean) => {
-    if (((chaoData & value) === value) === selected) {
+  const { value, setValue } = useChaoPath<number>(path)
+  const setValueSelected = useCallback((newValue: number, selected: boolean) => {
+    if (((value & newValue) === newValue) === selected) {
       return
     }
-    updateChao((c) => c[path] ^= value)
-  }, [chaoData, updateChao])
+    setValue(value ^ newValue)
+  }, [value, setValue])
   const selectAll = useCallback((selected: boolean) => {
-    updateChao((c) => {
-      if (selected) {
-        const numericValues = Object.values(type).filter(x => typeof x === "number");
-        numericValues.forEach((v) => c[path] |= (v as number))
-      } else {
-        c[path] = 0
-      }
-    })
-  }, [updateChao])
+    const newValue = selected ?
+      Object.values(type).filter(x => typeof x === "number").reduce((acc: number, v: any) => { return (acc | v) }, 0) : 0
+    setValue(newValue)
+  }, [setValue])
 
   return (
-    <Context.Provider value={{ value: chaoData, setValueSelected, selectAll }}>
+    <Context.Provider value={{ value, setValueSelected, selectAll }}>
       {children}
     </Context.Provider>
   )

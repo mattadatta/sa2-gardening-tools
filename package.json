@@ -13,11 +13,16 @@
     "start-debug": "concurrently \"pnpm run watch:tailwind\" \"pnpm dev\""
   },
   "dependencies": {
-    "@tauri-apps/api": "1.5.0",
+    "@emotion/react": "11.11.1",
+    "@emotion/styled": "11.11.0",
+    "@mui/material": "5.14.20",
+    "@tauri-apps/api": "1.5.1",
     "immer": "10.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "zustand": "4.4.6"
+    "react-virtualized-auto-sizer": "1.0.20",
+    "react-window": "1.8.10",
+    "zustand": "4.4.7"
   },
   "devDependencies": {
     "@tauri-apps/cli": "1.5.2",

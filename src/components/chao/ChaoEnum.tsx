@@ -38,7 +38,7 @@ const ChaoEnumImpl = memo(({ className = '', options, ...props }: ChaoEnumImplPr
 
 interface ChaoEnumProps {
   className?: string
-  path: string
+  path: any[]
   type: any
   onChange?: (value: number) => void
 }

@@ -4,19 +4,19 @@ import { ComboSlider } from "../ui/inputs"
 
 interface ChaoSliderInputProps {
   className?: string
-  path: string
+  path: any[]
   min: number
   max: number
   step: number
 }
 
 const ChaoSliderInput = memo(({ className = '', path, min, max, step }: ChaoSliderInputProps) => {
-  const { chaoData, updateChao } = useChaoPath<number>(path)
+  const { value, setValue } = useChaoPath<number>(path)
   return (
     <ComboSlider
       className={className}
-      value={chaoData}
-      onChange={updateChao}
+      value={value}
+      onChange={setValue}
       min={min}
       max={max}
       step={step} />

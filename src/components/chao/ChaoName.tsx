@@ -3,18 +3,18 @@ import { useChaoPath } from "./context/ChaoContext"
 import { chaoBytesToString, chaoStringToBytes } from "../../util/chao/name"
 import { Input } from "../ui/inputs"
 import { IconButton } from "../ui/buttons"
-import { Checkmark, Crossmark, Pencil, Tag } from "../ui/icons"
+import { Checkmark, Crossmark, Pencil } from "../ui/icons"
 
 const ChaoName = memo(() => {
-  const { chaoData, updateChao, index } = useChaoPath<number[]>("name")
+  const { value, setValue, index } = useChaoPath<number[]>(['name'])
   const [isEditing, setEditing] = useState(false)
   const [name, setName] = useState("")
-  const existingName = chaoBytesToString(chaoData)
+  const existingName = chaoBytesToString(value)
 
   useEffect(() => {
     setEditing(false)
     setName(existingName)
-  }, [index, chaoData])
+  }, [index, value])
 
   const onTextChange = useCallback((text: string) => {
     // TODO: maybe inline validation
@@ -23,14 +23,14 @@ const ChaoName = memo(() => {
 
   const onConfirm = useCallback(() => {
     const bytes = chaoStringToBytes(name)
-    updateChao(bytes)
+    setValue(bytes)
     setEditing(false)
-  }, [name, updateChao])
+  }, [name, setValue])
 
   const onCancel = useCallback(() => {
     setEditing(false)
     setName(existingName)
-  }, [chaoData])
+  }, [value])
 
   const onBeginEditing = useCallback(() => {
     setEditing(true)

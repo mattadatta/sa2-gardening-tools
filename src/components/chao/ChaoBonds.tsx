@@ -23,13 +23,13 @@ const DarkRow = memo(() => {
   return (
     <div className="flex space-x-8">
       <ChaoLabelledItem label="Shadow">
-        <ChaoSliderInput className="w-44" path="shadowBond.bond" min={-100} max={100} step={10} />
+        <ChaoSliderInput className="w-44" path={['shadowBond', 'bond']} min={-100} max={100} step={10} />
       </ChaoLabelledItem>
       <ChaoLabelledItem label="Eggman">
-        <ChaoSliderInput className="w-44" path="eggmanBond.bond" min={-100} max={100} step={10} />
+        <ChaoSliderInput className="w-44" path={['eggmanBond', 'bond']} min={-100} max={100} step={10} />
       </ChaoLabelledItem>
       <ChaoLabelledItem label="Rouge">
-        <ChaoSliderInput className="w-44" path="rougeBond.bond" min={-100} max={100} step={10} />
+        <ChaoSliderInput className="w-44" path={['rougeBond', 'bond']} min={-100} max={100} step={10} />
       </ChaoLabelledItem>
     </div>
   )
@@ -39,13 +39,13 @@ const HeroRow = memo(() => {
   return (
     <div className="flex space-x-8">
       <ChaoLabelledItem label="Sonic">
-        <ChaoSliderInput className="w-44" path="sonicBond.bond" min={-100} max={100} step={10} />
+        <ChaoSliderInput className="w-44" path={['sonicBond', 'bond']} min={-100} max={100} step={10} />
       </ChaoLabelledItem>
       <ChaoLabelledItem label="Tails">
-        <ChaoSliderInput className="w-44" path="tailsBond.bond" min={-100} max={100} step={10} />
+        <ChaoSliderInput className="w-44" path={['tailsBond', 'bond']} min={-100} max={100} step={10} />
       </ChaoLabelledItem>
       <ChaoLabelledItem label="Knuckles">
-        <ChaoSliderInput className="w-44" path="knucklesBond.bond" min={-100} max={100} step={10} />
+        <ChaoSliderInput className="w-44" path={['knucklesBond', 'bond']} min={-100} max={100} step={10} />
       </ChaoLabelledItem>
     </div>
   )
