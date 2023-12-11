@@ -29,8 +29,8 @@ impl ChaoSave {
 #[derive(Debug, Sieve, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Chao {
-    #[sieve(offset(0), stride(0x0))]
-    pub unknowns: ChaoUnknowns,
+    // #[sieve(offset(0), stride(0x0))]
+    // pub unknowns: ChaoUnknowns,
     #[sieve(offset(0x12), count(7))]
     pub name: Vec<u8>,
     #[sieve(offset(0x20), stride(7))]
@@ -146,7 +146,7 @@ pub struct Chao {
 impl Chao {
     pub fn create() -> Self {
         Self {
-            unknowns: ChaoUnknowns::new(),
+            // unknowns: ChaoUnknowns::new(),
             name: vec![0; 7],
             bars: Default::default(),
             grades: Default::default(),
@@ -218,7 +218,7 @@ impl Chao {
 
     pub fn deleted() -> Self {
         Self {
-            unknowns: Default::default(),
+            // unknowns: Default::default(),
             name: vec![0; 7],
             bars: Default::default(),
             grades: Default::default(),

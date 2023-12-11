@@ -102,7 +102,7 @@ pub async fn write_out_chao_save(
         .set_title("Export Chao Save")
         .set_directory(directory)
         // .set_file_name(format!("{}_1", file_name).as_str())
-        .set_file_name("SONIC2B__ALF_1")
+        .set_file_name("SONIC2B__ALF")
         .save_file()
         .ok_or("UserCancelled".to_string())?;
 
