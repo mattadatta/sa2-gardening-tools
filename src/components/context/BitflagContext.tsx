@@ -20,14 +20,14 @@ const BitflagProvider = memo(({ value, setValue, type, children }: BitflagProvid
     if (((value & v) === v) === selected) {
       return
     }
-    setValue(value ^ v)
+    setValue((value ^ v) >>> 0)
   }, [value, setValue])
   const selectAll = useCallback((selected: boolean) => {
     if (selected) {
       let newValue = 0
       const numericValues = Object.values(type).filter(x => typeof x === "number");
       numericValues.forEach((v) => value |= (v as number))
-      setValue(newValue)
+      setValue(newValue >>> 0)
     } else {
       setValue(0)
     }

@@ -67,6 +67,9 @@ pub async fn read_in_chao() -> Result<String, String> {
 
 #[tauri::command]
 pub async fn write_out_chao(name: String, json: String) -> Result<(), String> {
+    let chao = serde_json::from_str::<Chao>(&json).map_err(|e| format!("DeserializeFailed: {}", e))?;
+    let chao_json = serde_json::to_string(&chao).map_err(|_| "SerializeFailed")?;
+
     let file_path = tauri::api::dialog::blocking::FileDialogBuilder::new()
         .set_title("Save Chao")
         .add_filter("Chao files", &["chao", "json"])
@@ -75,8 +78,6 @@ pub async fn write_out_chao(name: String, json: String) -> Result<(), String> {
         .save_file()
         .ok_or("UserCancelled".to_string())?;
 
-    let chao = serde_json::from_str::<Chao>(&json).map_err(|_| "DeserializeFailed")?;
-    let chao_json = serde_json::to_string(&chao).map_err(|_| "SerializeFailed")?;
     let mut file = std::fs::File::create(file_path).map_err(|_| "CreateFailed")?;
     std::io::Write::write_all(&mut file, chao_json.as_bytes()).map_err(|_| "WriteFailed")?;
     Ok(())
@@ -87,8 +88,7 @@ pub async fn write_out_chao_save(
     json: String,
     state: tauri::State<'_, std::sync::Mutex<State>>,
 ) -> Result<(), String> {
-    let new_loaded_save =
-        serde_json::from_str::<LoadedSave>(&json).map_err(|_| "DeserializeFailed")?;
+    let new_loaded_save = serde_json::from_str::<LoadedSave>(&json).map_err(|_| "DeserializeFailed")?;
     let mut state = state.lock().unwrap();
     let loaded_instance = state.instance.as_mut().unwrap();
     let unpacked_save = &mut loaded_instance.unpacked;
