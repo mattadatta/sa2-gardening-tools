@@ -3,7 +3,7 @@ import { useChaoPath } from './ChaoContext'
 
 interface ChaoEnumProviderData {
   value: number
-  setValueSelected: (value: number) => void
+  setValue: (value: number) => void
 }
 
 const Context = createContext<ChaoEnumProviderData | null>(null)
@@ -15,15 +15,9 @@ interface ChaoEnumProviderProps {
 
 const ChaoEnumProvider = memo(({ path, children }: ChaoEnumProviderProps) => {
   const { value, setValue } = useChaoPath<number>(path)
-  const setValueSelected = useCallback((newValue: number) => {
-    if (value === newValue) {
-      return;
-    }
-    setValue(newValue)
-  }, [value, setValue])
 
   return (
-    <Context.Provider value={{ value, setValueSelected }}>
+    <Context.Provider value={{ value, setValue }}>
       {children}
     </Context.Provider>
   )
@@ -41,10 +35,10 @@ interface ChaoEnumValueData {
 function useChaoEnumValue(value: number): ChaoEnumValueData {
   const providerData = useChaoEnum()
   const isSelected = (providerData.value === value)
-  const setValueSelected = providerData.setValueSelected
+  const setValue = providerData.setValue
   const setSelected = useCallback(() => {
-    setValueSelected(value)
-  }, [setValueSelected])
+    setValue(value)
+  }, [value, setValue])
   return {
     isSelected,
     setSelected
