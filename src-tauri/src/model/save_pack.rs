@@ -19,7 +19,7 @@ impl UnpackedSave {
 #[derive(thiserror::Error, Debug)]
 pub enum UnpackError {
     #[error("cursieve error: {0}")]
-    CurseiveError(#[from] cursieve::Error),
+    CursieveError(#[from] cursieve::Error),
     #[error("i/o error: `{0}`")]
     IoError(#[from] std::io::Error),
     #[error("{0} crc `{1}` does not match computed crc `{2}`")]
@@ -35,7 +35,7 @@ impl From<UnpackError> for String {
 #[derive(thiserror::Error, Debug)]
 pub enum PackError {
     #[error("cursieve error")]
-    CurseiveError(#[from] cursieve::Error),
+    CursieveError(#[from] cursieve::Error),
     #[error("i/o error")]
     IoError(#[from] std::io::Error),
 }

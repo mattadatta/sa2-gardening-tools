@@ -34,7 +34,7 @@ const BitflagProvider = memo(({ value, setValue, type, children }: BitflagProvid
   }, [setValue])
 
   return (
-    <Context.Provider value={{ value: value, setValueSelected, selectAll }}>
+    <Context.Provider value={{ value, setValueSelected, selectAll }}>
       {children}
     </Context.Provider>
   )

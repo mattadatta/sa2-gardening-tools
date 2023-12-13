@@ -69,7 +69,7 @@ pub enum LoadError {
     #[error("unpack error: `{0}`")]
     UnpackError(#[from] UnpackError),
     #[error("cursieve error: `{0}`")]
-    CurseiveError(#[from] cursieve::Error),
+    CursieveError(#[from] cursieve::Error),
 }
 
 impl From<LoadError> for String {
