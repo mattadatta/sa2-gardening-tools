@@ -52,7 +52,7 @@ function useBitflagValue(value: number): BitflagValueData {
   const setValueSelected = providerData.setValueSelected
   const setSelected = useCallback((selected: boolean) => {
     setValueSelected(value, selected)
-  }, [setValueSelected])
+  }, [value, setValueSelected])
   const toggleSelected = useCallback(() => {
     setSelected(!isSelected)
   }, [isSelected, setSelected])
