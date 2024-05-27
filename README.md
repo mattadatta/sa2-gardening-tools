@@ -1,7 +1,11 @@
-# Tauri + React + Typescript
+# SA2 Gardening Tools
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+A cross-platform Chao save file editor for the PC version of Sonic Adventure 2.
 
-## Recommended IDE Setup
+## Acknowledgements
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+[dfrood](https://github.com/dfrood) for their [SA2SaveUtility](https://github.com/dfrood) project, which served as the basis for the Rust implementation of their C# cryptography code.
+
+## License
+
+This project is licensed under the [MIT license](LICENSE).
