@@ -7,32 +7,30 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tauri": "tauri",
-    "watch:tailwind": "pnpx tailwindcss -i ./src/input.css -o ./src/styles.css --watch",
-    "start": "concurrently \"pnpm run watch:tailwind\" \"pnpm tauri dev\"",
-    "start-debug": "concurrently \"pnpm run watch:tailwind\" \"pnpm dev\""
+    "tauri": "tauri"
   },
   "dependencies": {
-    "@emotion/react": "11.11.1",
-    "@emotion/styled": "11.11.0",
-    "@mui/material": "5.14.20",
+    "@emotion/react": "11.11.4",
+    "@emotion/styled": "11.11.5",
+    "@mui/material": "5.15.18",
     "@tauri-apps/api": "1.5.1",
-    "immer": "10.0.3",
+    "immer": "10.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-virtualized-auto-sizer": "1.0.20",
     "react-window": "1.8.10",
-    "zustand": "4.4.7"
+    "zustand": "4.5.2"
   },
   "devDependencies": {
     "@tauri-apps/cli": "1.5.2",
     "@types/react": "18.2.28",
     "@types/react-dom": "18.2.13",
-    "@vitejs/plugin-react": "4.1.0",
-    "concurrently": "8.2.1",
-    "tailwindcss": "3.3.3",
-    "typescript": "5.2.2",
-    "vite": "4.4.11",
+    "@vitejs/plugin-react": "4.3.0",
+    "autoprefixer": "10.4.19",
+    "postcss": "8.4.38",
+    "tailwindcss": "3.4.3",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0",
     "vite-plugin-svgr": "4.2.0"
   }
 }
