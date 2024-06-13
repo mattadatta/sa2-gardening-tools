@@ -12,7 +12,7 @@ interface ChaoEnumImplProps {
   onChange?: (value: number) => void
 }
 
-const ChaoEnumImpl = ({ className = '', options, ...props }: ChaoEnumImplProps) => {
+const ChaoEnumImpl = ({ className = '', options, onChange }: ChaoEnumImplProps) => {
   const { value, setValue } = useChaoEnum()
   // const selectedValue = options.find((o) => o.key === value)?.value ?? ""
   const valuesByKey = useMemo(() => {
@@ -22,17 +22,17 @@ const ChaoEnumImpl = ({ className = '', options, ...props }: ChaoEnumImplProps) 
     }, {} as { [key: number]: string })
   }, [options])
   const selectedValue = valuesByKey[value]
-  const onChange = useCallback((option: SelectOption) => {
+  const onValueChange = useCallback((option: SelectOption) => {
     setValue((option as ChaoEnumOption).key)
-    props.onChange?.((option as ChaoEnumOption).key)
-  }, [setValue])
+    onChange?.((option as ChaoEnumOption).key)
+  }, [setValue, onChange])
 
   return (
     <Select
       className={className}
       options={options}
       value={selectedValue}
-      onChange={onChange} />
+      onChange={onValueChange} />
   )
 }
 
