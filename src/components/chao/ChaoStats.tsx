@@ -9,7 +9,7 @@ interface GradeSpinnerProps {
   onChange: (value: number) => void
 }
 
-const GradeSpinner = memo(({ inputClassName, stat, value, onChange }: GradeSpinnerProps) => {
+const GradeSpinner = ({ inputClassName, stat, value, onChange }: GradeSpinnerProps) => {
   const maxValue = (() => {
     switch (stat) {
       case 'swim':
@@ -55,14 +55,14 @@ const GradeSpinner = memo(({ inputClassName, stat, value, onChange }: GradeSpinn
       {(maxValue <= 6) && <span className={`${labelColor} w-4 font-black`}>{label}</span>}
     </div>
   )
-})
+}
 
 interface ChaoDnaStatProps {
   stat: string
   path: any[]
 }
 
-const ChaoDnaStat = memo(({ stat, path }: ChaoDnaStatProps) => {
+const ChaoDnaStat = ({ stat, path }: ChaoDnaStatProps) => {
   const { value, setValue } = useChaoPath<number>(path)
 
   const ringColor = (() => {
@@ -93,14 +93,14 @@ const ChaoDnaStat = memo(({ stat, path }: ChaoDnaStatProps) => {
       value={value}
       onChange={setValue} />
   )
-})
+}
 
 interface ChaoStatProps {
   section: string
   stat: string
 }
 
-const ChaoStat = memo(({ section, stat }: ChaoStatProps) => {
+const ChaoStat = ({ section, stat }: ChaoStatProps) => {
   const { value, setValue } = useChaoPath<number>([section, stat])
 
   const ringColor = (() => {
@@ -169,13 +169,13 @@ const ChaoStat = memo(({ section, stat }: ChaoStatProps) => {
   })()
 
   return (<>{content}</>)
-})
+}
 
 interface ChaoStatRowProps {
   stat: string
 }
 
-const ChaoStatRow = memo(({ stat }: ChaoStatRowProps) => {
+const ChaoStatRow = ({ stat }: ChaoStatRowProps) => {
   // const textColorForStat = (stat: string) => {
   //   switch (stat) {
   //     case 'swim':
@@ -208,9 +208,9 @@ const ChaoStatRow = memo(({ stat }: ChaoStatRowProps) => {
       <td><ChaoDnaStat path={['dnaStatGrades', `${stat}2`]} stat={stat} /></td>
     </tr>
   )
-})
+}
 
-const ChaoStatsHeaderRow = memo(() => {
+const ChaoStatsHeaderRow = () => {
   const headerStyles = `text-start pl-1`
   return (
     <tr className="text-sm">
@@ -223,11 +223,11 @@ const ChaoStatsHeaderRow = memo(() => {
       <th className={`${headerStyles}`}>DNA 2</th>
     </tr>
   )
-})
+}
 
 const stats = ['swim', 'fly', 'run', 'power', 'stamina', 'intelligence', 'luck']
 
-const ChaoStats = memo(() => {
+const ChaoStats = () => {
   return (
     <table className="border-separate border-spacing-2">
       <tbody>
@@ -240,6 +240,6 @@ const ChaoStats = memo(() => {
       </tbody>
     </table>
   )
-})
+}
 
 export default ChaoStats

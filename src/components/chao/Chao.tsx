@@ -15,7 +15,7 @@ import ChaoItems from "./ChaoItems"
 import ChaoPersonality from "./ChaoPersonality"
 import ChaoStats from "./ChaoStats"
 
-const ChaoData = memo(() => {
+const ChaoData = () => {
   return (
     <>
       <Section Icon={Tag} label="Basics">
@@ -47,9 +47,9 @@ const ChaoData = memo(() => {
       </Section>
     </>
   )
-})
+}
 
-const FileOptionsRow = memo(() => {
+const FileOptionsRow = () => {
   const { createChao, readChao, writeChao, deleteChao } = useChaoOrganizing()
 
   return (
@@ -72,9 +72,9 @@ const FileOptionsRow = memo(() => {
         onClick={writeChao} />
     </div>
   )
-})
+}
 
-const ChaoImpl = memo(() => {
+const ChaoImpl = () => {
   const chaoName = chaoBytesToString(useChaoPath<number[]>(["name"], true).value)
   const { index, isValid } = useChaoOrganizing()
 
@@ -95,18 +95,18 @@ const ChaoImpl = memo(() => {
       </div>
     </div>
   )
-})
+}
 
 interface ChaoProps {
   selectedIndex: number
 }
 
-const Chao = memo((props: ChaoProps) => {
+const Chao = (props: ChaoProps) => {
   return (
     <ChaoProvider index={props.selectedIndex}>
       <ChaoImpl />
     </ChaoProvider>
   )
-})
+}
 
 export default Chao

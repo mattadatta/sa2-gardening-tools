@@ -1,4 +1,4 @@
-import { createContext, memo, ReactNode, useCallback, useContext } from 'react'
+import { createContext, ReactNode, useCallback, useContext } from 'react'
 import { useChaoPath } from './ChaoContext'
 
 interface ChaoEnumProviderData {
@@ -13,7 +13,7 @@ interface ChaoEnumProviderProps {
   children?: ReactNode
 }
 
-const ChaoEnumProvider = memo(({ path, children }: ChaoEnumProviderProps) => {
+const ChaoEnumProvider = ({ path, children }: ChaoEnumProviderProps) => {
   const { value, setValue } = useChaoPath<number>(path)
 
   return (
@@ -21,7 +21,7 @@ const ChaoEnumProvider = memo(({ path, children }: ChaoEnumProviderProps) => {
       {children}
     </Context.Provider>
   )
-})
+}
 
 function useChaoEnum(): ChaoEnumProviderData {
   return useContext(Context)!

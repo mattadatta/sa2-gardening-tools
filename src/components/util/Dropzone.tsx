@@ -4,7 +4,7 @@ interface DropzoneProps extends React.HTMLAttributes<HTMLDivElement> {
   onZoneDrop: (files: FileList) => void
 }
 
-const Dropzone = memo(({ children, onZoneDrop, ...props }: DropzoneProps) => {
+const Dropzone = ({ children, onZoneDrop, ...props }: DropzoneProps) => {
   const handleDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
   }, []);
@@ -24,6 +24,6 @@ const Dropzone = memo(({ children, onZoneDrop, ...props }: DropzoneProps) => {
       {children}
     </div>
   )
-})
+}
 
 export default Dropzone

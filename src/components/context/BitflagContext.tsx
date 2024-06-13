@@ -1,4 +1,4 @@
-import { createContext, memo, ReactNode, useCallback, useContext } from 'react'
+import { createContext, ReactNode, useCallback, useContext } from 'react'
 
 interface BitflagProviderData {
   value: number
@@ -15,7 +15,7 @@ interface BitflagProviderProps {
   children?: ReactNode
 }
 
-const BitflagProvider = memo(({ value, setValue, type, children }: BitflagProviderProps) => {
+const BitflagProvider = ({ value, setValue, type, children }: BitflagProviderProps) => {
   const setValueSelected = useCallback((v: number, selected: boolean) => {
     if (((value & v) === v) === selected) {
       return
@@ -38,7 +38,7 @@ const BitflagProvider = memo(({ value, setValue, type, children }: BitflagProvid
       {children}
     </Context.Provider>
   )
-})
+}
 
 interface BitflagValueData {
   isSelected: boolean

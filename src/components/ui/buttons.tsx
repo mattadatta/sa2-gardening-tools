@@ -3,7 +3,7 @@ import { memo, useCallback } from "react"
 interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 }
 
-const Button = memo(({ className = '', children, ...props }: ButtonProps) => {
+const Button = ({ className = '', children, ...props }: ButtonProps) => {
   return (
     <button
       className={`${className}`}
@@ -11,7 +11,7 @@ const Button = memo(({ className = '', children, ...props }: ButtonProps) => {
       {children}
     </button>
   )
-})
+}
 
 interface IconProps {
   className?: string
@@ -25,7 +25,7 @@ interface IconButtonProps {
   onClick: () => void
 }
 
-const IconButton = memo(({
+const IconButton = ({
   className = '',
   Icon,
   iconProps = {},
@@ -47,7 +47,7 @@ const IconButton = memo(({
       <Icon {...iconProps} className={`fill-current ${iconProps.className ?? ''}`} />
     </Button>
   )
-})
+}
 
 interface TabButtonProps {
   label: string
@@ -56,7 +56,7 @@ interface TabButtonProps {
   onClick: () => void
 }
 
-const TabButton = memo(({
+const TabButton = ({
   label,
   isActive,
   isDisabled,
@@ -73,7 +73,7 @@ const TabButton = memo(({
       {label}
     </Button>
   )
-})
+}
 
 interface CheckboxProps {
   className?: string
@@ -82,7 +82,7 @@ interface CheckboxProps {
   setSelected: (enabled: boolean) => void
 }
 
-const Checkbox = memo(({ className = '', label, isSelected, setSelected }: CheckboxProps) => {
+const Checkbox = ({ className = '', label, isSelected, setSelected }: CheckboxProps) => {
   const toggleSelected = useCallback(() => {
     (setSelected(!isSelected))
   }, [isSelected, setSelected])
@@ -96,6 +96,6 @@ const Checkbox = memo(({ className = '', label, isSelected, setSelected }: Check
       <span>{label}</span>
     </Button>
   )
-})
+}
 
 export { Button, IconButton, TabButton, Checkbox }

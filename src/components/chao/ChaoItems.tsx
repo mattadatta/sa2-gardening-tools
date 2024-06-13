@@ -8,16 +8,16 @@ interface ChaoItemSectionProps {
   type: any
 }
 
-const ChaoItemSection = memo(({ label, path, type }: ChaoItemSectionProps) => {
+const ChaoItemSection = ({ label, path, type }: ChaoItemSectionProps) => {
   return (
     <div className="flex flex-col space-y-1">
       <span>{label}</span>
       <ChaoBitflags path={path} type={type} />
     </div>
   )
-})
+}
 
-const ChaoItems = memo(() => {
+const ChaoItems = () => {
   return (
     <div className="flex space-x-2">
       <ChaoItemSection label="Toys" path={['toys']} type={Types.ChaoToys} />
@@ -26,6 +26,6 @@ const ChaoItems = memo(() => {
       <ChaoItemSection label="SA Behaviors" path={['saAnimalBehaviors']} type={Types.ChaoSaAnimalBehaviors} />
     </div>
   )
-})
+}
 
 export default ChaoItems

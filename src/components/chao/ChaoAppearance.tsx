@@ -1,10 +1,10 @@
-import { ReactNode, memo, useCallback } from "react"
+import { ReactNode, useCallback } from "react"
 import ChaoEnum from "./ChaoEnum"
 import * as Types from "../../gen/types"
 import ChaoCheckbox from "./ChaoCheckbox"
 import { useChaoPath } from "./context/ChaoContext"
 
-// const ColorAppearanceColumn = memo(() => {
+// const ColorAppearanceColumn = () => {
 //   return (
 //     <div className={`flex flex-col space-y-2`}>
 //       <span>Color</span>
@@ -14,23 +14,23 @@ import { useChaoPath } from "./context/ChaoContext"
 //       <ChaoEnum path={['dnaProps.color2']} type={Types.ChaoColor} />
 //     </div>
 //   )
-// })
+// }
 
 interface ChaoLabelledItemProps {
   label: string
   children: ReactNode
 }
 
-const ChaoLabelledItem = memo(({ label, children }: ChaoLabelledItemProps) => {
+const ChaoLabelledItem = ({ label, children }: ChaoLabelledItemProps) => {
   return (
     <div className={`flex flex-col space-y-1 mb-2`}>
       <span>{label}</span>
       {children}
     </div>
   )
-})
+}
 
-const AnimalPartsAppearanceRow = memo(() => {
+const AnimalPartsAppearanceRow = () => {
   return (
     <div className="flex space-x-2">
       <ChaoLabelledItem label="Horns">
@@ -59,9 +59,9 @@ const AnimalPartsAppearanceRow = memo(() => {
       </ChaoLabelledItem>
     </div>
   )
-})
+}
 
-const ChaoBodyItem = memo(() => {
+const ChaoBodyItem = () => {
   const chaoBodyType = useChaoPath<Types.ChaoBodyType>(["bodyType"])
   const chaoBodyTypeAnimal = useChaoPath<Types.ChaoAnimal>(["bodyTypeAnimal"])
   const onChange = useCallback((value: number) => {
@@ -86,9 +86,9 @@ const ChaoBodyItem = memo(() => {
       {isBodyAnimal && renderBodyAnimal()}
     </>
   )
-})
+}
 
-const SecondaryAppearanceRow = memo(() => {
+const SecondaryAppearanceRow = () => {
   return (
     <div className="flex space-x-2">
       <ChaoLabelledItem label="Emotiball">
@@ -112,9 +112,9 @@ const SecondaryAppearanceRow = memo(() => {
       </ChaoLabelledItem>
     </div>
   )
-})
+}
 
-const ColorAppearanceColumn = memo(() => {
+const ColorAppearanceColumn = () => {
   return (
     <div className={`flex flex-col space-y-2`}>
       <span>Color</span>
@@ -124,9 +124,9 @@ const ColorAppearanceColumn = memo(() => {
       <ChaoEnum path={['dnaProps', 'color2']} type={Types.ChaoColor} />
     </div>
   )
-})
+}
 
-const EggColorAppearanceColumn = memo(() => {
+const EggColorAppearanceColumn = () => {
   return (
     <div className={`flex flex-col space-y-2`}>
       <span>Egg Color</span>
@@ -136,9 +136,9 @@ const EggColorAppearanceColumn = memo(() => {
       <ChaoEnum path={['dnaProps', 'eggColor2']} type={Types.ChaoEggColor} />
     </div>
   )
-})
+}
 
-const TextureAppearanceColumn = memo(() => {
+const TextureAppearanceColumn = () => {
   return (
     <div className={`flex flex-col space-y-2`}>
       <span>Texture</span>
@@ -148,9 +148,9 @@ const TextureAppearanceColumn = memo(() => {
       <ChaoEnum path={['dnaProps', 'texture2']} type={Types.ChaoTexture} />
     </div>
   )
-})
+}
 
-const ShinyAppearanceColumn = memo(() => {
+const ShinyAppearanceColumn = () => {
   return (
     <div className={`flex flex-col space-y-2`}>
       <span>Shiny?</span>
@@ -160,9 +160,9 @@ const ShinyAppearanceColumn = memo(() => {
       <ChaoCheckbox path={['dnaProps', 'shiny2']} label="Shiny" />
     </div>
   )
-})
+}
 
-const MonotoAppearanceColumn = memo(() => {
+const MonotoAppearanceColumn = () => {
   return (
     <div className={`flex flex-col space-y-2`}>
       <span>Monotone?</span>
@@ -172,9 +172,9 @@ const MonotoAppearanceColumn = memo(() => {
       <ChaoCheckbox path={['dnaProps, monotone2']} label="Monotone" />
     </div>
   )
-})
+}
 
-const PrimaryAppearanceRow = memo(() => {
+const PrimaryAppearanceRow = () => {
   return (
     <div className="flex space-x-2">
       <ColorAppearanceColumn />
@@ -184,9 +184,9 @@ const PrimaryAppearanceRow = memo(() => {
       <MonotoAppearanceColumn />
     </div>
   )
-})
+}
 
-const ChaoAppearance = memo(() => {
+const ChaoAppearance = () => {
   return (
     <div className="flex flex-col space-y-2">
       <ChaoLabelledItem label="Breed">
@@ -200,6 +200,6 @@ const ChaoAppearance = memo(() => {
       </ChaoLabelledItem>
     </div>
   )
-})
+}
 
 export default ChaoAppearance

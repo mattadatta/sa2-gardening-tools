@@ -7,7 +7,7 @@ import { IconButton } from "../ui/buttons"
 import { Addmark, ToFile } from "../ui/icons"
 import * as Types from "../../gen/types"
 
-const ChaoSave = memo(() => {
+const ChaoSave = () => {
   const portalData = useChaoSavePath<number>(["portals"])
   const { chaoCount, createChao, writeChaoSave } = useChaoOrganizing()
   const [selectedChaoIndex, setSelectedChaoIndex] = useState<number | null>(null)
@@ -49,6 +49,6 @@ const ChaoSave = memo(() => {
       </div>
     </div>
   )
-})
+}
 
 export default ChaoSave

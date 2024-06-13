@@ -1,4 +1,4 @@
-import { ReactNode, memo } from "react"
+import { ReactNode } from "react"
 import ChaoName from "./ChaoName"
 import ChaoEnum from "./ChaoEnum"
 import * as Types from "../../gen/types"
@@ -10,7 +10,7 @@ interface ChaoLabelledItemProps {
   children: ReactNode
 }
 
-const ChaoLabelledItem = memo(({ label, rightLabel, children }: ChaoLabelledItemProps) => {
+const ChaoLabelledItem = ({ label, rightLabel, children }: ChaoLabelledItemProps) => {
   return (
     <div className={`flex flex-col space-y-1 mb-2`}>
       <div className="flex justify-between">
@@ -20,9 +20,9 @@ const ChaoLabelledItem = memo(({ label, rightLabel, children }: ChaoLabelledItem
       {children}
     </div>
   )
-})
+}
 
-// const Row2 = memo(() => {
+// const Row2 = () => {
 //   return (
 //     <div className="flex space-x-8">
 //       <ChaoLabelledItem label="Reset?">
@@ -30,9 +30,9 @@ const ChaoLabelledItem = memo(({ label, rightLabel, children }: ChaoLabelledItem
 //       </ChaoLabelledItem>
 //     </div>
 //   )
-// })
+// }
 
-const Row1 = memo(() => {
+const Row1 = () => {
   return (
     <div className="flex space-x-8">
       <ChaoLabelledItem label="Garden">
@@ -40,9 +40,9 @@ const Row1 = memo(() => {
       </ChaoLabelledItem>
     </div>
   )
-})
+}
 
-const ChaoBasics = memo(() => {
+const ChaoBasics = () => {
   return (
     <div className="flex flex-col space-y-2">
       <ChaoLabelledItem label="Name">
@@ -52,6 +52,6 @@ const ChaoBasics = memo(() => {
       {/* <Row2 /> */}
     </div>
   )
-})
+}
 
 export default ChaoBasics

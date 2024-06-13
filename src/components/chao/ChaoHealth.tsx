@@ -1,4 +1,4 @@
-import { ReactNode, memo } from "react"
+import { ReactNode } from "react"
 import ChaoSliderInput from "./ChaoSliderInput"
 
 interface ChaoLabelledItemProps {
@@ -7,7 +7,7 @@ interface ChaoLabelledItemProps {
   children: ReactNode
 }
 
-const ChaoLabelledItem = memo(({ label, rightLabel, children }: ChaoLabelledItemProps) => {
+const ChaoLabelledItem = ({ label, rightLabel, children }: ChaoLabelledItemProps) => {
   return (
     <div className={`flex flex-col space-y-1 mb-2`}>
       <div className="flex justify-between">
@@ -17,9 +17,9 @@ const ChaoLabelledItem = memo(({ label, rightLabel, children }: ChaoLabelledItem
       {children}
     </div>
   )
-})
+}
 
-const HealthRow = memo(() => {
+const HealthRow = () => {
   return (
     <div className="flex space-x-8">
       <ChaoLabelledItem label="Cough">
@@ -42,14 +42,14 @@ const HealthRow = memo(() => {
       </ChaoLabelledItem>
     </div>
   )
-})
+}
 
-const ChaoHealth = memo(() => {
+const ChaoHealth = () => {
   return (
     <div className="flex flex-col space-y-2">
       <HealthRow />
     </div>
   )
-})
+}
 
 export default ChaoHealth

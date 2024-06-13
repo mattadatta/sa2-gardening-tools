@@ -1,4 +1,4 @@
-import { ReactNode, memo, useCallback, useState } from "react"
+import { ReactNode, useCallback, useState } from "react"
 import { ArrowDown } from "./icons"
 import { Button } from "./buttons"
 
@@ -14,7 +14,7 @@ interface HeaderProps {
   label: string
 }
 
-const Header = memo(({
+const Header = ({
   className = '',
   Icon,
   iconProps = {},
@@ -26,7 +26,7 @@ const Header = memo(({
       <span>{label}</span>
     </span>
   )
-})
+}
 
 interface SectionProps {
   className?: string
@@ -35,7 +35,7 @@ interface SectionProps {
   children?: ReactNode
 }
 
-const Section = memo(({
+const Section = ({
   className = '',
   Icon,
   label,
@@ -58,6 +58,6 @@ const Section = memo(({
       </div>
     </div>
   )
-})
+}
 
 export { Section }

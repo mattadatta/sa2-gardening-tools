@@ -1,4 +1,4 @@
-import { createContext, memo, ReactNode, useCallback, useContext } from 'react'
+import { createContext, ReactNode, useCallback, useContext } from 'react'
 import { useChaoPath } from './ChaoContext'
 
 interface ChaoBitflagProviderData {
@@ -15,7 +15,7 @@ interface ChaoBitflagProviderProps {
   children?: ReactNode
 }
 
-const ChaoBitflagProvider = memo(({ path, type, children }: ChaoBitflagProviderProps) => {
+const ChaoBitflagProvider = ({ path, type, children }: ChaoBitflagProviderProps) => {
   const { value, setValue } = useChaoPath<number>(path)
   const setValueSelected = useCallback((newValue: number, selected: boolean) => {
     if (((value & newValue) === newValue) === selected) {
@@ -34,7 +34,7 @@ const ChaoBitflagProvider = memo(({ path, type, children }: ChaoBitflagProviderP
       {children}
     </Context.Provider>
   )
-})
+}
 
 interface ChaoBitflagValueData {
   isSelected: boolean

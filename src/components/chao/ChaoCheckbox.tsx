@@ -7,7 +7,7 @@ interface ChaoCheckboxProps {
   path: any[]
 }
 
-const ChaoCheckbox = memo(({ label, path }: ChaoCheckboxProps) => {
+const ChaoCheckbox = ({ label, path }: ChaoCheckboxProps) => {
   const { value, setValue } = useChaoPath<boolean>(path)
   return (
     <Checkbox
@@ -15,6 +15,6 @@ const ChaoCheckbox = memo(({ label, path }: ChaoCheckboxProps) => {
       isSelected={value}
       setSelected={setValue} />
   )
-})
+}
 
 export default ChaoCheckbox

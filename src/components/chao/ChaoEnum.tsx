@@ -12,7 +12,7 @@ interface ChaoEnumImplProps {
   onChange?: (value: number) => void
 }
 
-const ChaoEnumImpl = memo(({ className = '', options, ...props }: ChaoEnumImplProps) => {
+const ChaoEnumImpl = ({ className = '', options, ...props }: ChaoEnumImplProps) => {
   const { value, setValueSelected } = useChaoEnum()
   // const selectedValue = options.find((o) => o.key === value)?.value ?? ""
   const valuesByKey = useMemo(() => {
@@ -34,7 +34,7 @@ const ChaoEnumImpl = memo(({ className = '', options, ...props }: ChaoEnumImplPr
       value={selectedValue}
       onChange={onChange} />
   )
-})
+}
 
 interface ChaoEnumProps {
   className?: string
@@ -43,7 +43,7 @@ interface ChaoEnumProps {
   onChange?: (value: number) => void
 }
 
-const ChaoEnum = memo(({ className = '', path, type, onChange }: ChaoEnumProps) => {
+const ChaoEnum = ({ className = '', path, type, onChange }: ChaoEnumProps) => {
   const numericValues = Object.values(type).filter(x => typeof x === "number")
   const stringValues = Object.values(type).filter(x => typeof x === "string")
 
@@ -63,6 +63,6 @@ const ChaoEnum = memo(({ className = '', path, type, onChange }: ChaoEnumProps) 
       <ChaoEnumImpl className={className} options={options} onChange={onChange} />
     </ChaoEnumProvider>
   )
-})
+}
 
 export default ChaoEnum

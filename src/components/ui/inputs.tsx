@@ -13,7 +13,7 @@ interface InputProps extends Record<string, any> {
   // nativeProps?: React.InputHTMLAttributes<HTMLInputElement>
 }
 
-const Input = memo(({
+const Input = ({
   className = '',
   type = 'text',
   onChange,
@@ -51,7 +51,7 @@ const Input = memo(({
       {...props}
     />
   )
-})
+}
 
 interface NumberInputProps {
   className?: string
@@ -64,7 +64,7 @@ interface NumberInputProps {
   parseFn?: (_: string) => number
 }
 
-const NumberInput = memo(({
+const NumberInput = ({
   className = '',
   value,
   onChange,
@@ -107,7 +107,7 @@ const NumberInput = memo(({
       {...props}
     />
   )
-})
+}
 
 interface SpinnerProps {
   className?: string
@@ -121,7 +121,7 @@ interface SpinnerProps {
   inputClassName?: string
 }
 
-const Spinner = memo(({
+const Spinner = ({
   className = '',
   onChange,
   value,
@@ -168,7 +168,7 @@ const Spinner = memo(({
       </div>
     </div>
   )
-})
+}
 
 interface SliderProps {
   className?: string
@@ -179,7 +179,7 @@ interface SliderProps {
   step: number;
 }
 
-const Slider = memo(({
+const Slider = ({
   className = '',
   value,
   onChange,
@@ -203,7 +203,7 @@ const Slider = memo(({
       {...props}
     />
   )
-})
+}
 
 interface ComboSliderProps {
   className?: string
@@ -214,7 +214,7 @@ interface ComboSliderProps {
   step: number;
 }
 
-const ComboSlider = memo(({
+const ComboSlider = ({
   className = '',
   value,
   onChange,
@@ -244,7 +244,7 @@ const ComboSlider = memo(({
       />
     </div>
   )
-})
+}
 
 export interface SelectOption {
   value: string
@@ -258,7 +258,7 @@ interface SelectProps {
   onChange: (key: SelectOption) => void
 }
 
-const Select = memo(({
+const Select = ({
   className = '',
   options,
   value,
@@ -298,6 +298,6 @@ const Select = memo(({
       </div>
     </div>
   )
-})
+}
 
 export { Input, NumberInput, Spinner, Slider, ComboSlider, Select }

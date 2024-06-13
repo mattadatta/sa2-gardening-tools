@@ -5,7 +5,7 @@ import { Input } from "../ui/inputs"
 import { IconButton } from "../ui/buttons"
 import { Checkmark, Crossmark, Pencil } from "../ui/icons"
 
-const ChaoName = memo(() => {
+const ChaoName = () => {
   const { value, setValue, index } = useChaoPath<number[]>(['name'])
   const [isEditing, setEditing] = useState(false)
   const [name, setName] = useState("")
@@ -73,6 +73,6 @@ const ChaoName = memo(() => {
       {childElement}
     </div>
   )
-})
+}
 
 export default ChaoName

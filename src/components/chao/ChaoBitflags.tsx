@@ -1,4 +1,3 @@
-import { memo } from "react"
 import { ChaoBitflagProvider, useChaoBitflagValue } from "./context/ChaoBitflagContext"
 import { Checkbox } from "../ui/buttons"
 
@@ -7,7 +6,7 @@ interface ChaoBitflagProps {
   value: number
 }
 
-// const ChaoBitflag = memo(({ label, value }: ChaoBitflagProps) => {
+// const ChaoBitflag = ({ label, value }: ChaoBitflagProps) => {
 //   const { isSelected, toggleSelected } = useChaoBitflagValue(value)
 //   const baseStyles = 'border-[1px] rounded-md py-1'
 //   const selectedStyle = isSelected ? 'border-blue-400 text-white' : 'border-gray-400/20'
@@ -18,9 +17,9 @@ interface ChaoBitflagProps {
 //       </span>
 //     </Button>
 //   )
-// })
+// }
 
-const ChaoBitflag = memo(({ label, value }: ChaoBitflagProps) => {
+const ChaoBitflag = ({ label, value }: ChaoBitflagProps) => {
   const { isSelected, setSelected } = useChaoBitflagValue(value)
   return (
     <Checkbox
@@ -28,14 +27,14 @@ const ChaoBitflag = memo(({ label, value }: ChaoBitflagProps) => {
       isSelected={isSelected}
       setSelected={setSelected} />
   )
-})
+}
 
 interface ChaoBitflagsProps {
   path: any[]
   type: any
 }
 
-const ChaoBitflags = memo(({ path, type }: ChaoBitflagsProps) => {
+const ChaoBitflags = ({ path, type }: ChaoBitflagsProps) => {
   const numericValues = Object.values(type).filter(x => typeof x === "number")
   const stringValues = Object.values(type).filter(x => typeof x === "string")
 
@@ -54,6 +53,6 @@ const ChaoBitflags = memo(({ path, type }: ChaoBitflagsProps) => {
       </div>
     </ChaoBitflagProvider>
   )
-})
+}
 
 export default ChaoBitflags

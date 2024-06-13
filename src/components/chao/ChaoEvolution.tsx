@@ -1,4 +1,4 @@
-import { ReactNode, memo } from "react"
+import { ReactNode } from "react"
 import ChaoEnum from "./ChaoEnum"
 import * as Types from "../../gen/types"
 import ChaoSliderInput from "./ChaoSliderInput"
@@ -11,7 +11,7 @@ interface ChaoLabelledItemProps {
   children: ReactNode
 }
 
-const ChaoLabelledItem = memo(({ label, rightLabel, children }: ChaoLabelledItemProps) => {
+const ChaoLabelledItem = ({ label, rightLabel, children }: ChaoLabelledItemProps) => {
   return (
     <div className={`flex flex-col space-y-1 mb-2`}>
       <div className="flex justify-between">
@@ -21,9 +21,9 @@ const ChaoLabelledItem = memo(({ label, rightLabel, children }: ChaoLabelledItem
       {children}
     </div>
   )
-})
+}
 
-const LifespanRow = memo(() => {
+const LifespanRow = () => {
   return (
     <div className="flex space-x-8">
       <ChaoLabelledItem label="Lifespan 1">
@@ -34,9 +34,9 @@ const LifespanRow = memo(() => {
       </ChaoLabelledItem>
     </div>
   )
-})
+}
 
-const AlignmentRow = memo(() => {
+const AlignmentRow = () => {
   return (
     <div className="flex space-x-8">
       <ChaoLabelledItem label="Dark" rightLabel="Hero">
@@ -53,7 +53,7 @@ const AlignmentRow = memo(() => {
       </ChaoLabelledItem>
     </div>
   )
-})
+}
 
 interface ChaoSpinnerProps {
   inputClassName?: string
@@ -62,7 +62,7 @@ interface ChaoSpinnerProps {
   max: number
 }
 
-const ChaoSpinner = memo(({ inputClassName = '', path, min, max }: ChaoSpinnerProps) => {
+const ChaoSpinner = ({ inputClassName = '', path, min, max }: ChaoSpinnerProps) => {
   const { value, setValue } = useChaoPath<number>(path)
   return (
     <Spinner
@@ -72,9 +72,9 @@ const ChaoSpinner = memo(({ inputClassName = '', path, min, max }: ChaoSpinnerPr
       min={min}
       max={max} />
   )
-})
+}
 
-const TypeRow = memo(() => {
+const TypeRow = () => {
   return (
     <div className="flex space-x-2">
       <ChaoLabelledItem label="Type">
@@ -88,9 +88,9 @@ const TypeRow = memo(() => {
       </ChaoLabelledItem> */}
     </div>
   )
-})
+}
 
-const ChaoEvolution = memo(() => {
+const ChaoEvolution = () => {
   return (
     <div className="flex flex-col space-y-2">
       <TypeRow />
@@ -98,6 +98,6 @@ const ChaoEvolution = memo(() => {
       <LifespanRow />
     </div>
   )
-})
+}
 
 export default ChaoEvolution

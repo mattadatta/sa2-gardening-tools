@@ -10,7 +10,7 @@ interface ChaoCellProps {
   onSelect: (index: number) => void
 }
 
-const ChaoCellImpl = memo(({ index, isSelected, onSelect }: ChaoCellProps) => {
+const ChaoCellImpl = ({ index, isSelected, onSelect }: ChaoCellProps) => {
   const { isValid, isLastValid, copyChao, swapChao } = useChaoOrganizing()
   const chaoName = chaoBytesToString(useChaoPath<number[]>(["name"]).value)
   const selectedStyle = isSelected ? 'bg-gray-600' : 'bg-gray-800'
@@ -70,14 +70,14 @@ const ChaoCellImpl = memo(({ index, isSelected, onSelect }: ChaoCellProps) => {
       </div>
     </div>
   )
-})
+}
 
-const ChaoCell = memo((props: ChaoCellProps) => {
+const ChaoCell = (props: ChaoCellProps) => {
   return (
     <ChaoProvider index={props.index}>
       <ChaoCellImpl {...props} />
     </ChaoProvider>
   )
-})
+}
 
 export default ChaoCell

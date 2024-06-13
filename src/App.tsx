@@ -4,15 +4,15 @@ import ErrorModal from "./components/ErrorModal"
 import MainContent from "./MainContent"
 import { useLoadedSave, useProcessFiles } from "./store"
 
-const EmptyContent = memo(() => {
+const EmptyContent = () => {
   return (
     <div className="m-auto border border-gray-700 p-20 rounded-lg bg-gray-800 flex flex-col items-center justify-center font-pixelify">
       <p>Drop save file(s)</p>
     </div>
   )
-})
+}
 
-const App = memo(() => {
+const App = () => {
   const { processFiles } = useProcessFiles()
   const loadedSave = useLoadedSave();
 
@@ -27,6 +27,6 @@ const App = memo(() => {
       <ErrorModal />
     </div>
   )
-})
+}
 
 export default App

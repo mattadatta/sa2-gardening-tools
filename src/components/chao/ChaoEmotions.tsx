@@ -1,4 +1,4 @@
-import { ReactNode, memo } from "react"
+import { ReactNode } from "react"
 import ChaoSliderInput from "./ChaoSliderInput"
 
 interface ChaoLabelledItemProps {
@@ -7,7 +7,7 @@ interface ChaoLabelledItemProps {
   children: ReactNode
 }
 
-const ChaoLabelledItem = memo(({ label, rightLabel, children }: ChaoLabelledItemProps) => {
+const ChaoLabelledItem = ({ label, rightLabel, children }: ChaoLabelledItemProps) => {
   return (
     <div className={`flex flex-col space-y-1 mb-2`}>
       <div className="flex justify-between">
@@ -17,9 +17,9 @@ const ChaoLabelledItem = memo(({ label, rightLabel, children }: ChaoLabelledItem
       {children}
     </div>
   )
-})
+}
 
-const EmotionsRow3 = memo(() => {
+const EmotionsRow3 = () => {
   return (
     <div className="flex space-x-8">
       <ChaoLabelledItem label="Joy">
@@ -39,9 +39,9 @@ const EmotionsRow3 = memo(() => {
       </ChaoLabelledItem>
     </div>
   )
-})
+}
 
-const EmotionsRow2 = memo(() => {
+const EmotionsRow2 = () => {
   return (
     <div className="flex space-x-8">
       <ChaoLabelledItem label="Desire to mate">
@@ -64,9 +64,9 @@ const EmotionsRow2 = memo(() => {
       </ChaoLabelledItem>
     </div>
   )
-})
+}
 
-const EmotionsRow1 = memo(() => {
+const EmotionsRow1 = () => {
   return (
     <div className="flex space-x-8">
       <ChaoLabelledItem label="Happiness">
@@ -74,9 +74,9 @@ const EmotionsRow1 = memo(() => {
       </ChaoLabelledItem>
     </div>
   )
-})
+}
 
-const ChaoEmotions = memo(() => {
+const ChaoEmotions = () => {
   return (
     <div className="flex flex-col space-y-2">
       <EmotionsRow1 />
@@ -84,6 +84,6 @@ const ChaoEmotions = memo(() => {
       <EmotionsRow3 />
     </div>
   )
-})
+}
 
 export default ChaoEmotions

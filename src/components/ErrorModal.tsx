@@ -9,7 +9,7 @@ interface ErrorModalImplProps {
   onDismiss: () => void
 }
 
-const ErrorModalImpl = memo(({ error, onDismiss }: ErrorModalImplProps) => {
+const ErrorModalImpl = ({ error, onDismiss }: ErrorModalImplProps) => {
   return (
     <div className="flex flex-col items-center font-nunito space-y-2">
       <span className="font-bold">{`${error}`}</span>
@@ -21,12 +21,12 @@ const ErrorModalImpl = memo(({ error, onDismiss }: ErrorModalImplProps) => {
       </Button>
     </div>
   )
-})
+}
 
 interface ErrorModalProps {
 }
 
-const ErrorModal = memo(({ }: ErrorModalProps) => {
+const ErrorModal = ({ }: ErrorModalProps) => {
   const { error, setError } = useCurrentError()
   const isOpen = error !== null
   const handleClose = useCallback(() => {
@@ -46,6 +46,6 @@ const ErrorModal = memo(({ }: ErrorModalProps) => {
       </Box>
     </Modal>
   )
-})
+}
 
 export default ErrorModal

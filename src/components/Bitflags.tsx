@@ -1,4 +1,3 @@
-import { memo } from "react"
 import { BitflagProvider, useBitflagValue } from "./context/BitflagContext"
 import { Checkbox } from "./ui/buttons"
 
@@ -7,7 +6,7 @@ interface BitflagProps {
   value: number
 }
 
-// const Bitflag = memo(({ label, value }: BitflagProps) => {
+// const Bitflag = ({ label, value }: BitflagProps) => {
 //   const { isSelected, toggleSelected } = useBitflagValue(value)
 //   const baseStyles = 'border-[1px] rounded-md py-1'
 //   const selectedStyle = isSelected ? 'border-blue-400 text-white' : 'border-gray-400/20'
@@ -18,9 +17,9 @@ interface BitflagProps {
 //       </span>
 //     </Button>
 //   )
-// })
+// }
 
-const Bitflag = memo(({ label, value }: BitflagProps) => {
+const Bitflag = ({ label, value }: BitflagProps) => {
   const { isSelected, setSelected } = useBitflagValue(value)
   return (
     <Checkbox
@@ -28,7 +27,7 @@ const Bitflag = memo(({ label, value }: BitflagProps) => {
       isSelected={isSelected}
       setSelected={setSelected} />
   )
-})
+}
 
 interface BitflagsProps {
   value: number
@@ -36,7 +35,7 @@ interface BitflagsProps {
   type: any
 }
 
-const Bitflags = memo(({ value, setValue, type }: BitflagsProps) => {
+const Bitflags = ({ value, setValue, type }: BitflagsProps) => {
   const numericValues = Object.values(type).filter(x => typeof x === "number")
   const stringValues = Object.values(type).filter(x => typeof x === "string")
 
@@ -53,6 +52,6 @@ const Bitflags = memo(({ value, setValue, type }: BitflagsProps) => {
       })}
     </BitflagProvider>
   )
-})
+}
 
 export default Bitflags

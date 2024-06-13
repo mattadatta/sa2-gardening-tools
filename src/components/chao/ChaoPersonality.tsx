@@ -1,4 +1,4 @@
-import { ReactNode, memo } from "react"
+import { ReactNode } from "react"
 import ChaoEnum from "./ChaoEnum"
 import * as Types from "../../gen/types"
 import ChaoSliderInput from "./ChaoSliderInput"
@@ -9,7 +9,7 @@ interface ChaoLabelledItemProps {
   children: ReactNode
 }
 
-const ChaoLabelledItem = memo(({ label, rightLabel, children }: ChaoLabelledItemProps) => {
+const ChaoLabelledItem = ({ label, rightLabel, children }: ChaoLabelledItemProps) => {
   return (
     <div className={`flex flex-col space-y-1 mb-2`}>
       <div className="flex justify-between">
@@ -19,9 +19,9 @@ const ChaoLabelledItem = memo(({ label, rightLabel, children }: ChaoLabelledItem
       {children}
     </div>
   )
-})
+}
 
-const AlignmentRow = memo(() => {
+const AlignmentRow = () => {
   return (
     <div className="flex space-x-8">
       <ChaoLabelledItem label="Normal" rightLabel="Curious">
@@ -41,9 +41,9 @@ const AlignmentRow = memo(() => {
       </ChaoLabelledItem>
     </div>
   )
-})
+}
 
-const TypeRow = memo(() => {
+const TypeRow = () => {
   return (
     <div className="flex space-x-2">
       <div className={`flex flex-col space-y-2`}>
@@ -55,15 +55,15 @@ const TypeRow = memo(() => {
       </div>
     </div>
   )
-})
+}
 
-const ChaoPersonality = memo(() => {
+const ChaoPersonality = () => {
   return (
     <div className="flex flex-col space-y-2">
       <TypeRow />
       <AlignmentRow />
     </div>
   )
-})
+}
 
 export default ChaoPersonality

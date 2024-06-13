@@ -1,4 +1,4 @@
-import { createContext, memo, ReactNode, useCallback, useContext } from 'react'
+import { createContext, ReactNode, useCallback, useContext } from 'react'
 import {
   useChaoSavePath, UseSavePath,
   useWriteChaoAtIndex, UseWriteChaoData,
@@ -16,13 +16,13 @@ interface ChaoProviderProps {
   children?: ReactNode
 }
 
-const ChaoProvider = memo(({ index, children }: ChaoProviderProps) => {
+const ChaoProvider = ({ index, children }: ChaoProviderProps) => {
   return (
     <Context.Provider value={{ index }}>
       {children}
     </Context.Provider>
   )
-})
+}
 
 interface UseChao extends ChaoProviderData {
 }

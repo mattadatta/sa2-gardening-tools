@@ -10,7 +10,7 @@ interface ChaoSliderInputProps {
   step: number
 }
 
-const ChaoSliderInput = memo(({ className = '', path, min, max, step }: ChaoSliderInputProps) => {
+const ChaoSliderInput = ({ className = '', path, min, max, step }: ChaoSliderInputProps) => {
   const { value, setValue } = useChaoPath<number>(path)
   return (
     <ComboSlider
@@ -21,6 +21,6 @@ const ChaoSliderInput = memo(({ className = '', path, min, max, step }: ChaoSlid
       max={max}
       step={step} />
   )
-})
+}
 
 export default ChaoSliderInput
