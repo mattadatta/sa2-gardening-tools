@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react"
+import { useCallback, useMemo } from "react"
 import { ChaoEnumProvider, useChaoEnum } from "./context/ChaoEnumContext"
 import { Select, SelectOption } from "../ui/inputs"
 
@@ -13,7 +13,7 @@ interface ChaoEnumImplProps {
 }
 
 const ChaoEnumImpl = ({ className = '', options, ...props }: ChaoEnumImplProps) => {
-  const { value, setValueSelected } = useChaoEnum()
+  const { value, setValue } = useChaoEnum()
   // const selectedValue = options.find((o) => o.key === value)?.value ?? ""
   const valuesByKey = useMemo(() => {
     return options.reduce((map, option) => {
@@ -23,9 +23,9 @@ const ChaoEnumImpl = ({ className = '', options, ...props }: ChaoEnumImplProps) 
   }, [options])
   const selectedValue = valuesByKey[value]
   const onChange = useCallback((option: SelectOption) => {
-    setValueSelected((option as ChaoEnumOption).key)
+    setValue((option as ChaoEnumOption).key)
     props.onChange?.((option as ChaoEnumOption).key)
-  }, [setValueSelected])
+  }, [setValue])
 
   return (
     <Select
