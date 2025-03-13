@@ -689,7 +689,7 @@ Public License instead of this License.  But first, please read
 pub fn checksum(bytes: &mut [u8]) {
     let offset: usize = 0x24C;
     let bytes = &mut bytes[0x3040..];
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
 
     bytes[0xC81D + offset] = 0;
     bytes[0xC818 + offset] = 0;
@@ -697,16 +697,16 @@ pub fn checksum(bytes: &mut [u8]) {
     bytes[0xC81A + offset] = 0;
     bytes[0xC81B + offset] = 0;
 
-    bytes[0xC819 + offset] = rand::Rng::gen::<u8>(&mut rng);
-    bytes[0xC81C + offset] = rand::Rng::gen::<u8>(&mut rng);
-    bytes[0xC81E + offset] = rand::Rng::gen::<u8>(&mut rng);
+    bytes[0xC819 + offset] = rand::Rng::random::<u8>(&mut rng);
+    bytes[0xC81C + offset] = rand::Rng::random::<u8>(&mut rng);
+    bytes[0xC81E + offset] = rand::Rng::random::<u8>(&mut rng);
 
     let v1 = compute(bytes, 0xC820 + offset);
     bytes[0xC81D + offset] = v1 as u8;
     bytes[0xC818 + offset] = (v1 >> 8) as u8;
     bytes[0xC81F + offset] = (v1 >> 16) as u8;
     bytes[0xC81A + offset] = (v1 >> 24) as u8;
-    bytes[0xC81B + offset] = rand::Rng::gen::<u8>(&mut rng);
+    bytes[0xC81B + offset] = rand::Rng::random::<u8>(&mut rng);
 }
 
 fn compute(bytes: &mut [u8], offset: usize) -> u32 {

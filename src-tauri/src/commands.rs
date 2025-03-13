@@ -3,6 +3,7 @@ use crate::{
     model::save::Chao,
     state::State,
 };
+use tauri_plugin_dialog::DialogExt;
 
 #[tauri::command]
 pub async fn process_files(
@@ -49,15 +50,15 @@ pub fn create_deleted_chao() -> String {
 }
 
 #[tauri::command]
-pub async fn read_in_chao() -> Result<String, String> {
-    let file_path = tauri::api::dialog::blocking::FileDialogBuilder::new()
+pub async fn read_in_chao(app: tauri::AppHandle) -> Result<String, String> {
+    let file_path = app.dialog().file()
         .set_title("Open Chao")
         .add_filter("Chao files", &["chao", "json"])
         .set_directory(".")
-        .pick_file()
+        .blocking_pick_file()
         .ok_or("UserCancelled".to_string())?;
 
-    let mut file = std::fs::File::open(file_path).map_err(|_| "OpenFailed")?;
+    let mut file = std::fs::File::open(file_path.as_path().ok_or("InvalidPath".to_string())?).map_err(|_| "OpenFailed")?;
     let mut contents = String::new();
     std::io::Read::read_to_string(&mut file, &mut contents).map_err(|_| "ReadFailed")?;
     let chao = serde_json::from_str::<Chao>(&contents).map_err(|_| "DeserializeFailed")?;
@@ -66,29 +67,32 @@ pub async fn read_in_chao() -> Result<String, String> {
 }
 
 #[tauri::command]
-pub async fn write_out_chao(name: String, json: String) -> Result<(), String> {
-    let chao = serde_json::from_str::<Chao>(&json).map_err(|e| format!("DeserializeFailed: {}", e))?;
+pub async fn write_out_chao(app: tauri::AppHandle, name: String, json: String) -> Result<(), String> {
+    let chao =
+        serde_json::from_str::<Chao>(&json).map_err(|e| format!("DeserializeFailed: {}", e))?;
     let chao_json = serde_json::to_string(&chao).map_err(|_| "SerializeFailed")?;
 
-    let file_path = tauri::api::dialog::blocking::FileDialogBuilder::new()
+    let file_path = app.dialog().file()
         .set_title("Save Chao")
         .add_filter("Chao files", &["chao", "json"])
         .set_directory(".")
         .set_file_name(&format!("{}", name))
-        .save_file()
+        .blocking_save_file()
         .ok_or("UserCancelled".to_string())?;
 
-    let mut file = std::fs::File::create(file_path).map_err(|_| "CreateFailed")?;
+    let mut file = std::fs::File::create(file_path.as_path().ok_or("InvalidPath".to_string())?).map_err(|_| "CreateFailed")?;
     std::io::Write::write_all(&mut file, chao_json.as_bytes()).map_err(|_| "WriteFailed")?;
     Ok(())
 }
 
 #[tauri::command]
 pub async fn write_out_chao_save(
+    app: tauri::AppHandle,
     json: String,
     state: tauri::State<'_, std::sync::Mutex<State>>,
 ) -> Result<(), String> {
-    let new_loaded_save = serde_json::from_str::<LoadedSave>(&json).map_err(|_| "DeserializeFailed")?;
+    let new_loaded_save =
+        serde_json::from_str::<LoadedSave>(&json).map_err(|_| "DeserializeFailed")?;
     let mut state = state.lock().unwrap();
     let loaded_instance = state.instance.as_mut().unwrap();
     let unpacked_save = &mut loaded_instance.unpacked;
@@ -98,15 +102,15 @@ pub async fn write_out_chao_save(
     let packed_save = unpacked_save.pack()?;
     let (directory, _file_name) = split_path(&loaded_instance.file.path).unwrap();
 
-    let file_path = tauri::api::dialog::blocking::FileDialogBuilder::new()
+    let file_path = app.dialog().file()
         .set_title("Export Chao Save")
         .set_directory(directory)
         // .set_file_name(format!("{}_1", file_name).as_str())
         .set_file_name("SONIC2B__ALF")
-        .save_file()
+        .blocking_save_file()
         .ok_or("UserCancelled".to_string())?;
 
-    let mut file = std::fs::File::create(file_path).map_err(|_| "CreateFailed")?;
+    let mut file = std::fs::File::create(file_path.as_path().ok_or("InvalidPath".to_string())?).map_err(|_| "CreateFailed")?;
     std::io::Write::write_all(&mut file, &packed_save).map_err(|_| "WriteFailed")?;
 
     Ok(())

@@ -1,4 +1,3 @@
-import { memo } from "react"
 import Dropzone from "./components/util/TauriDropzone"
 import ErrorModal from "./components/ErrorModal"
 import MainContent from "./MainContent"

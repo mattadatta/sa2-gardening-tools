@@ -1,5 +1,5 @@
-import React, { memo, useCallback, useEffect } from 'react'
-import { onFileDrop } from '../../util/tauri'
+import React, { useCallback, useEffect } from 'react'
+import { onDragDrop } from '../../tauri/drag_drop';
 
 interface DropzoneProps extends React.HTMLAttributes<HTMLDivElement> {
   onZoneDrop: (files: string[]) => void
@@ -10,7 +10,7 @@ const Dropzone = ({ children, onZoneDrop, ...props }: DropzoneProps) => {
     event.preventDefault()
   }, []);
 
-  useEffect(() => onFileDrop(onZoneDrop), [])
+  useEffect(() => onDragDrop(({ paths }) => onZoneDrop(paths)), [])
 
   return (
     <div

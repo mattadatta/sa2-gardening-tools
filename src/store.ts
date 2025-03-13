@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { create } from "zustand";
 import { useShallow } from 'zustand/react/shallow'
 import { produce, enableMapSet } from 'immer'
-import { processFiles, createDeletedChao, createNewChao, readInChao, writeOutChao, writeOutChaoSave } from "./backend";
+import { processFiles, createDeletedChao, createNewChao, readInChao, writeOutChao, writeOutChaoSave } from "./tauri/backend";
 import { chaoBytesToString } from "./util/chao/name";
 import { getValue, setValue } from "./util/object_path";
 

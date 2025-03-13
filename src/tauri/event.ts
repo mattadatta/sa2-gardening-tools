@@ -1,6 +1,6 @@
 import { EventCallback, EventName, UnlistenFn, listen } from '@tauri-apps/api/event'
 
-function observe<T>(event: EventName, handler: EventCallback<T>): UnlistenFn {
+export function observe<T>(event: EventName, handler: EventCallback<T>): UnlistenFn {
   const promise = listen(event, handler)
 
   let unlisten: UnlistenFn | null = null
@@ -23,10 +23,4 @@ function observe<T>(event: EventName, handler: EventCallback<T>): UnlistenFn {
   }
 
   return unsubscribe
-}
-
-export function onFileDrop(callback: (files: string[]) => void): UnlistenFn {
-  return observe<string[]>('tauri://file-drop', (event) => {
-    callback(event.payload);
-  })
 }

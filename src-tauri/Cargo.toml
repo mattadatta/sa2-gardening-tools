@@ -3,34 +3,36 @@ name = "sa2-gardening-tools"
 version = "0.1.0"
 authors = ["Matthew Brown"]
 edition = "2021"
-rust-version = "1.60"
+rust-version = "1.81"
 description = "A Tauri app"
 readme = "README.md"
 homepage = "https://github.com/mattadatta/sa2-gardening-tools"
 repository = "https://github.com/mattadatta/sa2-gardening-tools"
 license-file = "LICENSE"
 
+[lib]
+name = "sa2_gardening_tools_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
 [build-dependencies]
-tauri-build = { version = "1.5", features = [] }
+tauri-build = { version = "2", features = [] }
 
 [dependencies]
-tauri = { version = "1.5", features = [ "fs-write-file", "dialog-all", "shell-open"] }
-ts-rs = "7.0"
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
+ts-rs = "10.1.0"
 cursieve = { path = "../../cursieve/cursieve" }
 futures = "0.3.29"
-rand = "0.8.5"
-thiserror = "1.0.50"
+time = "0.3.39"
+rand = "0.9.0"
+thiserror = "2.0.12"
 byteorder = "1.5.0"
-serde = { version = "1.0.192", features = ["derive"] }
-serde_json = "1.0.108"
-strum = "0.25"
-strum_macros = "0.25"
-paste = "1.0.14"
-bitflags = "2.4.1"
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
+strum = "0.27.1"
+strum_macros = "0.27.1"
+paste = "1.0.15"
+bitflags = "2.9.0"
 bimap = "0.6.3"
-lazy_static = "1.4.0"
-
-[features]
-# this feature is used for production builds or when `devPath` points to the filesystem
-# DO NOT REMOVE!!
-custom-protocol = ["tauri/custom-protocol"]
+lazy_static = "1.5.0"
+tauri-plugin-dialog = "2"

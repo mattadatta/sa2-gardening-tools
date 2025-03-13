@@ -4,7 +4,7 @@ use lazy_static::lazy_static;
 use strum_macros::EnumIter;
 use ts_rs::TS;
 
-use crate::{try_from_enum, try_from_bitflags, serde_try_from};
+use crate::{serde_try_from, try_from_bitflags, try_from_enum};
 
 try_from_enum! {
     #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumIter, TS)]
